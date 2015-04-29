@@ -193,7 +193,18 @@ void g4matrixSteppingAction::UserSteppingAction(const G4Step* step)
 	CreateTree::Instance()->PostMomentumY.push_back(PostOnDetectorMomentum.getY()/*/CLHEP::nm*/);
 	CreateTree::Instance()->PostMomentumZ.push_back(PostOnDetectorMomentum.getZ()/*/CLHEP::nm*/);
 	
+	//save the process that created the photon
+	if(track->GetCreatorProcess()->GetProcessName() == "Scintillation")
+	  CreateTree::Instance()->PhotonType.push_back(0);
+	else if(track->GetCreatorProcess()->GetProcessName() == "Cerenkov")
+	  CreateTree::Instance()->PhotonType.push_back(1);
+	else
+	  CreateTree::Instance()->PhotonType.push_back(2);
+	
 	CreateTree::Instance()->GlobalTime.push_back(globalTime/CLHEP::ns);  
+	CreateTree::Instance()->PhotonEnergy.push_back(track->GetDynamicParticle()->GetTotalEnergy()/CLHEP::eV);
+  
+	
       }
       //kill the photon
       track->SetTrackStatus(fStopAndKill); 

@@ -90,6 +90,11 @@ class CreateTree
   std::vector<float> GlobalTime;
   std::vector<float> *pGlobalTime;
   
+  std::vector<int> PhotonType;
+  std::vector<int> *pPhotonType;
+  
+  std::vector<float> PhotonEnergy;
+  std::vector<float> *pPhotonEnergy;
   
  
 };
