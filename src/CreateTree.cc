@@ -111,12 +111,14 @@ CreateTree::CreateTree(TString name, int x, int y, int z, int k)
   this->GetTree()->Branch("PostMomentumY","std::vector<float>",&pPostMomentumY);
   this->GetTree()->Branch("PostMomentumZ","std::vector<float>",&pPostMomentumZ);
   
-  
-  
   pGlobalTime = &GlobalTime;
-  
   this->GetTree()->Branch("GlobalTime","std::vector<float>",&pGlobalTime);
   
+  pPhotonType = &PhotonType;
+  this->GetTree()->Branch("PhotonType","std::vector<int>",&pPhotonType);
+  
+  pPhotonEnergy = &PhotonEnergy;
+  this->GetTree()->Branch("PhotonEnergy","std::vector<float>",&pPhotonEnergy);
   
   this->Clear();
 }
@@ -182,7 +184,7 @@ void CreateTree::Clear()
   PostMomentumY.clear();
   PostMomentumZ.clear();
   
-  
   GlobalTime.clear();
-  
+  PhotonType.clear();
+  PhotonEnergy.clear();
 }
