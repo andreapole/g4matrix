@@ -1632,13 +1632,13 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
     
     //four dimensions matrix of pointers. It's friday and I need a doctor.
     G4OpticalSurface***** opAirThinLayerToEsrSurface = new G4OpticalSurface**** [nCrystalsX];
-    for(int i = 0 ; i < nCrystalsY ; i++) 
+    for(int i = 0 ; i < nCrystalsX ; i++) 
     {
       opAirThinLayerToEsrSurface[i] = new G4OpticalSurface*** [nCrystalsY];
-      for(int j = 0 ; j < nCrystalsX ; j++) 
+      for(int j = 0 ; j < nCrystalsY ; j++) 
       {
 	opAirThinLayerToEsrSurface[i][j] = new G4OpticalSurface** [nCrystalsX];
-	for(int k = 0 ; k < nCrystalsY ; k++) 
+	for(int k = 0 ; k < nCrystalsX ; k++) 
 	{
 	  opAirThinLayerToEsrSurface[i][j][k] = new G4OpticalSurface* [nCrystalsY];
 	}
