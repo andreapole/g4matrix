@@ -399,7 +399,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   G4double Absorption1[nEntries1] = { 3.448*m, 3.448*m,  4.082*m,  6.329*m,  9.174*m, 12.346*m, 13.889*m, 15.152*m, 17.241*m, 18.868*m, 20.000*m, 26.316*m, 35.714*m, 45.455*m, 47.619*m, 52.632*m, 52.632*m, 55.556*m, 52.632*m, 52.632*m, 47.619*m, 45.455*m, 41.667*m, 37.037*m, 33.333*m, 30.000*m, 28.500*m, 27.000*m, 24.500*m, 22.000*m, 19.500*m, 17.500*m, 14.500*m };
   G4MaterialPropertiesTable *Grease_mt = new G4MaterialPropertiesTable();
   Grease_mt->AddProperty("RINDEX"   , PhotonEnergy1, RefractiveIndex1, nEntries1);
-  Grease_mt->AddProperty("ABSLENGTH", PhotonEnergy1, Absorption1       nEntries1);
+  Grease_mt->AddProperty("ABSLENGTH", PhotonEnergy1, Absorption1     , nEntries1);
   Grease->SetMaterialPropertiesTable (Grease_mt);
   
   // Fused silica
