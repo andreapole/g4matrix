@@ -214,6 +214,9 @@ int main(int argc,char** argv)
   G4cout << "Scintillator Light Yield [Ph/MeV]: " << lightyield << G4endl;
   // energy resolution
   G4double resolutionScale = config.read<double>("resolutionScale");
+  // rise time and decay time
+  G4double risetime = config.read<double>("risetime");
+  G4double decaytime = config.read<double>("decaytime");
   
   //lateral depolishing
   G4bool latdepolished = (bool) config.read<int>("latdepolished");
@@ -331,6 +334,9 @@ int main(int argc,char** argv)
   ((g4matrixDetectorConstruction*)detector)->SetGlassBack(glassBack);
   ((g4matrixDetectorConstruction*)detector)->SetAirBack(airBack);
   ((g4matrixDetectorConstruction*)detector)->SetLightYield(lightyield);
+  ((g4matrixDetectorConstruction*)detector)->SetRiseTime(risetime);
+  ((g4matrixDetectorConstruction*)detector)->SetDecayTime(decaytime);
+  
   
   ((g4matrixDetectorConstruction*)detector)->SetLateralDepolished(latdepolished);
   ((g4matrixDetectorConstruction*)detector)->SetLateralSurfaceRoughness(latsurfaceroughness);

@@ -63,6 +63,8 @@ class g4matrixDetectorConstruction : public G4VUserDetectorConstruction
     void SetGlassBack(G4double x) { fGlassBack_z = x*mm; };
     void SetAirBack(G4double x) { fAirBack_z = x*mm; };
     void SetLightYield(G4double x) { lightyield = x; };
+    void SetRiseTime(G4double x) { risetime = x; };
+    void SetDecayTime(G4double x) { decaytime = x; };
     
     void SetLateralDepolished(G4bool x) { latdepolished = x; };
     void SetLateralSurfaceSigmaAlpha(G4double x){latsigmaalpha = x;};
@@ -198,6 +200,8 @@ class g4matrixDetectorConstruction : public G4VUserDetectorConstruction
     G4double pFakeAirBack_z;
     
     G4double lightyield;				//photons per MeV for LYSO
+    G4double risetime;
+    G4double decaytime;
     
     G4bool   latdepolished;
     G4double latsigmaalpha;
