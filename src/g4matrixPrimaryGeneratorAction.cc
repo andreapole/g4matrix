@@ -126,7 +126,15 @@ void g4matrixPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double halfXatrix = ((crystalx + esrThickness) * ncrystalx) / 2.0;
   G4double angleLimit = atan(halfXatrix / distance);
   
-  theta = (G4UniformRand() * 2.0*angleLimit) - angleLimit;
+  //theta = (G4UniformRand() * 2.0*angleLimit) - angleLimit; //WRONG!!!! this would make cos(theta) uniform, not sin(theta)d(theta)
+  
+  //find the limit for acos
+  double acosMin = cos(angleLimit);
+  //so acos will have to be generated uniformely between acosMin and +1
+  
+  double randomNum =  G4UniformRand()*(1.0 - acosMin)  + (acosMin);
+  theta = acos(randomNum); 
+  
   phi = G4UniformRand() * CLHEP::pi;
   
   //G4cout << "Theta = " << theta << G4endl;
