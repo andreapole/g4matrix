@@ -193,6 +193,18 @@ void g4matrixSteppingAction::UserSteppingAction(const G4Step* step)
 	CreateTree::Instance()->PostMomentumY.push_back(PostOnDetectorMomentum.getY()/*/CLHEP::nm*/);
 	CreateTree::Instance()->PostMomentumZ.push_back(PostOnDetectorMomentum.getZ()/*/CLHEP::nm*/);
 	
+	//BEGIN of DEBUG for negative PostMomentumZ
+// 	if(PostOnDetectorMomentum.getZ() < 0)
+// 	{
+// 	  G4cout << "----------------------------------------------------------------------------------------------------------------" << G4endl;
+// 	  G4cout << "PreMaterialName = " << PreMaterialName << G4endl;
+// 	  G4cout << "PostMaterialName = " << PostMaterialName << G4endl;
+// 	  G4cout << "Position = " << OnDetectorPosition.getX() << " " << OnDetectorPosition.getY() << " " << OnDetectorPosition.getZ() << G4endl;
+// 	  G4cout << "----------------------------------------------------------------------------------------------------------------" << G4endl;
+// 	}
+	//END of DEBUG for negative PostMomentumZ
+	
+	
 	//save the process that created the photon
 	if(track->GetCreatorProcess()->GetProcessName() == "Scintillation")
 	  CreateTree::Instance()->PhotonType.push_back(0);
