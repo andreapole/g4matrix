@@ -135,7 +135,7 @@ void g4matrixPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   double randomNum =  G4UniformRand()*(1.0 - acosMin)  + (acosMin);
   theta = acos(randomNum); 
   
-  phi = G4UniformRand() * CLHEP::pi;
+  phi = G4UniformRand() * 2.0 * CLHEP::pi;
   
   //G4cout << "Theta = " << theta << G4endl;
   //G4cout << "Phi = " << phi << G4endl;
