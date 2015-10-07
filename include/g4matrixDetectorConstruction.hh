@@ -82,7 +82,16 @@ class g4matrixDetectorConstruction : public G4VUserDetectorConstruction
     
     void SetResolutionScale(G4double x){resolutionScale = x;};
     
-    
+    void SetFastEnergy   (std::vector<double> x)   {fastenergy = x;};
+    void SetFastComponent(std::vector<double> x){fastcomponent = x;};
+    void SetSlowEnergy   (std::vector<double> x)   {slowenergy = x;};
+    void SetSlowComponent(std::vector<double> x){slowcomponent = x;};
+   
+    void SetFastRiseTime (G4double x){fastrisetime = x;};
+    void SetFastDecayTime(G4double x){fastdecaytime= x;};
+    void SetFastRatio    (G4double x){fastratio    = x;};
+    void SetSlowRiseTime (G4double x){slowrisetime = x;};
+    void SetSlowDecayTime(G4double x){slowdecaytime= x;};
     
     void SetEsrTransmittance(G4double x) { esrTransmittance = x; };
     void SetSourceDistance(G4double x) { distance = x *mm ; };
@@ -218,10 +227,16 @@ class g4matrixDetectorConstruction : public G4VUserDetectorConstruction
     G4double realsurfaceroughness;
     
     G4double esrTransmittance;
-    
     G4double resolutionScale;
-    
     G4double distance;
+    
+    std::vector<double>  fastenergy,fastcomponent,slowenergy,slowcomponent;
+    G4double fastrisetime ;
+    G4double fastdecaytime;
+    G4double fastratio    ;
+    G4double slowrisetime ;
+    G4double slowdecaytime;
+    
     
     G4bool lateralEsr;
     G4bool backEsr;
