@@ -24,13 +24,7 @@ class CreateTree
   public:
 
   CreateTree(TString name,int x, int y, int z, int k);
-  ~CreateTree();
-
-  
-  
-  //void SetModuleElements(int x, int y,int z,int k){ nCrystalsX = x; nCrystalsY = y ; nDetectorsX = z ; nDetectorsY = k; };
-  
-  
+  ~CreateTree();  
   
   
   TTree*              GetTree() const { return ftree; };
