@@ -109,7 +109,7 @@ g4matrixDetectorConstruction::g4matrixDetectorConstruction()
   //fMPPCArray_y = fGreaseFrontCryToGlass_y;
   fMPPCArray_x = fSingleMPPCBlock_x * nDetectorsX;
   fMPPCArray_y = fSingleMPPCBlock_y * nDetectorsY;
-  fMPPCArray_z = 0.01*mm;					//fixed to 0.01 mm to make cherenkov in silicon unlikely
+  fMPPCArray_z = fSingleMPPC_z*mm;					//fixed to 0.01 mm to make cherenkov in silicon unlikely
   //grease back dimensions - cry to glass
   fGreaseBackCryToGlass_x = fAirThinLayerBox_x * nCrystalsX;
   fGreaseBackCryToGlass_y = fAirThinLayerBox_y * nCrystalsY;
@@ -229,6 +229,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   //entire mppc array
   fMPPCArray_x = fSingleMPPCBlock_x * nDetectorsX;
   fMPPCArray_y = fSingleMPPCBlock_y * nDetectorsY;
+  fMPPCArray_z = fSingleMPPC_z;
   //epoxy layer dimensions 
   fEpoxy_x = fMPPCArray_x;
   fEpoxy_y = fMPPCArray_y;
@@ -825,6 +826,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   // The experimental Hall
   G4Box* expHall_box = new G4Box("World",fExpHall_x/2.0,fExpHall_y/2.0,fExpHall_z/2.0);
   G4LogicalVolume* expHall_log = new G4LogicalVolume(expHall_box,airThinLayer,"World",0,0,0);
+  expHall_log->SetVisAttributes (G4VisAttributes::GetInvisible());
   G4VPhysicalVolume* expHall_phys = new G4PVPlacement(0,G4ThreeVector(),expHall_log,"World",0,false,fCheckOverlaps);
   
   // the esr box
@@ -864,6 +866,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
       airThinLayer_log[i][j]  = new G4LogicalVolume(airThinLayer_box[i][j],airThinLayer,name.str().c_str(),0,0,0);
       G4VisAttributes* EsrVisulizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
       airThinLayer_log[i][j]->SetVisAttributes(EsrVisulizationAttribute); // we also set here the visualization colors
+      airThinLayer_log[i][j]->SetVisAttributes (G4VisAttributes::GetInvisible());
       //and we place the box in space 
       airThinLayer_phys[i][j] = new G4PVPlacement(0,G4ThreeVector(i*fAirThinLayerBox_x - matrixShiftX ,j*fAirThinLayerBox_y - matrixShiftY,matrixShiftZ),airThinLayer_log[i][j],name.str().c_str(),expHall_log,false,0);
       G4cout << name.str() << " Position" << "\t" << i*fAirThinLayerBox_x - matrixShiftX  << "\t" << j*fAirThinLayerBox_y - matrixShiftY << "\t" << matrixShiftZ << G4endl;
@@ -899,7 +902,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
     G4cout << "GreaseFrontCryToGlass dimensions = " << "\t" << fGreaseFrontCryToGlass_x << "\t" << fGreaseFrontCryToGlass_y << "\t" << fGreaseFrontCryToGlass_z << G4endl;
     G4LogicalVolume* greaseFrontCryToGlass_log = new G4LogicalVolume(greaseFrontCryToGlass_box,Grease,"GreaseFrontCryToGlass",0,0,0);
     G4VPhysicalVolume* greaseFrontCryToGlass_phys = new G4PVPlacement(0,G4ThreeVector(pGreaseFrontCryToGlass_x,pGreaseFrontCryToGlass_y,pGreaseFrontCryToGlass_z),greaseFrontCryToGlass_log,"GreaseFrontCryToGlass",expHall_log,false,fCheckOverlaps);
-    G4VisAttributes* GreaseFrontCryToGlassVisulizationAttribute = new G4VisAttributes(G4Colour(0.0,1.0,1.0)); //cyan
+    G4VisAttributes* GreaseFrontCryToGlassVisulizationAttribute = new G4VisAttributes(G4Colour(0.0,0.0,1.0)); //blue
     greaseFrontCryToGlass_log->SetVisAttributes(GreaseFrontCryToGlassVisulizationAttribute); // we also set here the visualization colors
     
     //assign this volume to the volume in front, then set the flag to true
@@ -931,7 +934,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
     G4Box* greaseFrontGlassToMPPC_box = new G4Box("GreaseFrontGlassToMPPC",fGreaseFrontGlassToMPPC_x/2.0,fGreaseFrontGlassToMPPC_x/2.0,fGreaseFrontGlassToMPPC_z/2.0);
     G4LogicalVolume* greaseFrontGlassToMPPC_log = new G4LogicalVolume(greaseFrontGlassToMPPC_box,Grease,"GreaseFrontGlassToMPPC",0,0,0);
     G4VPhysicalVolume* greaseFrontGlassToMPPC_phys = new G4PVPlacement(0,G4ThreeVector(pGreaseFrontGlassToMPPC_x,pGreaseFrontGlassToMPPC_y,pGreaseFrontGlassToMPPC_z),greaseFrontGlassToMPPC_log,"GreaseFrontGlassToMPPC",expHall_log,false,fCheckOverlaps);
-    G4VisAttributes* GreaseFrontGlassToMPPCVisulizationAttribute = new G4VisAttributes(G4Colour(0.0,1.0,1.0)); //cyan
+    G4VisAttributes* GreaseFrontGlassToMPPCVisulizationAttribute = new G4VisAttributes(G4Colour(0.0,0.0,1.0)); //blue
     greaseFrontGlassToMPPC_log->SetVisAttributes(GreaseFrontGlassToMPPCVisulizationAttribute); // we also set here the visualization colors
     //assign this volume to the volume in front, then set the flag to true
     if(!volumeInFrontIsSet)
@@ -948,7 +951,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
     G4Box* greaseFrontGlassToMPPC_box = new G4Box("AirGapCrystalMPPC",fGreaseFrontGlassToMPPC_x/2.0,fGreaseFrontGlassToMPPC_y/2.0,0.01/2.0);
     G4LogicalVolume* greaseFrontGlassToMPPC_log = new G4LogicalVolume(greaseFrontGlassToMPPC_box,airThinLayer,"AirGapCrystalMPPC",0,0,0);
     G4VPhysicalVolume* greaseFrontGlassToMPPC_phys = new G4PVPlacement(0,G4ThreeVector(pGreaseFrontGlassToMPPC_x,pGreaseFrontGlassToMPPC_y,pGreaseFrontGlassToMPPC_z),greaseFrontGlassToMPPC_log,"AirGapCrystalMPPC",expHall_log,false,fCheckOverlaps);
-    G4VisAttributes* GreaseFrontGlassToMPPCVisulizationAttribute = new G4VisAttributes(G4Colour(0.0,1.0,1.0)); //cyan
+    G4VisAttributes* GreaseFrontGlassToMPPCVisulizationAttribute = new G4VisAttributes(G4Colour(0.0,0.0,1.0)); //blue
     greaseFrontGlassToMPPC_log->SetVisAttributes(GreaseFrontGlassToMPPCVisulizationAttribute); // we also set here the visualization colors
     if(!volumeInFrontIsSet)
     {
@@ -963,7 +966,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   G4Box* epoxy_box = new G4Box("Epoxy",fEpoxy_x/2.0,fEpoxy_y/2.0,fEpoxy_z/2.0);
   G4LogicalVolume* epoxy_log = new G4LogicalVolume(epoxy_box,Epoxy,"Epoxy",0,0,0);
   G4VPhysicalVolume* epoxy_phys = new G4PVPlacement(0,G4ThreeVector(pEpoxy_x,pEpoxy_y,pEpoxy_z),epoxy_log,"Epoxy",expHall_log,false,fCheckOverlaps);
-  G4VisAttributes* EpoxyVisualizationAttribute = new G4VisAttributes(G4Colour(0.0,1.0,0.0)); //green
+  G4VisAttributes* EpoxyVisualizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
   epoxy_log->SetVisAttributes(EpoxyVisualizationAttribute); // we also set here the visualization colors
   }
   
@@ -1024,7 +1027,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
     //G4LogicalVolume* greaseBackCryToGlass_log = new G4LogicalVolume(greaseBackCryToGlass_box,Grease,"GreaseBackCryToGlass",0,0,0); //material is grease
     G4LogicalVolume* greaseBackCryToGlass_log = new G4LogicalVolume(greaseBackCryToGlass_box,Grease,"GreaseBackCryToGlass",0,0,0); //FIXME material is air_thin
     G4VPhysicalVolume* greaseBackCryToGlass_phys = new G4PVPlacement(0,G4ThreeVector(pGreaseBackCryToGlass_x,pGreaseBackCryToGlass_y,pGreaseBackCryToGlass_z),greaseBackCryToGlass_log,"GreaseBackCryToGlass",expHall_log,false,fCheckOverlaps);
-    G4VisAttributes* GreaseBackCryToGlassVisulizationAttribute = new G4VisAttributes(G4Colour(0.0,1.0,1.0)); //cyan
+    G4VisAttributes* GreaseBackCryToGlassVisulizationAttribute = new G4VisAttributes(G4Colour(0.0,0.0,1.0)); //blue
     greaseBackCryToGlass_log->SetVisAttributes(GreaseBackCryToGlassVisulizationAttribute); // we also set here the visualization colors
     
     volumeOnTheBack = greaseBackCryToGlass_phys;
@@ -1039,7 +1042,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
     G4LogicalVolume* glassBack_log = new G4LogicalVolume(glassBack_box,Fused_silica,"GlassBack",0,0,0); //material is air_thin
     //G4LogicalVolume* glassBack_log = new G4LogicalVolume(glassBack_box,Fused_silica,"GlassBack",0,0,0); //material is glass
     G4VPhysicalVolume* glassBack_phys = new G4PVPlacement(0,G4ThreeVector(pGlassBack_x,pGlassBack_y,pGlassBack_z),glassBack_log,"GlassBack",expHall_log,false,fCheckOverlaps);
-    G4VisAttributes* GlassBackVisulizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,1.0)); //magenta
+    G4VisAttributes* GlassBackVisulizationAttribute = new G4VisAttributes(G4Colour(0.0,1.0,0.0)); //green
     glassBack_log->SetVisAttributes(GlassBackVisulizationAttribute); // we also set here the visualization colors
     if(!volumeOnTheBackIsSet)
     {
@@ -1053,7 +1056,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   G4Box* airBack_box = new G4Box("AirBack",fAirBack_x/2.0,fAirBack_y/2.0,fAirBack_z/2.0);
   G4LogicalVolume* airBack_log = new G4LogicalVolume(airBack_box,airThinLayer,"AirBack",0,0,0);
   G4VPhysicalVolume* airBack_phys = new G4PVPlacement(0,G4ThreeVector(pAirBack_x,pAirBack_y,pAirBack_z),airBack_log,"AirBack",expHall_log,false,fCheckOverlaps);
-  G4VisAttributes* AirBackVisualizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
+  G4VisAttributes* AirBackVisualizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,1.0)); //green
   airBack_log->SetVisAttributes(AirBackVisualizationAttribute); // we also set here the visualization colors
   if(!volumeOnTheBackIsSet)
   {
@@ -1067,7 +1070,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   G4Box* fakeAirBack_box = new G4Box("FakeAirBack",fFakeAirBack_x/2.0,fFakeAirBack_y/2.0,fFakeAirBack_z/2.0);
   G4LogicalVolume* fakeAirBack_log = new G4LogicalVolume(fakeAirBack_box,airThinLayer,"FakeAirBack",0,0,0);
   G4VPhysicalVolume* fakeAirBack_phys = new G4PVPlacement(0,G4ThreeVector(pFakeAirBack_x,pFakeAirBack_y,pFakeAirBack_z),fakeAirBack_log,"FakeAirBack",expHall_log,false,fCheckOverlaps);
-  G4VisAttributes* FakeAirBackVisualizationAttribute = new G4VisAttributes(G4Colour(0.0,1.0,0.0)); //green
+  G4VisAttributes* FakeAirBackVisualizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,1.0)); //magenta
   fakeAirBack_log->SetVisAttributes(FakeAirBackVisualizationAttribute); // we also set here the visualization colors
   
   
