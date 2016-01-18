@@ -922,9 +922,9 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
       G4cout << name.str() << " Dimensions" << "\t" << fAirThinLayerBox_x/2.0 << "\t" << fAirThinLayerBox_y/2.0 << "\t" << fAirThinLayerBox_z/2.0 << G4endl;
       //logical volume
       airThinLayer_log[i][j]  = new G4LogicalVolume(airThinLayer_box[i][j],airThinLayer,name.str().c_str(),0,0,0);
-      G4VisAttributes* EsrVisulizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
+      G4VisAttributes* EsrVisulizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,1.0)); //magenta
       airThinLayer_log[i][j]->SetVisAttributes(EsrVisulizationAttribute); // we also set here the visualization colors
-      airThinLayer_log[i][j]->SetVisAttributes (G4VisAttributes::GetInvisible());
+      //airThinLayer_log[i][j]->SetVisAttributes (G4VisAttributes::GetInvisible());
       //and we place the box in space 
       airThinLayer_phys[i][j] = new G4PVPlacement(0,G4ThreeVector(i*fAirThinLayerBox_x - matrixShiftX ,j*fAirThinLayerBox_y - matrixShiftY,matrixShiftZ),airThinLayer_log[i][j],name.str().c_str(),expHall_log,false,0);
       G4cout << name.str() << " Position" << "\t" << i*fAirThinLayerBox_x - matrixShiftX  << "\t" << j*fAirThinLayerBox_y - matrixShiftY << "\t" << matrixShiftZ << G4endl;
