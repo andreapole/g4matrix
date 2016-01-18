@@ -106,7 +106,7 @@ public:
   };
   
   template <typename Container>
-Container& split(Container& result,const typename Container::value_type& s,const typename Container::value_type& delimiters,split_t::empties_t empties /*= split_t::empties_ok*/);
+Container& split(Container& result,const typename Container::value_type& s,const typename Container::value_type& delimiters,split_t::empties_t empties = split_t::empties_ok);
   
   
   static void trim( string& s );
@@ -167,7 +167,7 @@ inline string ConfigFile::string_as_T<string>( const string& s )
 
 //split strings
 template <typename Container>
-Container& ConfigFile::split(Container& result,const typename Container::value_type& s,const typename Container::value_type& delimiters,split_t::empties_t empties = split_t::empties_ok)
+Container& ConfigFile::split(Container& result,const typename Container::value_type& s,const typename Container::value_type& delimiters,split_t::empties_t empties /*= split_t::empties_ok*/)
 {
   // splits the strings into individual fields
   // useful if you want to pass many parameters in the same string
