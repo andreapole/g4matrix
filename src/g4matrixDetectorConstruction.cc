@@ -619,7 +619,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   
   
   //silicon
-  G4double siliconRindexEnergy[] = 
+  G4double siliconRindexEnergy[76] = 
   {
     1.2407002545,
     1.2532325803,
@@ -698,7 +698,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
     4.7719240558,
     4.962801018
   };
-  G4double siliconRindexValue[]
+  G4double siliconRindexValue[76] = 
   {
     3.57,
     3.574,
@@ -777,7 +777,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
     1.8  ,
     1.694
   };
-  G4double siliconAbsLenghtValue[]
+  G4double siliconAbsLenghtValue[76] =
   {
     1.56E-02,
     1.26E-02,
