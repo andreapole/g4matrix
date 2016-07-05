@@ -267,6 +267,32 @@ void g4matrixSteppingAction::UserSteppingAction(const G4Step* step)
     {
       if(materialName == "LYSO") //if the electron is interacting with the detector, it does a huge number of cherenkov
       {
+	
+	//get the deposition process name
+// 	G4OpBoundaryProcessStatus boundaryStatus=Undefined;
+// 	static G4ThreadLocal G4OpBoundaryProcess* boundary=NULL;
+	
+	//find the boundary process only once
+// 	if(!boundary)
+// 	{
+	  G4ProcessManager* pm = track->GetDefinition()->GetProcessManager();
+	  G4int nprocesses = pm->GetProcessListLength();
+	  G4ProcessVector* pv = pm->GetProcessList();
+	  G4int i;
+	  
+	  for( i=0;i<nprocesses;i++)
+	  {
+// 	    if((*pv)[i]->GetProcessName()=="OpBoundary")
+	    G4cout << (*pv)[i]->GetProcessType() << " " << (*pv)[i]->GetProcessName() << G4endl;
+// 	    {
+// 	      boundary = (G4OpBoundaryProcess*)(*pv)[i];
+// 	      break;
+// 	    }
+	  }
+// 	}
+// 	boundaryStatus = boundary->GetStatus();
+	
+	
 	//add total energy deposited
 	CreateTree::Instance()->totalEnergyDeposited += edep;
 	//take crystal name
