@@ -275,20 +275,20 @@ void g4matrixSteppingAction::UserSteppingAction(const G4Step* step)
 	//find the boundary process only once
 // 	if(!boundary)
 // 	{
-	  G4ProcessManager* pm = track->GetDefinition()->GetProcessManager();
-	  G4int nprocesses = pm->GetProcessListLength();
-	  G4ProcessVector* pv = pm->GetProcessList();
-	  G4int i;
+// 	  G4ProcessManager* pm = track->GetDefinition()->GetProcessManager();
+// 	  G4int nprocesses = pm->GetProcessListLength();
+// 	  G4ProcessVector* pv = pm->GetProcessList();
+// 	  G4int i;
 	  
-	  for( i=0;i<nprocesses;i++)
-	  {
+// 	  for( i=0;i<nprocesses;i++)
+// 	  {
 // 	    if((*pv)[i]->GetProcessName()=="OpBoundary")
-	    G4cout << (*pv)[i]->GetProcessType() << " " << (*pv)[i]->GetProcessName() << G4endl;
+// 	    G4cout << (*pv)[i]->GetProcessType() << " " << (*pv)[i]->GetProcessName() << G4endl;
 // 	    {
 // 	      boundary = (G4OpBoundaryProcess*)(*pv)[i];
 // 	      break;
 // 	    }
-	  }
+// 	  }
 // 	}
 // 	boundaryStatus = boundary->GetStatus();
 	
