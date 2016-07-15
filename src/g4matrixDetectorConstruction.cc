@@ -530,7 +530,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   //we specify the imaginary index WITHOUT dividing by 1.47 because in this matrix 
   // esr is in air contact with everything, so n1=1
   G4double vikuiti_RIndex_im[NUMvikuiti] = { 9.49, 8.88, 8.49, 8.30, 8.18, 8.22, 8.31, 8.60, 8.62, 8.39, 8.21, 7.82, 7.65, 7.31, 7.15, 6.85, 6.69, 6.42, 6.15, 6.03, 5.58, 5.38, 5.02, 4.71, 4.43, 4.24, 4.06, 3.84, 3.61 };
-  G4double vikuiti_energy_re[NUMvikuiti] = { 1.24*eV, 1.27*eV, 1.31*eV, 1.34*eV, 1.38*eV, 1.42*eV, 1.46*eV, 4.51*eV, 1.55*eV, 1.60*eV, 1.66*eV, 1.71*eV, 1.77*eV, 1.84*eV, 1.91*eV, 1.99*eV, 2.07*eV, 2.16*eV, 2.26*eV, 2.37*eV, 2.48*eV, 2.62*eV, 2.76*eV, 2.92*eV, 3.11*eV, 3.31*eV, 3.55*eV, 3.82*eV, 4.14*eV };
+  G4double vikuiti_energy_re[NUMvikuiti] = { 1.24*eV, 1.27*eV, 1.31*eV, 1.34*eV, 1.38*eV, 1.42*eV, 1.46*eV, 1.51*eV, 1.55*eV, 1.60*eV, 1.66*eV, 1.71*eV, 1.77*eV, 1.84*eV, 1.91*eV, 1.99*eV, 2.07*eV, 2.16*eV, 2.26*eV, 2.37*eV, 2.48*eV, 2.62*eV, 2.76*eV, 2.92*eV, 3.11*eV, 3.31*eV, 3.55*eV, 3.82*eV, 4.14*eV };
 //   G4double vikuiti_RIndex_re[NUMvikuiti] = 
 //   {
 //     0.08/1.47, 0.08/1.47, 0.08/1.47, 0.08/1.47, 0.08/1.47, 0.08/1.47, 0.08/1.47,
@@ -574,6 +574,12 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   G4double esrTransmittance_values[] = {0.0024,0.0025,0.002 ,0.0024,0.0015,0.0011,0.0011,0.0011,0.0009,0.0007,0.001 ,0.0016,0.005 ,0.0164,0.0303,0.0365,0.0389};
   const G4int numEsrTrans = sizeof(esrTransmittance_energy)/sizeof(G4double);
   assert(sizeof(esrTransmittance_energy) == sizeof(esrTransmittance_values));
+  
+  //modfication for double surface. since the Transmittance measured is for a real material, with 2 surfaces, we need to scale the measurement to have a correct result when we use the two of them
+  for(int esr_n = 0; esr_n < numEsrTrans ; esr_n++)
+  {
+    esrTransmittance_values[esr_n] = pow(esrTransmittance_values[esr_n],0.5);
+  }
   
   ESR_surf->AddProperty ("REALRINDEX",        vikuiti_energy_re,  vikuiti_RIndex_re,  NUMvikuiti);
   ESR_surf->AddProperty ("IMAGINARYRINDEX",   vikuiti_energy_im,  vikuiti_RIndex_im,  NUMvikuiti);
