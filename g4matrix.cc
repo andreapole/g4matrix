@@ -262,28 +262,49 @@ int main(int argc,char** argv)
   assert( fastenergy.size() == fastcomponent.size() );
   assert( slowenergy.size() == slowcomponent.size() );
   
+  std::string latedepo_str;
+  
+  std::vector <std::string> latedepo_f;
+  std::vector <G4bool> LatDepoSideBySide;
+  
+  latedepo_str    = config.read<std::string>("latdepolishedSideBySide","0,0,0,0");
+  config.split( latedepo_f, latedepo_str, "," );
+  for(int i = 0 ; i < latedepo_f.size() ; i++)
+  {
+    config.trim(latedepo_f[i]);
+    LatDepoSideBySide.push_back((bool) atoi(latedepo_f[i].c_str()));
+  }
   
   //lateral depolishing
-  G4bool latdepolished = (bool) config.read<int>("latdepolished");
+//   G4bool latdepolished = (bool) config.read<int>("latdepolished");
   G4double latsurfaceroughness = config.read<double>("latsurfaceroughness");
   G4double latsigmaalpha = config.read<double>("latsigmaalpha");
   G4double latspecularlobe = config.read<double>("latspecularlobe");
   G4double latspecularspike = config.read<double>("latspecularspike");
   G4double latbackscattering = config.read<double>("latbackscattering");
   G4cout << "Crystal surface finish: "; 
-  if(latdepolished)
+  for(int i = 0 ; i < LatDepoSideBySide.size() ; i++)
   {
-    G4cout << "Lateral depolishing:" << G4endl;
-    G4cout << "Sigma Alpha [radiants]: " << latsigmaalpha << G4endl;
-    G4cout << "Specular Lobe:  " << latspecularlobe << G4endl;
-    G4cout << "Specular Spike: " << latspecularspike << G4endl;
-    G4cout << "Back Scattering: " << latbackscattering << G4endl;
-    if(latsurfaceroughness != 0)
-      G4cout << "Surface roughness [nm]: " << latsurfaceroughness << G4endl; 
-  }
-  else
-  {
-    G4cout << " Lateral: perfect polished" << G4endl;
+      G4cout << G4endl;
+      G4cout << "--------------------" << G4endl;
+      G4cout << "| Side " << i << G4endl;
+      G4cout << "--------------------" << G4endl;
+      if(LatDepoSideBySide[i])
+      {
+          
+          G4cout << "Lateral depolishing:" << G4endl;
+          G4cout << "Sigma Alpha [radiants]: " << latsigmaalpha << G4endl;
+          G4cout << "Specular Lobe:  " << latspecularlobe << G4endl;
+          G4cout << "Specular Spike: " << latspecularspike << G4endl;
+          G4cout << "Back Scattering: " << latbackscattering << G4endl;
+          if(latsurfaceroughness != 0)
+              G4cout << "Surface roughness [nm]: " << latsurfaceroughness << G4endl; 
+      }
+      else
+      {
+          G4cout << "Lateral: perfect polished" << G4endl;
+      }
+      G4cout << G4endl;
   }
   
   //front and back depolishing (for real polishing state)
@@ -380,6 +401,8 @@ int main(int argc,char** argv)
   ((g4matrixDetectorConstruction*)detector)->SetAirBack(airBack);
   ((g4matrixDetectorConstruction*)detector)->SetLightYield(lightyield);
   
+  ((g4matrixDetectorConstruction*)detector)->SetLatDepoSideBySide(LatDepoSideBySide[0],LatDepoSideBySide[1],LatDepoSideBySide[2],LatDepoSideBySide[3]);
+  
   ((g4matrixDetectorConstruction*)detector)->SetFastRiseTime(fastrisetime);
   ((g4matrixDetectorConstruction*)detector)->SetFastDecayTime(fastdecaytime);
   ((g4matrixDetectorConstruction*)detector)->SetFastRatio(fastratio);
@@ -392,7 +415,7 @@ int main(int argc,char** argv)
   ((g4matrixDetectorConstruction*)detector)->SetSlowComponent(slowcomponent);
   
   
-  ((g4matrixDetectorConstruction*)detector)->SetLateralDepolished(latdepolished);
+//   ((g4matrixDetectorConstruction*)detector)->SetLateralDepolished(latdepolished);
   ((g4matrixDetectorConstruction*)detector)->SetLateralSurfaceRoughness(latsurfaceroughness);
   ((g4matrixDetectorConstruction*)detector)->SetLateralSurfaceSigmaAlpha(latsigmaalpha);
   ((g4matrixDetectorConstruction*)detector)->SetLateralSurfaceSpecularLobe(latspecularlobe);

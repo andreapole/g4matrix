@@ -95,6 +95,13 @@ class g4matrixDetectorConstruction : public G4VUserDetectorConstruction
     
     void SetEsrTransmittance(G4double x) { esrTransmittance = x; };
     void SetSourceDistance(G4double x) { distance = x *mm ; };
+    void SetLatDepoSideBySide(G4bool b0, G4bool b1,G4bool b2, G4bool b3 )
+    {
+        latdepo_sideBySide[0] = b0; 
+        latdepo_sideBySide[1] = b1;
+        latdepo_sideBySide[2] = b2;
+        latdepo_sideBySide[3] = b3;
+    };
     
   private:
 
@@ -240,6 +247,8 @@ class g4matrixDetectorConstruction : public G4VUserDetectorConstruction
     
     G4bool lateralEsr;
     G4bool backEsr;
+    
+    G4bool latdepo_sideBySide[4];
     
     G4bool fCheckOverlaps;
     

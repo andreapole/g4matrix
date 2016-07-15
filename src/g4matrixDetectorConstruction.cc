@@ -877,7 +877,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   //so we just need to specify the real indexes of refraction of both materials
   //and we don't need to create a surface
   //2. we want a dielectric_metal surface between air and esr, thus we need to declare a surface
-  //between the two. We want this surface to ahve reflectivity calculated from the indexes of refraction 
+  //between the two. We want this surface to have reflectivity calculated from the indexes of refraction 
   //real and imaginary of esr and the real of air, although G4 makes a mistake and doesn't take into account the 
   //index of air. But since air has index = 1, here it doesn't matter. 
   
@@ -887,26 +887,73 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   expHall_log->SetVisAttributes (G4VisAttributes::GetInvisible());
   G4VPhysicalVolume* expHall_phys = new G4PVPlacement(0,G4ThreeVector(),expHall_log,"World",0,false,fCheckOverlaps);
   
-  // the esr box
-//   G4Box* esr_box = new G4Box("Esr",fAirThinLayerBox_x/2.0,fAirThinLayerBox_x/2.0,fAirThinLayerBox_x/2.0);
-//   G4LogicalVolume* esr_log = new G4LogicalVolume(esr_box,air,"Esr",0,0,0);
-//   G4VPhysicalVolume* esr_phys = new G4PVPlacement(0,G4ThreeVector(),esr_log,"Esr",expHall_log,false,0);
-
-  // the air thin layer box
-  // now we do it in a "matrix" way with pointers. This is hell.
-  		
+  
+  //new structure: 
+  //the fundamental block is the esr box as before, but
+  //it is a air box that has not one but 5 boxes inside:
+  //the crystal in the center, and 4 boxes of air or other material in contact with the lateral surfs of the crystal
+  //then a surface is defined between crystal and each one of these surfs
+  
+  
+  
+  //----------------
+  //OLD VERSION
+  //----------------
+  
+//   // the esr box
+// //   G4Box* esr_box = new G4Box("Esr",fAirThinLayerBox_x/2.0,fAirThinLayerBox_x/2.0,fAirThinLayerBox_x/2.0);
+// //   G4LogicalVolume* esr_log = new G4LogicalVolume(esr_box,air,"Esr",0,0,0);
+// //   G4VPhysicalVolume* esr_phys = new G4PVPlacement(0,G4ThreeVector(),esr_log,"Esr",expHall_log,false,0);
+// 
+//   // the air thin layer box
+//   // now we do it in a "matrix" way with pointers. This is hell.
+//   	
+  //airboxes
   G4Box*** airThinLayer_box					= new G4Box** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) airThinLayer_box[i]	= new G4Box* [nCrystalsY];
   G4LogicalVolume*** airThinLayer_log 				= new G4LogicalVolume** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) airThinLayer_log[i]	= new G4LogicalVolume* [nCrystalsY];
   G4VPhysicalVolume*** airThinLayer_phys			= new G4VPhysicalVolume** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) airThinLayer_phys[i]	= new G4VPhysicalVolume* [nCrystalsY];
+  //crystals
   G4Box*** crystal_box						= new G4Box** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) crystal_box[i]		= new G4Box* [nCrystalsY];
   G4LogicalVolume*** crystal_log				= new G4LogicalVolume** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) crystal_log[i]		= new G4LogicalVolume* [nCrystalsY];
   G4VPhysicalVolume*** crystal_phys 				= new G4VPhysicalVolume** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) crystal_phys[i]		= new G4VPhysicalVolume* [nCrystalsY];
+  //4 air volumes
+  G4Box**** lateral_box						= new G4Box*** [nCrystalsX];
+  for(int i = 0 ; i < nCrystalsX ; i++) 
+  {
+      lateral_box[i]           	= new G4Box** [nCrystalsY];
+      for(int j = 0 ; j < nCrystalsY ; j++)
+          lateral_box[i][j]     = new G4Box* [4];
+  }
+  G4LogicalVolume**** lateral_log				= new G4LogicalVolume*** [nCrystalsX];
+  for(int i = 0 ; i < nCrystalsX ; i++) 
+  {
+      lateral_log[i]           	= new G4LogicalVolume** [nCrystalsY];
+      for(int j = 0 ; j < nCrystalsY ; j++)
+          lateral_log[i][j]     = new G4LogicalVolume* [4];
+  }
+  G4VPhysicalVolume**** lateral_phys				= new G4VPhysicalVolume*** [nCrystalsX];
+  for(int i = 0 ; i < nCrystalsX ; i++) 
+  {
+      lateral_phys[i]           	= new G4VPhysicalVolume** [nCrystalsY];
+      for(int j = 0 ; j < nCrystalsY ; j++)
+          lateral_phys[i][j]     = new G4VPhysicalVolume* [4];
+  }
+  
+  G4OpticalSurface**** opCrystalToAirThinLayerSurface		= new G4OpticalSurface*** [nCrystalsX];
+  for(int i = 0 ; i < nCrystalsX ; i++) 
+  {
+      opCrystalToAirThinLayerSurface[i]           	= new G4OpticalSurface** [nCrystalsY];
+      for(int j = 0 ; j < nCrystalsY ; j++)
+          opCrystalToAirThinLayerSurface[i][j]     = new G4OpticalSurface* [4];
+  }
+//   G4OpticalSurface*** opCrystalToAirThinLayerSurface				= new G4OpticalSurface** [nCrystalsX];
+//     for(int i = 0 ; i < nCrystalsX ; i++) opCrystalToAirThinLayerSurface[i]	= new G4OpticalSurface* [nCrystalsY];
   
   G4int crystalNumber = 0;
   
@@ -945,6 +992,58 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
       name << crystalNumber;
       crystal_phys[i][j] = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),crystal_log[i][j],name.str().c_str(),airThinLayer_log[i][j],false,fCheckOverlaps);
       crystalNumber++;
+      
+      //3. create the 4 volumes
+      // arranged this way wrt the crystal 
+      //
+      //       k=0
+      // k=3 crystal k=1
+      //       k=2
+      //
+      //dimensions - we make them half of the space between crystal and esrbox
+      double dim_x[4]   = {fCrystal_x/2.0,airThinThickness/8.0,fCrystal_x/2.0,airThinThickness/8.0}; 
+      double dim_y[4]   = {airThinThickness/8.0,fCrystal_y/2.0,airThinThickness/8.0,fCrystal_y/2.0};
+      
+      double shift_x[4] = {0,fCrystal_x/2.0 + airThinThickness/8.0,0,-(fCrystal_x/2.0 + airThinThickness/8.0)};
+      double shift_y[4] = {fCrystal_y/2.0 + airThinThickness/8.0,0,-(fCrystal_y/2.0 + airThinThickness/8.0),0};
+//       double dim_x[4]   = {fCrystal_x/2.0,airThinThickness/4.0,fCrystal_x/2.0,airThinThickness/4.0}; 
+//       double dim_y[4]   = {airThinThickness/4.0,fCrystal_y/2.0,airThinThickness/4.0,fCrystal_y/2.0};
+//       bool latdepo_sideBySide[4] = {true,false,true,false};
+
+      for(int k = 0 ; k < 4 ; k++)
+      {
+          name.str("");
+          name << "Lateral_" << i << "_" << j << "_" << k;
+          lateral_box[i][j][k]  = new G4Box(name.str().c_str(),dim_x[k],dim_y[k],fAirThinLayerBox_z/2.0);
+          G4cout << name.str() << G4endl;
+          //logical volume
+          lateral_log[i][j][k]  = new G4LogicalVolume(lateral_box[i][j][k],airThinLayer,name.str().c_str(),0,0,0);
+          G4VisAttributes* lateralVisulizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
+          lateral_log[i][j][k]->SetVisAttributes(lateralVisulizationAttribute); // we also set here the visualization colors
+          //airThinLayer_log[i][j]->SetVisAttributes (G4VisAttributes::GetInvisible());
+          //and we place the box in space 
+          lateral_phys[i][j][k] = new G4PVPlacement(0,G4ThreeVector(shift_x[k],shift_y[k],0),lateral_log[i][j][k],name.str().c_str(),airThinLayer_log[i][j],false,0);
+//           G4cout << name.str() << " Position" << "\t" << i*fAirThinLayerBox_x - matrixShiftX  << "\t" << j*fAirThinLayerBox_y - matrixShiftY << "\t" << matrixShiftZ << G4endl;
+          
+          //define the surface here, for depolishing
+          if(latdepo_sideBySide[k])
+          {
+              
+              std::stringstream Surfname;
+              Surfname << "CrystalToAirThinLayerSurface_" << i << "_" << j << "_" << k; 
+              opCrystalToAirThinLayerSurface[i][j][k] = new G4OpticalSurface(Surfname.str().c_str());
+              opCrystalToAirThinLayerSurface[i][j][k]->SetType(dielectric_dielectric);
+              opCrystalToAirThinLayerSurface[i][j][k]->SetFinish(ground);
+              opCrystalToAirThinLayerSurface[i][j][k]->SetModel(unified);
+              opCrystalToAirThinLayerSurface[i][j][k]->SetSigmaAlpha(latsigmaalpha);
+              opCrystalToAirThinLayerSurface[i][j][k]->SetMaterialPropertiesTable(crystalDepolished_surf); //this sets the surface roughness
+              new G4LogicalBorderSurface(Surfname.str().c_str(),crystal_phys[i][j],lateral_phys[i][j][k],opCrystalToAirThinLayerSurface[i][j][k]);
+              G4cout << Surfname.str() << G4endl;
+              
+          }
+          
+      }
+          
     } 
   }
   
@@ -1138,32 +1237,32 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   //                            SURFACES                               //
   //                                                                   //
   //-------------------------------------------------------------------//
-  
-  // define a surface between each crystal and its own air layer
-  if(latdepolished)
-  {
-//     G4OpticalSurface* opCrystalToAirThinLayerSurface[nCrystalsX][nCrystalsY];
-    G4OpticalSurface*** opCrystalToAirThinLayerSurface				= new G4OpticalSurface** [nCrystalsX];
-    for(int i = 0 ; i < nCrystalsX ; i++) opCrystalToAirThinLayerSurface[i]	= new G4OpticalSurface* [nCrystalsY];
-    
-    for(G4int i = 0 ; i < nCrystalsX ; i++)
-    {
-      for(G4int j = 0 ; j < nCrystalsY ; j++)
-      {
-	std::stringstream name;
-	name << "CrystalToAirThinLayerSurface_" << i << "_" << j; 
-	opCrystalToAirThinLayerSurface[i][j] = new G4OpticalSurface(name.str().c_str());
-	opCrystalToAirThinLayerSurface[i][j]->SetType(dielectric_dielectric);
-	opCrystalToAirThinLayerSurface[i][j]->SetFinish(ground);
-	opCrystalToAirThinLayerSurface[i][j]->SetModel(unified);
-	opCrystalToAirThinLayerSurface[i][j]->SetSigmaAlpha(latsigmaalpha);
-	opCrystalToAirThinLayerSurface[i][j]->SetMaterialPropertiesTable(crystalDepolished_surf); //this sets the surface roughness
-	new G4LogicalBorderSurface(name.str().c_str(),crystal_phys[i][j],airThinLayer_phys[i][j],opCrystalToAirThinLayerSurface[i][j]);
-      }
-    }
-  }
-  
-  
+//   
+//   // define a surface between each crystal and its own air layer
+//   if(latdepolished)
+//   {
+// //     G4OpticalSurface* opCrystalToAirThinLayerSurface[nCrystalsX][nCrystalsY];
+//     G4OpticalSurface*** opCrystalToAirThinLayerSurface				= new G4OpticalSurface** [nCrystalsX];
+//     for(int i = 0 ; i < nCrystalsX ; i++) opCrystalToAirThinLayerSurface[i]	= new G4OpticalSurface* [nCrystalsY];
+//     
+//     for(G4int i = 0 ; i < nCrystalsX ; i++)
+//     {
+//       for(G4int j = 0 ; j < nCrystalsY ; j++)
+//       {
+// 	std::stringstream name;
+// 	name << "CrystalToAirThinLayerSurface_" << i << "_" << j; 
+// 	opCrystalToAirThinLayerSurface[i][j] = new G4OpticalSurface(name.str().c_str());
+// 	opCrystalToAirThinLayerSurface[i][j]->SetType(dielectric_dielectric);
+// 	opCrystalToAirThinLayerSurface[i][j]->SetFinish(ground);
+// 	opCrystalToAirThinLayerSurface[i][j]->SetModel(unified);
+// 	opCrystalToAirThinLayerSurface[i][j]->SetSigmaAlpha(latsigmaalpha);
+// 	opCrystalToAirThinLayerSurface[i][j]->SetMaterialPropertiesTable(crystalDepolished_surf); //this sets the surface roughness
+// 	new G4LogicalBorderSurface(name.str().c_str(),crystal_phys[i][j],airThinLayer_phys[i][j],opCrystalToAirThinLayerSurface[i][j]);
+//       }
+//     }
+//   }
+//   
+//   
   // now define a depolished surface also between the front and back of the crystals and the neighbour volumes. 
   // It if useful if we want to use depolishing to characterize the imperfection of a polished surface. 
   // In this case in fact even the front and back faces of the crystal, although nominally polished, will be simulated as
