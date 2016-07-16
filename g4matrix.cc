@@ -215,7 +215,9 @@ int main(int argc,char** argv)
   // energy resolution
   G4double resolutionScale = config.read<double>("resolutionScale");
   // rise time and decay time
-  
+  G4double esrgapx = config.read<double>("esrgapx",0);
+  G4double esrgapy = config.read<double>("esrgapy",0);
+  G4double airgap = config.read<double>("airgap",0.01);
   
   G4double fastrisetime = config.read<double>("fastrisetime",0);   // can be optional
   G4double fastdecaytime = config.read<double>("fastdecaytime",0); // can be optional
@@ -346,7 +348,7 @@ int main(int argc,char** argv)
   G4double quantumEff = config.read<double>("quantumEff");
   
   G4cout << "Resolution Scale: " << resolutionScale << G4endl; 
-  G4cout << "here" << G4endl;
+//   G4cout << "here" << G4endl;
   G4cout << "Quantum efficiency: " << quantumEff << G4endl; 
   
   //distance of source from back of the module
@@ -400,6 +402,9 @@ int main(int argc,char** argv)
   ((g4matrixDetectorConstruction*)detector)->SetGlassBack(glassBack);
   ((g4matrixDetectorConstruction*)detector)->SetAirBack(airBack);
   ((g4matrixDetectorConstruction*)detector)->SetLightYield(lightyield);
+  ((g4matrixDetectorConstruction*)detector)->SetEsrGapX(esrgapx);
+  ((g4matrixDetectorConstruction*)detector)->SetEsrGapY(esrgapy);
+  ((g4matrixDetectorConstruction*)detector)->SetAirGap(airgap);
   
   ((g4matrixDetectorConstruction*)detector)->SetLatDepoSideBySide(LatDepoSideBySide[0],LatDepoSideBySide[1],LatDepoSideBySide[2],LatDepoSideBySide[3]);
   

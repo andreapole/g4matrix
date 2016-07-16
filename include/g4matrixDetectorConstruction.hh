@@ -103,6 +103,10 @@ class g4matrixDetectorConstruction : public G4VUserDetectorConstruction
         latdepo_sideBySide[3] = b3;
     };
     
+    void SetEsrGapX(G4double x) { esrgapx = x *mm ; };
+    void SetEsrGapY(G4double x) { esrgapy = x *mm ; };
+    void SetAirGap(G4double x) { airgap = x *mm ; };
+    
   private:
 
     G4double fCrystal_x;				//x dimensions of crystals
@@ -166,7 +170,9 @@ class g4matrixDetectorConstruction : public G4VUserDetectorConstruction
     G4double fFakeAirBack_x;				//dimensions of fake air on the back of back glass, useful to properly define the esr reflector there
     G4double fFakeAirBack_y;
     G4double fFakeAirBack_z;
-    
+    G4double esrgapx;
+    G4double esrgapy;
+    G4double airgap;
     
     
     //POSITIONS

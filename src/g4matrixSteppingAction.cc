@@ -78,9 +78,9 @@ void g4matrixSteppingAction::UserSteppingAction(const G4Step* step)
                                               GetCurrentEvent()->GetEventID();
 
   if (eventNumber != fEventNumber) {
-     G4cout << " Number of Scintillation Photons in previous event: "
+     G4cout << "Number of Scintillation Photons in previous event: "
             << fScintillationCounter << G4endl;
-     G4cout << " Number of Cerenkov Photons in previous event: "
+     G4cout << "Number of Cerenkov Photons in previous event: "
             << fCerenkovCounter << G4endl;
      fEventNumber = eventNumber;
      fScintillationCounter = 0;
