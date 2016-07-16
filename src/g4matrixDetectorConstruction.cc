@@ -1036,8 +1036,6 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
       crystal_phys[i][j] = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),crystal_log[i][j],name.str().c_str(),airThinLayer_log[i][j],false,fCheckOverlaps);
       crystalNumber++;
       
-      
-      
       //3. create the 4 volumes
       // arranged this way wrt the crystal 
       //
@@ -1073,11 +1071,9 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
           //and we place the box in space 
           lateral_phys[i][j][k] = new G4PVPlacement(0,G4ThreeVector(shift_x[k],shift_y[k],0),lateral_log[i][j][k],name.str().c_str(),airThinLayer_log[i][j],false,0);
 //           G4cout << name.str() << " Position" << "\t" << i*fAirThinLayerBox_x - matrixShiftX  << "\t" << j*fAirThinLayerBox_y - matrixShiftY << "\t" << matrixShiftZ << G4endl;
-          
           //define the surface here, for depolishing
           if(latdepo_sideBySide[k])
           {
-              
               std::stringstream Surfname;
               Surfname << "CrystalToAirThinLayerSurface_" << i << "_" << j << "_" << k; 
               opCrystalToAirThinLayerSurface[i][j][k] = new G4OpticalSurface(Surfname.str().c_str());
@@ -1088,15 +1084,10 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
               opCrystalToAirThinLayerSurface[i][j][k]->SetMaterialPropertiesTable(crystalDepolished_surf); //this sets the surface roughness
               new G4LogicalBorderSurface(Surfname.str().c_str(),crystal_phys[i][j],lateral_phys[i][j][k],opCrystalToAirThinLayerSurface[i][j][k]);
 //               G4cout << Surfname.str() << G4endl;
-              
           }
-          
       }
-      
-      
-      
       //4. create the volumes of esr-air, the real structure of the matrix
-      //FIXME put the esr surf from edge esr to expHall_box
+      // also create the esr surfaces      
       double dim_x_esr[4];
       double dim_y_esr[4];
       //shifts are the same, except for a very peculiar case in the 4 corners
@@ -1246,12 +1237,8 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
                   opAirThinLayerToWorldSurface[i][j][indexEsr[t]]->SetMaterialPropertiesTable(ESR_surf);
                   new G4LogicalBorderSurface(SurfToWorldName.str().c_str(),esr_phys[i][j][indexEsr[t]],expHall_phys,opAirThinLayerToWorldSurface[i][j][indexEsr[t]]);
               }
-              
-          
           }
-      }
-
-          
+      }    
     } 
   }
   
@@ -1327,12 +1314,12 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   
   if(fEpoxy_z != 0)
   {
-  //epoxy layer
-  G4Box* epoxy_box = new G4Box("Epoxy",fEpoxy_x/2.0,fEpoxy_y/2.0,fEpoxy_z/2.0);
-  G4LogicalVolume* epoxy_log = new G4LogicalVolume(epoxy_box,Epoxy,"Epoxy",0,0,0);
-  G4VPhysicalVolume* epoxy_phys = new G4PVPlacement(0,G4ThreeVector(pEpoxy_x,pEpoxy_y,pEpoxy_z),epoxy_log,"Epoxy",expHall_log,false,fCheckOverlaps);
-  G4VisAttributes* EpoxyVisualizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
-  epoxy_log->SetVisAttributes(EpoxyVisualizationAttribute); // we also set here the visualization colors
+    //epoxy layer
+    G4Box* epoxy_box = new G4Box("Epoxy",fEpoxy_x/2.0,fEpoxy_y/2.0,fEpoxy_z/2.0);
+    G4LogicalVolume* epoxy_log = new G4LogicalVolume(epoxy_box,Epoxy,"Epoxy",0,0,0);
+    G4VPhysicalVolume* epoxy_phys = new G4PVPlacement(0,G4ThreeVector(pEpoxy_x,pEpoxy_y,pEpoxy_z),epoxy_log,"Epoxy",expHall_log,false,fCheckOverlaps);
+    G4VisAttributes* EpoxyVisualizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
+    epoxy_log->SetVisAttributes(EpoxyVisualizationAttribute); // we also set here the visualization colors
   }
   
   //mppc array
@@ -1520,85 +1507,55 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
     }    
   }
   
+  //also the esrboxes, if they are there, should have a final esr surface with the volumes in fron and on the back
+  if(lateralEsr)
+  {
+      
+      G4OpticalSurface**** opEsrToFrontSurface	= new G4OpticalSurface*** [nCrystalsX];
+      for(int i = 0 ; i < nCrystalsX ; i++) 
+      {
+          opEsrToFrontSurface[i]	= new G4OpticalSurface** [nCrystalsY];
+          for(int j = 0 ; j < nCrystalsY ; j++)
+              opEsrToFrontSurface[i][j]     = new G4OpticalSurface* [4];
+      }
+      G4OpticalSurface**** opEsrToBackSurface	= new G4OpticalSurface*** [nCrystalsX];
+      for(int i = 0 ; i < nCrystalsX ; i++) 
+      {
+          opEsrToBackSurface[i]	= new G4OpticalSurface** [nCrystalsY];
+          for(int j = 0 ; j < nCrystalsY ; j++)
+              opEsrToBackSurface[i][j]     = new G4OpticalSurface* [4];
+      }
+      
+      
+      for(G4int i = 0 ; i < nCrystalsX ; i++)
+      {
+          for(G4int j = 0 ; j < nCrystalsY ; j++)
+          {
+              for(G4int k = 0 ; k < nCrystalsY ; k++)
+              {
+                  std::stringstream EsrToFrontname;
+                  EsrToFrontname << "opEsrToBackSurface" << i << "_" << j << "_" << k; 
+                  opEsrToFrontSurface[i][j][k] = new G4OpticalSurface(EsrToFrontname.str().c_str());
+                  opEsrToFrontSurface[i][j][k]->SetType(dielectric_metal);
+                  opEsrToFrontSurface[i][j][k]->SetFinish(polished);
+                  opEsrToFrontSurface[i][j][k]->SetModel(unified);
+                  opEsrToFrontSurface[i][j][k]->SetMaterialPropertiesTable(ESR_surf); //this sets the surface roughness
+                  new G4LogicalBorderSurface(EsrToFrontname.str().c_str(),volumeInFront,esr_phys[i][j][k],opEsrToFrontSurface[i][j][k]);
+                  
+                  std::stringstream EsrToBackname;
+                  EsrToBackname << "opEsrToBackSurface" << i << "_" << j << "_" << k; 
+                  opEsrToBackSurface[i][j][k] = new G4OpticalSurface(EsrToFrontname.str().c_str());
+                  opEsrToBackSurface[i][j][k]->SetType(dielectric_metal);
+                  opEsrToBackSurface[i][j][k]->SetFinish(polished);
+                  opEsrToBackSurface[i][j][k]->SetModel(unified);
+                  opEsrToBackSurface[i][j][k]->SetMaterialPropertiesTable(ESR_surf); //this sets the surface roughness
+                  new G4LogicalBorderSurface(EsrToBackname.str().c_str(),volumeOnTheBack,esr_phys[i][j][k],opEsrToBackSurface[i][j][k]);
+              }
+          }
+      }
+      
+  }
   
-  
-  //now more complicated, tell to g4 that each air thin layer has a esr surface between itself and any other air thin layer
-  //not very efficient way to do it...
-  //plus, this is really going to be the hell of pointers
-  
-  
-//   if(lateralEsr)
-//   {
-//     
-//     //four dimensions matrix of pointers. It's friday and I need a doctor.
-//     G4OpticalSurface***** opAirThinLayerToEsrSurface = new G4OpticalSurface**** [nCrystalsX];
-//     for(int i = 0 ; i < nCrystalsX ; i++) 
-//     {
-//       opAirThinLayerToEsrSurface[i] = new G4OpticalSurface*** [nCrystalsY];
-//       for(int j = 0 ; j < nCrystalsY ; j++) 
-//       {
-// 	opAirThinLayerToEsrSurface[i][j] = new G4OpticalSurface** [nCrystalsX];
-// 	for(int k = 0 ; k < nCrystalsX ; k++) 
-// 	{
-// 	  opAirThinLayerToEsrSurface[i][j][k] = new G4OpticalSurface* [nCrystalsY];
-// 	}
-//       }
-//     }
-//   
-// //     G4OpticalSurface* opAirThinLayerToEsrSurface[nCrystalsX][nCrystalsY][nCrystalsX][nCrystalsY];
-//     for(G4int i = 0 ; i < nCrystalsX ; i++)
-//     {
-//       for(G4int j = 0 ; j < nCrystalsY ; j++)
-//       {
-// 	//run on all air thin layer
-// 	//for each one, run on all the other air thin layers
-// 	for(G4int iOther = 0 ; iOther < nCrystalsX ; iOther++)
-// 	{
-// 	  for(G4int jOther = 0 ; jOther < nCrystalsY ; jOther++)
-// 	  {
-// 	    //do it only if it's not the same air thin layer
-// 	    if(i!=iOther && j!=jOther)
-// 	    {
-// 	      std::stringstream name;
-// 	      name << "AirThinLayerToEsrSurface_" << i << "_" << j << "_" << iOther << "_" << jOther ; 
-// 	      opAirThinLayerToEsrSurface[i][j][iOther][jOther] = new G4OpticalSurface(name.str().c_str());
-// 	      opAirThinLayerToEsrSurface[i][j][iOther][jOther]->SetType(dielectric_metal);
-// 	      opAirThinLayerToEsrSurface[i][j][iOther][jOther]->SetFinish(polished);
-// 	      opAirThinLayerToEsrSurface[i][j][iOther][jOther]->SetModel(unified);
-// 	      opAirThinLayerToEsrSurface[i][j][iOther][jOther]->SetMaterialPropertiesTable(ESR_surf);
-// 	      new G4LogicalBorderSurface(name.str().c_str(),airThinLayer_phys[i][j],airThinLayer_phys[iOther][jOther],opAirThinLayerToEsrSurface[i][j][iOther][jOther]);	      
-// 	    }
-// 	  }
-// 	}
-//       }
-//     }
-//   }
-  
-  
-//   if(lateralEsr) //FIXME here for sure we need the external esrboxes, not all the AirThinLayer(s). child should win in the assignment of volume, so if the dim are not wrong,
-//       // the photons arrive there and the interface is between esrbox and expHall_phys - SHOULD BE DONE DIRECTLY IN THE VOLUMES LOOP
-//   {
-//     
-//     G4OpticalSurface*** opAirThinLayerToWorldSurface				= new G4OpticalSurface** [nCrystalsX];
-//     for(int i = 0 ; i < nCrystalsX ; i++) opAirThinLayerToWorldSurface[i]	= new G4OpticalSurface* [nCrystalsY];
-//     
-// //     G4OpticalSurface* opAirThinLayerToWorldSurface[nCrystalsX][nCrystalsY];
-//     //we need an optical surface also between each (the externals, but it's the same) air thin layer and the world!!!
-//     for(G4int i = 0 ; i < nCrystalsX ; i++)
-//     {
-//       for(G4int j = 0 ; j < nCrystalsY ; j++)
-//       {
-// 	std::stringstream name;
-// 	name << "opAirThinLayerToWorldSurface_" << i << "_" << j ; 
-// 	opAirThinLayerToWorldSurface[i][j] = new G4OpticalSurface(name.str().c_str());
-// 	opAirThinLayerToWorldSurface[i][j]->SetType(dielectric_metal);
-// 	opAirThinLayerToWorldSurface[i][j]->SetFinish(polished);
-// 	opAirThinLayerToWorldSurface[i][j]->SetModel(unified);
-// 	opAirThinLayerToWorldSurface[i][j]->SetMaterialPropertiesTable(ESR_surf);
-// 	new G4LogicalBorderSurface(name.str().c_str(),airThinLayer_phys[i][j],expHall_phys,opAirThinLayerToWorldSurface[i][j]);
-//       } 
-//     }
-//   }
   
   if(backEsr)
   {
