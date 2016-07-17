@@ -66,7 +66,9 @@ class g4matrixPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     G4double phi ;
     G4double esrThickness;
     G4double crystalx;
+    G4double crystaly;
     G4int ncrystalx;
+    G4int ncrystaly;
     
     
 };

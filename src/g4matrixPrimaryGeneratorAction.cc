@@ -99,11 +99,12 @@ g4matrixPrimaryGeneratorAction::g4matrixPrimaryGeneratorAction(ConfigFile& confi
   }
   //find the x and y of matrix
   crystalx = config.read<double>("crystalx");
-  //G4double crystaly = config.read<double>("crystaly");
+  crystaly = config.read<double>("crystaly");
   ncrystalx = config.read<int>("ncrystalx");
-  //G4int ncrystaly = config.read<int>("ncrystaly");
+  ncrystaly = config.read<int>("ncrystaly");
   esrThickness = config.read<double>("esrThickness");
 
+  //FIXME this assumes pointlike source. wouldn't it be better to have a 1mm diameter sphere?
   fParticleGun->SetParticlePosition(G4ThreeVector(sourcex,sourcey,sourcez));
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
   fParticleGun->SetParticleEnergy(energy*keV);
@@ -123,8 +124,8 @@ g4matrixPrimaryGeneratorAction::~g4matrixPrimaryGeneratorAction()
 void g4matrixPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
   
-  G4double halfXatrix = ((crystalx + esrThickness) * ncrystalx) / 2.0;
-  G4double angleLimit = atan(halfXatrix / distance);
+  G4double halfDiagonal =  sqrt(pow((crystalx + esrThickness) * ncrystalx,2.0) + pow( (crystaly + esrThickness) * ncrystaly ,2.0)) / 2.0;
+  G4double angleLimit = atan(halfDiagonal / distance);
   
   //theta = (G4UniformRand() * 2.0*angleLimit) - angleLimit; //WRONG!!!! this would make cos(theta) uniform, not sin(theta)d(theta)
   
