@@ -126,7 +126,6 @@ void g4matrixPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   
   G4double halfDiagonal =  sqrt(pow((crystalx + esrThickness) * ncrystalx,2.0) + pow( (crystaly + esrThickness) * ncrystaly ,2.0)) / 2.0;
   G4double angleLimit = atan(halfDiagonal / distance);
-  
   //theta = (G4UniformRand() * 2.0*angleLimit) - angleLimit; //WRONG!!!! this would make cos(theta) uniform, not sin(theta)d(theta)
   
   //find the limit for acos

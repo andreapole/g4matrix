@@ -1506,8 +1506,8 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
       }      
     }    
   }
-  
-  //also the esrboxes, if they are there, should have a final esr surface with the volumes in fron and on the back
+
+  //also the esrboxes, if they are there, should have a final esr surface with the volumes in front and on the back
   if(lateralEsr)
   {
       
@@ -1531,7 +1531,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
       {
           for(G4int j = 0 ; j < nCrystalsY ; j++)
           {
-              for(G4int k = 0 ; k < nCrystalsY ; k++)
+              for(G4int k = 0 ; k < 4 ; k++)
               {
                   std::stringstream EsrToFrontname;
                   EsrToFrontname << "opEsrToBackSurface" << i << "_" << j << "_" << k; 
@@ -1553,10 +1553,9 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
               }
           }
       }
-      
   }
   
-  
+
   if(backEsr)
   {
     //back air to back esr -> so we define the surface between back air and fake air as esr
