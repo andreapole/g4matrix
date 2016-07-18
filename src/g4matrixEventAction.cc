@@ -80,10 +80,18 @@ void g4matrixEventAction::BeginOfEventAction(const G4Event* event)
 void g4matrixEventAction::EndOfEventAction(const G4Event* event)
 {
   // Accumulate statistics
-  //
+  // only if there was an energy deposition (otherwise, why would i save empty data?)
   
-  CreateTree::Instance()->Fill();
-  G4cout << "Total Energy deposited in this event = "<< CreateTree::Instance()->totalEnergyDeposited << " MeV" << G4endl;
+//   if(CreateTree::Instance()->totalEnergyDeposited > 0)
+//   {
+      CreateTree::Instance()->Fill();
+      G4cout << "Total Energy deposited in this event = "<< CreateTree::Instance()->totalEnergyDeposited << " MeV" << G4endl;
+//   }
+//   else
+//   {
+//       G4cout << "No Energy deposited in this event" << G4endl;
+//   }
+  
   
   
   
