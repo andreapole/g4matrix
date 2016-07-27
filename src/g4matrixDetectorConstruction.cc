@@ -109,7 +109,7 @@ g4matrixDetectorConstruction::g4matrixDetectorConstruction()
   //fMPPCArray_y = fGreaseFrontCryToGlass_y;
   fMPPCArray_x = fSingleMPPCBlock_x * nDetectorsX;
   fMPPCArray_y = fSingleMPPCBlock_y * nDetectorsY;
-  fMPPCArray_z = fSingleMPPC_z*mm;					//fixed to 0.01 mm to make cherenkov in silicon unlikely
+  fMPPCArray_z = fSingleMPPC_z*mm;					//could be fixed to 0.01 mm to make cherenkov in silicon unlikely
   //grease back dimensions - cry to glass
   fGreaseBackCryToGlass_x = fAirThinLayerBox_x * nCrystalsX;
   fGreaseBackCryToGlass_y = fAirThinLayerBox_y * nCrystalsY;
@@ -125,7 +125,7 @@ g4matrixDetectorConstruction::g4matrixDetectorConstruction()
   //fake air layer between air world
   fFakeAirBack_x = fAirBack_x;
   fFakeAirBack_y = fAirBack_y;
-  fFakeAirBack_z = 0.1*mm;					//fixed to 0.1, it has no physical meaning in our simulation
+  fFakeAirBack_z = airThinThickness;					//fixed to esr thickness
   //world dimensions
   //lenght is easy, it will have to accomodate for crystal length plus source distance plus some space (typically x2)
   fExpHall_z = fAirThinLayerBox_z * 2.0 + distance*2.0;
@@ -576,9 +576,10 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   assert(sizeof(esrTransmittance_energy) == sizeof(esrTransmittance_values));
   
   //modfication for double surface. since the Transmittance measured is for a real material, with 2 surfaces, we need to scale the measurement to have a correct result when we use the two of them
+  //this is anyway a big question mark..
   for(int esr_n = 0; esr_n < numEsrTrans ; esr_n++)
   {
-    esrTransmittance_values[esr_n] = pow(esrTransmittance_values[esr_n],0.5);
+    esrTransmittance_values[esr_n] = pow(esrTransmittance_values[esr_n],0.6666666666666666666);
   }
   
   ESR_surf->AddProperty ("REALRINDEX",        vikuiti_energy_re,  vikuiti_RIndex_re,  NUMvikuiti);
@@ -974,26 +975,41 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   }
   
   G4OpticalSurface**** opCrystalToAirThinLayerSurface		= new G4OpticalSurface*** [nCrystalsX];
+  G4OpticalSurface**** opCrystalToAirThinLayerSurfaceInv		= new G4OpticalSurface*** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) 
   {
       opCrystalToAirThinLayerSurface[i]           	= new G4OpticalSurface** [nCrystalsY];
+      opCrystalToAirThinLayerSurfaceInv[i]           	= new G4OpticalSurface** [nCrystalsY];
       for(int j = 0 ; j < nCrystalsY ; j++)
+      {
           opCrystalToAirThinLayerSurface[i][j]     = new G4OpticalSurface* [4];
+          opCrystalToAirThinLayerSurfaceInv[i][j]     = new G4OpticalSurface* [4];
+      }
   }
   
   G4OpticalSurface**** opEsrToAirThinLayerSurface		= new G4OpticalSurface*** [nCrystalsX];
+  G4OpticalSurface**** opEsrToAirThinLayerSurfaceInv		= new G4OpticalSurface*** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) 
   {
       opEsrToAirThinLayerSurface[i]           	= new G4OpticalSurface** [nCrystalsY];
+      opEsrToAirThinLayerSurfaceInv[i]           	= new G4OpticalSurface** [nCrystalsY];
       for(int j = 0 ; j < nCrystalsY ; j++)
-          opEsrToAirThinLayerSurface[i][j]     = new G4OpticalSurface* [4];
+      {
+         opEsrToAirThinLayerSurface[i][j]     = new G4OpticalSurface* [4];
+         opEsrToAirThinLayerSurfaceInv[i][j]     = new G4OpticalSurface* [4];
+      }
   }
   G4OpticalSurface**** opAirThinLayerToWorldSurface				= new G4OpticalSurface*** [nCrystalsX];
+  G4OpticalSurface**** opAirThinLayerToWorldSurfaceInv				= new G4OpticalSurface*** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) 
   {
       opAirThinLayerToWorldSurface[i]	= new G4OpticalSurface** [nCrystalsY];
+      opAirThinLayerToWorldSurfaceInv[i]	= new G4OpticalSurface** [nCrystalsY];
       for(int j = 0 ; j < nCrystalsY ; j++)
+      {
           opAirThinLayerToWorldSurface[i][j]     = new G4OpticalSurface* [4];
+          opAirThinLayerToWorldSurfaceInv[i][j]     = new G4OpticalSurface* [4];
+      }
   }
 //   G4OpticalSurface*** opCrystalToAirThinLayerSurface				= new G4OpticalSurface** [nCrystalsX];
 //     for(int i = 0 ; i < nCrystalsX ; i++) opCrystalToAirThinLayerSurface[i]	= new G4OpticalSurface* [nCrystalsY];
@@ -1084,6 +1100,15 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
               opCrystalToAirThinLayerSurface[i][j][k]->SetMaterialPropertiesTable(crystalDepolished_surf); //this sets the surface roughness
               new G4LogicalBorderSurface(Surfname.str().c_str(),crystal_phys[i][j],lateral_phys[i][j][k],opCrystalToAirThinLayerSurface[i][j][k]);
 //               G4cout << Surfname.str() << G4endl;
+              //and the reverse...
+              Surfname << "Inv";
+              opCrystalToAirThinLayerSurfaceInv[i][j][k] = new G4OpticalSurface(Surfname.str().c_str());
+              opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetType(dielectric_dielectric);
+              opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetFinish(ground);
+              opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetModel(unified);
+              opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetSigmaAlpha(latsigmaalpha);
+              opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetMaterialPropertiesTable(crystalDepolished_surf); //this sets the surface roughness
+              new G4LogicalBorderSurface(Surfname.str().c_str(),lateral_phys[i][j][k],crystal_phys[i][j],opCrystalToAirThinLayerSurfaceInv[i][j][k]);
           }
       }
       //4. create the volumes of esr-air, the real structure of the matrix
@@ -1218,6 +1243,16 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
               new G4LogicalBorderSurface(Surfname.str().c_str(),airThinLayer_phys[i][j],esr_phys[i][j][k],opEsrToAirThinLayerSurface[i][j][k]);
 //               G4cout << Surfname.str() << G4endl;
               
+              Surfname << "_Inv";
+              //also the inverse direction needs to be declared, for the same surface between the same two volumes. What is wrong with G4 developers?
+              opEsrToAirThinLayerSurfaceInv[i][j][k] = new G4OpticalSurface(Surfname.str().c_str());
+              opEsrToAirThinLayerSurfaceInv[i][j][k]->SetType(dielectric_metal);
+              opEsrToAirThinLayerSurfaceInv[i][j][k]->SetFinish(polished);
+              opEsrToAirThinLayerSurfaceInv[i][j][k]->SetModel(unified);
+//               opEsrToAirThinLayerSurface[i][j][k]->SetSigmaAlpha(latsigmaalpha);
+              opEsrToAirThinLayerSurfaceInv[i][j][k]->SetMaterialPropertiesTable(ESR_surf); //this sets the surface roughness
+              new G4LogicalBorderSurface(Surfname.str().c_str(),esr_phys[i][j][k],airThinLayer_phys[i][j],opEsrToAirThinLayerSurfaceInv[i][j][k]);
+              
               //we need a surface towards the world, but only for the edge esr boxes.
               //same as before to find them
               std::vector<int> indexEsr;
@@ -1236,6 +1271,17 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
                   opAirThinLayerToWorldSurface[i][j][indexEsr[t]]->SetModel(unified);
                   opAirThinLayerToWorldSurface[i][j][indexEsr[t]]->SetMaterialPropertiesTable(ESR_surf);
                   new G4LogicalBorderSurface(SurfToWorldName.str().c_str(),esr_phys[i][j][indexEsr[t]],expHall_phys,opAirThinLayerToWorldSurface[i][j][indexEsr[t]]);
+                  
+                  //nothing is outside of matrix, so in principle we don't need to define the inverse surface. But hei, you never know...
+                  SurfToWorldName << "_Inv";
+                  opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]] = new G4OpticalSurface(SurfToWorldName.str().c_str());
+                  opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]->SetType(dielectric_metal);
+                  opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]->SetFinish(polished);
+                  opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]->SetModel(unified);
+                  opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]->SetMaterialPropertiesTable(ESR_surf);
+                  new G4LogicalBorderSurface(SurfToWorldName.str().c_str(),expHall_phys,esr_phys[i][j][indexEsr[t]],opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]);
+                  
+                  
               }
           }
       }    
@@ -1417,11 +1463,12 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   }
   
   
-  //fake air (to have a vikuiti reflector only on the back of the back glass, otherwise it would be also on the sides (if you define the surface dielectric_metal 
-  //between back glass and world
-  G4Box* fakeAirBack_box = new G4Box("FakeAirBack",fFakeAirBack_x/2.0,fFakeAirBack_y/2.0,fFakeAirBack_z/2.0);
-  G4LogicalVolume* fakeAirBack_log = new G4LogicalVolume(fakeAirBack_box,airThinLayer,"FakeAirBack",0,0,0);
-  G4VPhysicalVolume* fakeAirBack_phys = new G4PVPlacement(0,G4ThreeVector(pFakeAirBack_x,pFakeAirBack_y,pFakeAirBack_z),fakeAirBack_log,"FakeAirBack",expHall_log,false,fCheckOverlaps);
+  
+  //the vikuiti on the back. Volume defined as air, it will have esr surfaces to the airgap and to the world
+  //since it's defined as air, is back esr is set to false then it will just act as air
+  G4Box* fakeAirBack_box = new G4Box("BackEsrReflector",fFakeAirBack_x/2.0,fFakeAirBack_y/2.0,fFakeAirBack_z/2.0);
+  G4LogicalVolume* fakeAirBack_log = new G4LogicalVolume(fakeAirBack_box,airThinLayer,"BackEsrReflector",0,0,0);
+  G4VPhysicalVolume* fakeAirBack_phys = new G4PVPlacement(0,G4ThreeVector(pFakeAirBack_x,pFakeAirBack_y,pFakeAirBack_z),fakeAirBack_log,"BackEsrReflector",expHall_log,false,fCheckOverlaps);
   G4VisAttributes* FakeAirBackVisualizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,1.0)); //magenta
   fakeAirBack_log->SetVisAttributes(FakeAirBackVisualizationAttribute); // we also set here the visualization colors
   
@@ -1471,10 +1518,20 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   {
     
     G4OpticalSurface*** CrystalFrontRealSurface				= new G4OpticalSurface** [nCrystalsX];
-    for(int i = 0 ; i < nCrystalsX ; i++) CrystalFrontRealSurface[i]	= new G4OpticalSurface* [nCrystalsY];
+    G4OpticalSurface*** CrystalFrontRealSurfaceInv				= new G4OpticalSurface** [nCrystalsX];
+    for(int i = 0 ; i < nCrystalsX ; i++) 
+    {
+      CrystalFrontRealSurface[i]	= new G4OpticalSurface* [nCrystalsY];
+      CrystalFrontRealSurfaceInv[i]	= new G4OpticalSurface* [nCrystalsY];
+    }
     
     G4OpticalSurface*** CrystalBackRealSurface				= new G4OpticalSurface** [nCrystalsX];
-    for(int i = 0 ; i < nCrystalsX ; i++) CrystalBackRealSurface[i]	= new G4OpticalSurface* [nCrystalsY];
+    G4OpticalSurface*** CrystalBackRealSurfaceInv				= new G4OpticalSurface** [nCrystalsX];
+    for(int i = 0 ; i < nCrystalsX ; i++) 
+    {
+      CrystalBackRealSurface[i]	= new G4OpticalSurface* [nCrystalsY];
+      CrystalBackRealSurfaceInv[i]	= new G4OpticalSurface* [nCrystalsY];
+    }
     
 //     G4OpticalSurface* CrystalFrontRealSurface[nCrystalsX][nCrystalsY];
 //     G4OpticalSurface* CrystalBackRealSurface[nCrystalsX][nCrystalsY];
@@ -1492,6 +1549,15 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
 	CrystalFrontRealSurface[i][j]->SetSigmaAlpha(realsigmaalpha);
 	CrystalFrontRealSurface[i][j]->SetMaterialPropertiesTable(crystalReal_surf); //this sets the surface roughness
 	new G4LogicalBorderSurface(name.str().c_str(),crystal_phys[i][j],volumeInFront,CrystalFrontRealSurface[i][j]);
+        //and inverse...
+        name << "_Inv"; 
+        CrystalFrontRealSurfaceInv[i][j] = new G4OpticalSurface(name.str().c_str());
+	CrystalFrontRealSurfaceInv[i][j]->SetType(dielectric_dielectric);
+	CrystalFrontRealSurfaceInv[i][j]->SetFinish(ground);
+	CrystalFrontRealSurfaceInv[i][j]->SetModel(unified);
+	CrystalFrontRealSurfaceInv[i][j]->SetSigmaAlpha(realsigmaalpha);
+	CrystalFrontRealSurfaceInv[i][j]->SetMaterialPropertiesTable(crystalReal_surf); //this sets the surface roughness
+	new G4LogicalBorderSurface(name.str().c_str(),volumeInFront,crystal_phys[i][j],CrystalFrontRealSurfaceInv[i][j]);
 	
 	//back
 	name.str("");
@@ -1503,6 +1569,15 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
 	CrystalBackRealSurface[i][j]->SetSigmaAlpha(realsigmaalpha);
 	CrystalBackRealSurface[i][j]->SetMaterialPropertiesTable(crystalReal_surf); //this sets the surface roughness
 	new G4LogicalBorderSurface(name.str().c_str(),crystal_phys[i][j],volumeOnTheBack,CrystalBackRealSurface[i][j]);
+        //and inverse..
+        name << "_Inv"; 
+        CrystalBackRealSurfaceInv[i][j] = new G4OpticalSurface(name.str().c_str());
+	CrystalBackRealSurfaceInv[i][j]->SetType(dielectric_dielectric);
+	CrystalBackRealSurfaceInv[i][j]->SetFinish(ground);
+	CrystalBackRealSurfaceInv[i][j]->SetModel(unified);
+	CrystalBackRealSurfaceInv[i][j]->SetSigmaAlpha(realsigmaalpha);
+	CrystalBackRealSurfaceInv[i][j]->SetMaterialPropertiesTable(crystalReal_surf); //this sets the surface roughness
+	new G4LogicalBorderSurface(name.str().c_str(),volumeOnTheBack,crystal_phys[i][j],CrystalBackRealSurfaceInv[i][j]);
       }      
     }    
   }
@@ -1512,18 +1587,28 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   {
       
       G4OpticalSurface**** opEsrToFrontSurface	= new G4OpticalSurface*** [nCrystalsX];
+      G4OpticalSurface**** opEsrToFrontSurfaceInv	= new G4OpticalSurface*** [nCrystalsX];
       for(int i = 0 ; i < nCrystalsX ; i++) 
       {
           opEsrToFrontSurface[i]	= new G4OpticalSurface** [nCrystalsY];
+          opEsrToFrontSurfaceInv[i]	= new G4OpticalSurface** [nCrystalsY];
           for(int j = 0 ; j < nCrystalsY ; j++)
+          {
               opEsrToFrontSurface[i][j]     = new G4OpticalSurface* [4];
+              opEsrToFrontSurfaceInv[i][j]     = new G4OpticalSurface* [4];
+          }
       }
       G4OpticalSurface**** opEsrToBackSurface	= new G4OpticalSurface*** [nCrystalsX];
+      G4OpticalSurface**** opEsrToBackSurfaceInv	= new G4OpticalSurface*** [nCrystalsX];
       for(int i = 0 ; i < nCrystalsX ; i++) 
       {
           opEsrToBackSurface[i]	= new G4OpticalSurface** [nCrystalsY];
+          opEsrToBackSurfaceInv[i]	= new G4OpticalSurface** [nCrystalsY];
           for(int j = 0 ; j < nCrystalsY ; j++)
+          {
               opEsrToBackSurface[i][j]     = new G4OpticalSurface* [4];
+              opEsrToBackSurfaceInv[i][j]     = new G4OpticalSurface* [4];
+          }
       }
       
       
@@ -1534,22 +1619,40 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
               for(G4int k = 0 ; k < 4 ; k++)
               {
                   std::stringstream EsrToFrontname;
-                  EsrToFrontname << "opEsrToBackSurface" << i << "_" << j << "_" << k; 
+                  EsrToFrontname << "opEsrToFrontSurface" << i << "_" << j << "_" << k; 
                   opEsrToFrontSurface[i][j][k] = new G4OpticalSurface(EsrToFrontname.str().c_str());
                   opEsrToFrontSurface[i][j][k]->SetType(dielectric_metal);
                   opEsrToFrontSurface[i][j][k]->SetFinish(polished);
                   opEsrToFrontSurface[i][j][k]->SetModel(unified);
-                  opEsrToFrontSurface[i][j][k]->SetMaterialPropertiesTable(ESR_surf); //this sets the surface roughness
+                  opEsrToFrontSurface[i][j][k]->SetMaterialPropertiesTable(ESR_surf); 
                   new G4LogicalBorderSurface(EsrToFrontname.str().c_str(),volumeInFront,esr_phys[i][j][k],opEsrToFrontSurface[i][j][k]);
+                  //and inverse...
+                  EsrToFrontname << "_Inv";
+                  opEsrToFrontSurfaceInv[i][j][k] = new G4OpticalSurface(EsrToFrontname.str().c_str());
+                  opEsrToFrontSurfaceInv[i][j][k]->SetType(dielectric_metal);
+                  opEsrToFrontSurfaceInv[i][j][k]->SetFinish(polished);
+                  opEsrToFrontSurfaceInv[i][j][k]->SetModel(unified);
+                  opEsrToFrontSurfaceInv[i][j][k]->SetMaterialPropertiesTable(ESR_surf); 
+                  new G4LogicalBorderSurface(EsrToFrontname.str().c_str(),esr_phys[i][j][k],volumeInFront,opEsrToFrontSurfaceInv[i][j][k]);
+                  
                   
                   std::stringstream EsrToBackname;
                   EsrToBackname << "opEsrToBackSurface" << i << "_" << j << "_" << k; 
-                  opEsrToBackSurface[i][j][k] = new G4OpticalSurface(EsrToFrontname.str().c_str());
+                  opEsrToBackSurface[i][j][k] = new G4OpticalSurface(EsrToBackname.str().c_str());
                   opEsrToBackSurface[i][j][k]->SetType(dielectric_metal);
                   opEsrToBackSurface[i][j][k]->SetFinish(polished);
                   opEsrToBackSurface[i][j][k]->SetModel(unified);
-                  opEsrToBackSurface[i][j][k]->SetMaterialPropertiesTable(ESR_surf); //this sets the surface roughness
+                  opEsrToBackSurface[i][j][k]->SetMaterialPropertiesTable(ESR_surf); 
                   new G4LogicalBorderSurface(EsrToBackname.str().c_str(),volumeOnTheBack,esr_phys[i][j][k],opEsrToBackSurface[i][j][k]);
+                  //and inverse...
+                  EsrToBackname << "_Inv";
+                  opEsrToBackSurfaceInv[i][j][k] = new G4OpticalSurface(EsrToBackname.str().c_str());
+                  opEsrToBackSurfaceInv[i][j][k]->SetType(dielectric_metal);
+                  opEsrToBackSurfaceInv[i][j][k]->SetFinish(polished);
+                  opEsrToBackSurfaceInv[i][j][k]->SetModel(unified);
+                  opEsrToBackSurfaceInv[i][j][k]->SetMaterialPropertiesTable(ESR_surf); 
+                  new G4LogicalBorderSurface(EsrToBackname.str().c_str(),esr_phys[i][j][k],volumeOnTheBack,opEsrToBackSurfaceInv[i][j][k]);
+                  
               }
           }
       }
@@ -1558,13 +1661,39 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
 
   if(backEsr)
   {
-    //back air to back esr -> so we define the surface between back air and fake air as esr
-    G4OpticalSurface* opAirBackToFakeAir = new G4OpticalSurface("AirBackToFakeAir");
-    opAirBackToFakeAir->SetType(dielectric_metal);
-    opAirBackToFakeAir->SetFinish(polished);
-    opAirBackToFakeAir->SetModel(unified);
-    opAirBackToFakeAir->SetMaterialPropertiesTable(ESR_surf);
-    new G4LogicalBorderSurface("AirBackToFakeAir",airBack_phys,fakeAirBack_phys,opAirBackToFakeAir);
+    //back air to back esr 
+    G4OpticalSurface* opAirBackToEsr = new G4OpticalSurface("AirBackToEsr");
+    opAirBackToEsr->SetType(dielectric_metal);
+    opAirBackToEsr->SetFinish(polished);
+    opAirBackToEsr->SetModel(unified);
+    opAirBackToEsr->SetMaterialPropertiesTable(ESR_surf);
+    new G4LogicalBorderSurface("AirBackToEsr",airBack_phys,fakeAirBack_phys,opAirBackToEsr);
+    //and the inverse...
+    G4OpticalSurface* opEsrToAirBack = new G4OpticalSurface("EsrToAirBack");
+    opEsrToAirBack->SetType(dielectric_metal);
+    opEsrToAirBack->SetFinish(polished);
+    opEsrToAirBack->SetModel(unified);
+    opEsrToAirBack->SetMaterialPropertiesTable(ESR_surf);
+    new G4LogicalBorderSurface("EsrToAirBack",fakeAirBack_phys,airBack_phys,opEsrToAirBack);
+    
+    
+    //esrBack to the world
+    G4OpticalSurface* opEsrToWorld = new G4OpticalSurface("opEsrToWorld");
+    opEsrToWorld->SetType(dielectric_metal);
+    opEsrToWorld->SetFinish(polished);
+    opEsrToWorld->SetModel(unified);
+    opEsrToWorld->SetMaterialPropertiesTable(ESR_surf);
+    new G4LogicalBorderSurface("opEsrToWorld",fakeAirBack_phys,expHall_phys,opEsrToWorld);
+    //and the inverse... (not needed but for completness...)
+    G4OpticalSurface* opWorldToEsr = new G4OpticalSurface("opWorldToEsr");
+    opWorldToEsr->SetType(dielectric_metal);
+    opWorldToEsr->SetFinish(polished);
+    opWorldToEsr->SetModel(unified);
+    opWorldToEsr->SetMaterialPropertiesTable(ESR_surf);
+    new G4LogicalBorderSurface("opWorldToEsr",expHall_phys,fakeAirBack_phys,opWorldToEsr);
+    
+    
+    
   }
   
   //always return the physical World
