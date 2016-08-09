@@ -253,7 +253,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
     fExpHall_x = fAirThinLayerBox_x * nCrystalsX * 2.0;
   else 
     fExpHall_x = fMPPCArray_x *2.0;
-  if((fExpHall_y = fAirThinLayerBox_y * nCrystalsY * 2.0) > fMPPCArray_y)
+  if( (fAirThinLayerBox_y * nCrystalsY * 2.0) > fMPPCArray_y)
     fExpHall_y = fAirThinLayerBox_y * nCrystalsY * 2.0;
   else
     fExpHall_y = fMPPCArray_y *2.0;
