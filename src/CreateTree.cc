@@ -6,17 +6,18 @@ CreateTree* CreateTree::fInstance = NULL;
 
 using namespace std;
 
-CreateTree::CreateTree(TString name, int x, int y, int z, int k)
+CreateTree::CreateTree(TString name, int x, int y, int z, int k, int j)
   : nCrystalsX(x),
     nCrystalsY(y),
     nDetectorsX(z), 
-    nDetectorsY(k)
+    nDetectorsY(k),
+    nArrays(j)
 {
   
   //G4cout << "DETECTORS "  << " " << nDetectorsX << " " << nDetectorsY << G4endl; ;
   
   //create the vectors
-  DetectorHit         = new Short_t [nDetectorsX*nDetectorsY];
+  DetectorHit         = new Short_t [nArrays*nDetectorsX*nDetectorsY];
   CryEnergyDeposited  = new std::vector<float> [nCrystalsX*nCrystalsY];
   pCryEnergyDeposited = new std::vector<float>* [nCrystalsX*nCrystalsY];
   PosXEnDep           = new std::vector<float> [nCrystalsX*nCrystalsY];
@@ -71,7 +72,7 @@ CreateTree::CreateTree(TString name, int x, int y, int z, int k)
     this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pPosZEnDep[i]);
   }
   
-  for (int i = 0 ; i < nDetectorsX*nDetectorsY ; i++) 
+  for (int i = 0 ; i < nArrays*nDetectorsX*nDetectorsY ; i++) 
   {
     std::stringstream snames,stypes;
     snames << "detector" << i;

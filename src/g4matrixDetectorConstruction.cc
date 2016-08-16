@@ -60,7 +60,7 @@ g4matrixDetectorConstruction::g4matrixDetectorConstruction()
   //all dimensions in G4 are semi dimensions (so smart...) 
   //so dimensions are defined here, but will have to be divided by 2 when creating the objects
   
-  //DEFAUTL DIMENSIONS
+  //DEFAULT DIMENSIONS
   //crystal dimensions
   fCrystal_x = fCrystal_y  =  1.5*mm;
   fCrystal_z =  15.0*mm;
@@ -178,10 +178,18 @@ g4matrixDetectorConstruction::g4matrixDetectorConstruction()
   pGlassBack_x = 0.0;
   pGlassBack_y = 0.0;
   pGlassBack_z = pGreaseBackCryToGlass_z - (fGreaseBackCryToGlass_z/2.0 + fGlassBack_z/2.0);
+  //EPOXY BACK
+  pEpoxyBack_x = 0.0;
+  pEpoxyBack_y = 0.0;
+  pEpoxyBack_z = pGlassBack_z - (fGlassBack_z/2.0 + fEpoxy_z/2.0);
+  //MPPC ARRAY BACK
+  pMPPCArrayBack_x = 0.0;
+  pMPPCArrayBack_y = 0.0;
+  pMPPCArrayBack_z = pEpoxyBack_z - (fEpoxy_z/2.0 + fMPPCArray_z/2.0);
   //AIR layer between glass and vikuiti
   pAirBack_x = 0.0;
   pAirBack_y = 0.0;
-  pAirBack_z = pGlassBack_z - (fGlassBack_z/2.0 + fAirBack_z/2.0);
+  pAirBack_z = pMPPCArrayBack_z - (fMPPCArray_z/2.0 + fAirBack_z/2.0);
   //FAKE AIR layer between air layer and world
   pFakeAirBack_x = 0.0;
   pFakeAirBack_y = 0.0;
@@ -302,8 +310,12 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   pGreaseBackCryToGlass_z = - (fCrystal_z/2.0 + fGreaseBackCryToGlass_z/2.0);
   //GLASS back 
   pGlassBack_z = pGreaseBackCryToGlass_z - (fGreaseBackCryToGlass_z/2.0 + fGlassBack_z/2.0);
+  //EPOXY back
+  pEpoxyBack_z = pGlassBack_z - (fGlassBack_z/2.0 + fEpoxy_z/2.0);
+  //MPPCs back
+  pMPPCArrayBack_z = pEpoxyBack_z - (fEpoxy_z/2.0 + fMPPCArray_z/2.0);
   //AIR layer between glass and vikuiti
-  pAirBack_z = pGlassBack_z - (fGlassBack_z/2.0 + fAirBack_z/2.0);
+  pAirBack_z = pMPPCArrayBack_z - (fMPPCArray_z/2.0 + fAirBack_z/2.0);
   //FAKE AIR layer between air layer and world
   pFakeAirBack_z = pAirBack_z - (fAirBack_z/2.0 + fFakeAirBack_z/2.0);
   
@@ -1390,7 +1402,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
 //   G4LogicalVolume* detector_log[nDetectorsX][nDetectorsY]; 
 //   G4VPhysicalVolume* detector_phys[nDetectorsX][nDetectorsY];
   G4int detectorNum = 0;
-  //all the 16 mppc detectors
+  //all the 64 mppc detectors
   for(G4int i = 0 ; i < nDetectorsX ; i++)
   {
     for(G4int j = 0 ; j < nDetectorsY ; j++)
@@ -1449,6 +1461,67 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
     }
     
   }
+
+
+
+
+  //epoxy layer back
+  if(fEpoxy_z != 0)
+  {
+    G4Box* epoxyBack_box = new G4Box("EpoxyBack",fEpoxy_x/2.0,fEpoxy_y/2.0,fEpoxy_z/2.0);
+    G4LogicalVolume* epoxyBack_log = new G4LogicalVolume(epoxyBack_box,Epoxy,"EpoxyBack",0,0,0);
+    G4VPhysicalVolume* epoxyBack_phys = new G4PVPlacement(0,G4ThreeVector(pEpoxyBack_x,pEpoxyBack_y,pEpoxyBack_z),epoxyBack_log,"EpoxyBack",expHall_log,false,fCheckOverlaps);
+    G4VisAttributes* EpoxyBackVisualizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
+    epoxyBack_log->SetVisAttributes(EpoxyBackVisualizationAttribute); // we also set here the visualization colors
+  }
+
+   
+  
+  //mppc array back
+  G4Box* MPPCArrayBack_box = new G4Box("MPPCArray",fMPPCArray_x/2.0,fMPPCArray_y/2.0,fMPPCArray_z/2.0);
+  G4LogicalVolume* MPPCArrayBack_log = new G4LogicalVolume(MPPCArrayBack_box,Silicio,"MPPCArrayBack",0,0,0);
+  G4VPhysicalVolume* MPPCArrayBack_phys = new G4PVPlacement(0,G4ThreeVector(pMPPCArrayBack_x,pMPPCArrayBack_y,pMPPCArrayBack_z),MPPCArrayBack_log,"MPPCArrayBack",expHall_log,false,fCheckOverlaps);
+  G4VisAttributes* MPPCArrayBackVisualizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //green
+  MPPCArrayBack_log->SetVisAttributes(MPPCArrayBackVisualizationAttribute); // we also set here the visualization colors
+  //output position 
+  G4cout << "MPPC array Back position" << G4endl;
+  G4cout << pMPPCArrayBack_x << "\t" << pMPPCArrayBack_y << "\t" << pMPPCArrayBack_z << G4endl;
+  
+  //detectors
+  G4Box*** detectorBack_box           = new G4Box** [nDetectorsX];
+  for(int i = 0 ; i < nDetectorsX ; i++) detectorBack_box[i]  = new G4Box* [nDetectorsY];
+  G4LogicalVolume*** detectorBack_log       = new G4LogicalVolume** [nDetectorsX];
+  for(int i = 0 ; i < nDetectorsX ; i++) detectorBack_log[i]  = new G4LogicalVolume* [nDetectorsY];
+  G4VPhysicalVolume*** detectorBack_phys        = new G4VPhysicalVolume** [nDetectorsX];
+  for(int i = 0 ; i < nDetectorsX ; i++) detectorBack_phys[i] = new G4VPhysicalVolume* [nDetectorsY];
+  
+//   G4Box* detectorBack_box[nDetectorsX][nDetectorsY];
+//   G4LogicalVolume* detectorBack_log[nDetectorsX][nDetectorsY]; 
+//   G4VPhysicalVolume* detectorBack_phys[nDetectorsX][nDetectorsY];
+  G4int detectorBackNum = 64;
+  //all the 64 mppc detectors
+  for(G4int i = 0 ; i < nDetectorsX ; i++)
+  {
+    for(G4int j = 0 ; j < nDetectorsY ; j++)
+    {
+      std::stringstream name;
+      name << "DetectorBack_" << i << "_" << j; 
+      G4cout << name.str() << "\t";
+      //box volume
+      detectorBack_box[i][j]  = new G4Box(name.str().c_str(),fSingleMPPC_x/2.0,fSingleMPPC_y/2.0,fSingleMPPC_z/2.0);
+      //logical volume
+      detectorBack_log[i][j]  =  new G4LogicalVolume(detectorBack_box[i][j],SilicioMPPC,name.str().c_str(),0,0,0);
+      G4VisAttributes* DetectorBackVisualizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
+      detectorBack_log[i][j]->SetVisAttributes(DetectorBackVisualizationAttribute); // we also set here the visualization colors
+      //and we place the box in space 
+      name.str("");
+      name << detectorBackNum;
+      G4cout << i*fSingleMPPCBlock_x - mppcShiftX << "\t" << j*fSingleMPPCBlock_y - mppcShiftY << "\t" << mppcShiftZ << G4endl;
+      detectorBack_phys[i][j] = new G4PVPlacement(0,G4ThreeVector(i*fSingleMPPCBlock_x - mppcShiftX ,j*fSingleMPPCBlock_y - mppcShiftY,mppcShiftZ),detectorBack_log[i][j],name.str().c_str(),MPPCArrayBack_log,false,0);
+      detectorBackNum++;
+    }
+  }
+
   
   //air layer between back glass and vikuiti
   G4Box* airBack_box = new G4Box("AirBack",fAirBack_x/2.0,fAirBack_y/2.0,fAirBack_z/2.0);

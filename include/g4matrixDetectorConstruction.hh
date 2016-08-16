@@ -212,6 +212,14 @@ class g4matrixDetectorConstruction : public G4VUserDetectorConstruction
     G4double pGlassBack_x;				//positions of glass layer on the back (i.e. opposite to the mppc side)
     G4double pGlassBack_y;
     G4double pGlassBack_z;
+
+    G4double pEpoxyBack_x;                  //positions of epoxy layer on the mppc on the back
+    G4double pEpoxyBack_y;
+    G4double pEpoxyBack_z;
+    
+    G4double pMPPCArrayBack_x;              //positions of the entire mppc array (16 detectors + dead space) on the back
+    G4double pMPPCArrayBack_y;
+    G4double pMPPCArrayBack_z;
     
     G4double pAirBack_x;				//positions of air on the back of back glass (esr is in dry contact with glass)
     G4double pAirBack_y;

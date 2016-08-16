@@ -144,6 +144,10 @@ int main(int argc,char** argv)
   G4cout<< "Random seed : "<< myseed <<G4endl;
   G4cout << "Output file '" << filename << ".root '..."<< G4endl;
   
+  //read number of detector arrays
+  G4double nArrays = config.read<double>("narrays");
+  G4cout << "Number of detector arrays: " << nArrays << G4endl;
+
   //read crystal dimensions
   G4double crystalx = config.read<double>("crystalx");
   G4double crystaly = config.read<double>("crystaly");
@@ -375,7 +379,7 @@ int main(int argc,char** argv)
   //create output ttree
 //   CreateTree* mytree = new CreateTree("StandardTree",ncrystalx,ncrystaly,nmppcx,nmppcy,true,true);
   
-  CreateTree* mytree = new CreateTree("StandardTree",ncrystalx,ncrystaly,nmppcx,nmppcy);
+  CreateTree* mytree = new CreateTree("StandardTree",ncrystalx,ncrystaly,nmppcx,nmppcy,nArrays);
   //((CreateTree*)mytree)->SetModuleElements(ncrystalx,ncrystaly,nmppcx,nmppcy);
   //mytree->SetModuleElements(ncrystalx,ncrystaly,nmppcx,nmppcy);
   

@@ -19,11 +19,11 @@ class CreateTree
   static const Int_t  MaxNum = 2000000;
   static const Int_t  MaxNumPro = 100;
   
-  int nCrystalsX, nCrystalsY, nDetectorsX, nDetectorsY;
+  int nCrystalsX, nCrystalsY, nDetectorsX, nDetectorsY, nArrays;
 
   public:
 
-  CreateTree(TString name,int x, int y, int z, int k);
+  CreateTree(TString name,int x, int y, int z, int k, int j);
   ~CreateTree();  
   
   
