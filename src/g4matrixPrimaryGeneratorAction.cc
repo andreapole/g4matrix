@@ -42,21 +42,21 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 g4matrixPrimaryGeneratorAction::g4matrixPrimaryGeneratorAction(ConfigFile& config)
- : G4VUserPrimaryGeneratorAction(), 
-   fParticleGun(0)
+: G4VUserPrimaryGeneratorAction(), 
+fParticleGun(0)
 //    ,fConfig(config)
 {
   G4int n_particle = 1;
   fParticleGun = new G4ParticleGun(n_particle);
-
+  
   //create a messenger for this class
   //fGunMessenger = new g4matrixPrimaryGeneratorMessenger(this);
-
+  
   //default kinematic
   //
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4ParticleDefinition* particle = particleTable->FindParticle("gamma");
-
+  
   fParticleGun->SetParticleDefinition(particle);
   fParticleGun->SetParticleTime(0.0*ns);
   
@@ -103,7 +103,7 @@ g4matrixPrimaryGeneratorAction::g4matrixPrimaryGeneratorAction(ConfigFile& confi
   ncrystalx = config.read<int>("ncrystalx");
   ncrystaly = config.read<int>("ncrystaly");
   esrThickness = config.read<double>("esrThickness");
-
+  
   //FIXME this assumes pointlike source. wouldn't it be better to have a 1mm diameter sphere?
   fParticleGun->SetParticlePosition(G4ThreeVector(sourcex,sourcey,sourcez));
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
@@ -116,7 +116,7 @@ g4matrixPrimaryGeneratorAction::g4matrixPrimaryGeneratorAction(ConfigFile& confi
 g4matrixPrimaryGeneratorAction::~g4matrixPrimaryGeneratorAction()
 {
   delete fParticleGun;
-//   delete fGunMessenger;
+  //   delete fGunMessenger;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

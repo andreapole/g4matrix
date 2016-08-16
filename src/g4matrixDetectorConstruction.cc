@@ -54,7 +54,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 g4matrixDetectorConstruction::g4matrixDetectorConstruction()
- : G4VUserDetectorConstruction()
+: G4VUserDetectorConstruction()
 {
   //Set default physical dimensions
   //all dimensions in G4 are semi dimensions (so smart...) 
@@ -258,7 +258,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   else
     fExpHall_y = fMPPCArray_y *2.0;
   
-
+  
   //-------------------------------------------------------------------//
   //                                                                   //
   //                       RELATIVE POSITIONS                          //
@@ -313,17 +313,17 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   //                            MATERIALS                              //
   //                                                                   //
   //-------------------------------------------------------------------//
-
+  
   G4double a, z, density;
   G4int nelements;
-
+  
   // Air - this is the external world
   G4Element* N = new G4Element("Nitrogen", "N", z=7 , a=14.01*g/mole);
   G4Element* O = new G4Element("Oxygen"  , "O", z=8 , a=16.00*g/mole);
   G4Material* air = new G4Material("Air", density=1.29*mg/cm3, nelements=2);
   air->AddElement(N, 70.*perCent);
   air->AddElement(O, 30.*perCent);
-
+  
   // Air thin layer
   // we need another air element, same characteristics as the other one, but 
   // different pointer, because we need to declare a surface between this air and esr
@@ -338,7 +338,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   LYSO->AddElement (Lu, 2);
   LYSO->AddElement (Si, 1);
   LYSO->AddElement (O, 5);
-
+  
   //ESR
   G4Element *H = new G4Element ("Hydrogen", "H", z = 1 , a = 1.01 * g / mole);
   G4Element *C = new G4Element ("Carbon"  , "C", z = 6 , a = 12.01 * g / mole);
@@ -374,7 +374,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   //-------------------------------------------------------------------//
   //           Generate & Add Material Properties Table                //
   //-------------------------------------------------------------------//
-
+  
   // Air
   // photon energy vector
   G4double photonEnergy[] ={ 2.034*eV, 2.068*eV, 2.103*eV, 2.139*eV, 2.177*eV, 2.216*eV, 2.256*eV, 2.298*eV, 2.341*eV, 2.386*eV, 2.433*eV, 2.481*eV, 2.532*eV, 2.585*eV, 2.640*eV, 2.697*eV, 2.757*eV, 2.820*eV, 2.885*eV, 2.954*eV, 3.026*eV, 3.102*eV, 3.181*eV, 3.265*eV, 3.353*eV, 3.446*eV, 3.545*eV, 3.649*eV, 3.760*eV, 3.877*eV, 4.002*eV, 4.136*eV };
@@ -431,9 +431,9 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   
   //LYSO
   
-//   G4double FAST_Energy[NUMENTRIES_1] =  { 1.77169 * eV, 1.77266 * eV, 1.77558 * eV, 1.77851 * eV, 1.78145 * eV, 1.78539 * eV, 1.79033 * eV, 1.7963 * eV, 1.80231 * eV, 1.80836 * eV, 1.81445 * eV, 1.82058 * eV, 1.82882 * eV, 1.83401 * eV, 1.84553 * eV, 1.85293 * eV, 1.86147 * eV, 1.869 * eV, 1.87769 * eV,  1.89308 * eV, 1.90536 * eV, 1.92007 * eV, 1.93039 * eV, 1.94901 * eV, 1.95846 * eV, 1.9668 * eV, 1.97884 * eV,        1.99102 * eV,        2.00088 * eV,        2.01209 * eV,        2.02596 * eV,        2.03617 * eV,        2.04519 * eV,        2.0569 * eV,        2.06611 * eV,        2.0794 * eV,        2.09151 * eV,        2.10239 * eV,        2.112 * eV,        2.1231 * eV,        2.13431 * eV,        2.14565 * eV,        2.15566 * eV,        2.16868 * eV,        2.18038 * eV,        2.19519 * eV,        2.21171 * eV,        2.2193 * eV,        2.23619 * eV,        2.23464 * eV,        2.24395 * eV,        2.25806 * eV,        2.27234 * eV,        2.28358 * eV,       2.29493 * eV,        2.30475 * eV,        2.31631 * eV,        2.32463 * eV,        2.33134 * eV,        2.33809 * eV,        2.34487 * eV,        2.35856 * eV,        2.36719 * eV,        2.37939 * eV,        2.38642 * eV,        2.40238 * eV,        2.41134 * eV,        2.424 * eV, 2.43312 * eV,        2.44047 * eV,        2.44786 * eV,        2.46278 * eV,        2.47788 * eV,        2.48741 * eV,        2.49317 * eV,        2.49702 * eV,        2.50282 * eV,        2.50865 * eV,        2.5145 * eV,        2.52038 * eV,        2.52432 * eV,  2.53223 * eV,        2.5362 * eV,        2.54619 * eV,        2.55424 * eV,        2.56031 * eV,        2.56437 * eV,   2.57049 * eV,        2.57663 * eV,        2.58487 * eV,        2.59317 * eV,        2.59734 * eV,        2.60571 * eV,        2.61414 * eV,        2.61414 * eV,        2.61837 * eV,        2.62262 * eV,        2.62475 * eV,        2.62902 * eV,        2.63331 * eV,   2.63545 * eV,        2.63976 * eV,        2.64191 * eV,        2.64841 * eV,        2.65493 * eV,        2.6593 * eV,        2.66149 * eV,        2.66588 * eV,        2.67914 * eV,        2.67914 * eV,        2.68136 * eV,        2.68136 * eV,        2.68359 * eV,  2.68805 * eV,        2.68805 * eV,        2.68805 * eV,        2.69477 * eV,        2.69477 * eV,        2.69702 * eV,        2.70153 * eV,        2.70605 * eV,        2.71286 * eV,        2.71742 * eV,        2.71971 * eV,      2.722 * eV,        2.722 * eV,        2.72429 * eV,  2.72889 * eV, 2.72889 * eV,  2.73351 * eV, 2.73814 * eV,  2.74279 * eV, 2.74512 * eV,  2.74979 * eV, 2.75213 * eV,  2.75447 * eV, 2.75917 * eV,
-//     2.75682 * eV, 2.76389 * eV,   2.76626 * eV, 2.76389 * eV,  2.76626 * eV, 2.77338 * eV,  2.77576 * eV, 2.78533 * eV, 2.79255 * eV, 2.79738 * eV, 2.80223 * eV, 2.80466 * eV, 2.80709 * eV, 2.80953 * eV, 2.80953 * eV, 2.81934 * eV, 2.8218 * eV, 2.82673 * eV, 2.83168 * eV, 2.84164 * eV, 2.84916 * eV, 2.85419 * eV, 2.8643 * eV, 2.86684 * eV, 2.87449 * eV, 2.87705 * eV, 2.87961 * eV, 2.88475 * eV, 2.88733 * eV, 2.8925 * eV, 2.89509 * eV, 2.90028 * eV, 2.90549 * eV, 2.90811 * eV, 2.91073 * eV, 2.91335 * eV, 2.91335 * eV, 2.91335 * eV, 2.91861 * eV, 2.92125 * eV, 2.92125 * eV, 2.92389 * eV, 2.92654 * eV, 2.92654 * eV, 2.92919 * eV, 2.92919 * eV, 2.93185 * eV, 2.93451 * eV, 2.93717 * eV, 2.93985 * eV, 2.94252 * eV, 2.9452 * eV, 2.94789 * eV, 2.94789 * eV,  2.94789 * eV,  2.95058 * eV,  2.95868 * eV,  2.96411 * eV,  2.96955 * eV,  2.97228 * eV,  2.97228 * eV,  2.96955 * eV,  2.97228 * eV, 2.97502 * eV, 2.97776 * eV, 2.97502 * eV, 2.9805 * eV,  2.9805 * eV,    2.9805 * eV,    2.98601 * eV,    2.99154 * eV,    2.99431 * eV,    2.99431 * eV,    2.99708 * eV,    2.99431 * eV,    2.99708 * eV,    3.00544 * eV,    3.00824 * eV,    3.00824 * eV,    3.00824 * eV,    3.00824 * eV,    3.01385 * eV,    3.0223 * eV,    3.02797 * eV,    3.03081 * eV,    3.02797 * eV,    3.03365 * eV,    3.03081 * eV,    3.03081 * eV,    3.0365 * eV,    3.03935 * eV,    3.04221 * eV,    3.04795 * eV,    3.04795 * eV,    3.05083 * eV,    3.05371 * eV,   3.05949 * eV,    3.06239 * eV,    3.06529 * eV,    3.0682 * eV,    3.06529 * eV,    3.07112 * eV,    3.0682 * eV,    3.07696 * eV,    3.08283 * eV,    3.0976 * eV,    3.09464 * eV,    3.09464 * eV,    3.10653 * eV,    3.11252 * eV,    3.11852 * eV,    3.12757 * eV,    3.13668 * eV,    3.14583 * eV,    3.15813 * eV,    3.16741 * eV,    3.17675 * eV,    3.20828 * eV,    3.23719 * eV,    3.26664 * eV,    3.28656 * eV,    3.31351 * eV,    3.34783 * eV,    3.38287 * eV,  };
-//   G4double FAST_COMPONENT[NUMENTRIES_1] = {    0.011691,    0.011691,    0.011691,    0.0146138,    0.0146138,    0.0146138,    0.011691,    0.011691,    0.00876827,    0.00876827,    0.00584551,    0.00584551,    0.00584551,    0.00292276,    0.00876827,    0.0146138,    0.0146138,   0.0146138,    0.0204593,    0.023382,    0.0263048,    0.0204593,    0.0204593,    0.023382,    0.0292276,    0.0321503,    0.0350731,    0.0379958,    0.0379958,    0.0379958,    0.0350731,    0.0379958,    0.0409186,    0.0438413,    0.0526096,    0.0584551,    0.0643006,    0.0730689,   0.0730689,    0.0818372,    0.0906054,    0.0964509,    0.0993737,    0.105219,    0.111065,    0.122756,    0.125678,    0.146138,    0.146138,    0.160752,    0.157829,    0.163674,    0.184134,    0.192902,    0.20167,    0.219207,    0.230898,    0.242589,    0.25428,    0.265971,   0.274739,    0.292276,    0.306889,    0.315658,    0.321503,    0.350731,    0.368267,    0.385804,    0.397495,    0.415031,    0.432568,    0.458873,    0.482255,    0.496868,    0.514405,    0.529019,    0.549478,    0.564092,    0.581628,    0.593319,    0.602088,    0.616701,   0.637161,    0.660543,    0.681002,    0.71023,    0.736534,    0.756994,    0.777453,    0.806681,    0.844676,    0.868058,    0.891441,    0.9119,    0.938205,    0.955741,    0.984969,    1.0142,    1.03173,    1.05511,    1.07557,    1.11649,    1.13695,    1.15741,    1.17495,   1.19248,    1.21002,    1.22756,    1.27432,    1.2977,    1.31524,    1.32985,    1.36785,    1.40292,    1.39415,    1.4,    1.41754,    1.44092,    1.47015,    1.48476,    1.50814,    1.5286,    1.54906,    1.56952,    1.58998,    1.61921,    1.63967,    1.66597,    1.68935,    1.71566,   1.73904,    1.76242,    1.77996,    1.80042,    1.8238,    1.83549,    1.85303,    1.8618,    1.87933,    1.89979,    1.91733,    1.92902,    1.95825,    1.98163,    2.01378,    2.03424,    2.0547,    2.07808,    2.09562,    2.11023,    2.12484,    2.13361,    2.15407,    2.15699,   2.15992,    2.16576,    2.16868,    2.16868,    2.16284,    2.15699,    2.14823,    2.13946,    2.12484,    2.11023,    2.08977,    2.06639,    2.04593,    2.02839,    2.01086,    1.98455,    1.96409,    1.94948,    1.93194,    1.91733,    1.90271,    1.87641,    1.86472,    1.8501,   1.83841,    1.82088,    1.79749,    1.77119,    1.75073,    1.73027,    1.70689,    1.68058,    1.65428,    1.6309,    1.60167,    1.57244,    1.55491,    1.53152,    1.50522,    1.47891,    1.45261,    1.43215,    1.40877,    1.38831,    1.362,    1.33862,    1.31232,    1.28601,   1.27432,    1.25678,    1.21587,    1.19541,    1.17203,    1.14864,    1.12234,    1.10772,    1.08434,    1.06096,    1.0142,    0.987891,    0.967432,    0.938205,    0.9119,    0.879749,    0.853445,    0.82714,    0.786221,    0.765762,    0.739457,    0.716075,    0.681002,   0.660543,    0.637161,    0.60501,    0.581628,    0.552401,    0.531942,    0.505637,    0.485177,    0.458873,    0.435491,    0.412109,    0.379958,    0.356576,    0.336117,    0.309812,    0.280585,    0.25428,    0.207516,    0.175365,    0.157829,    0.13737,    0.119833,   0.0993737,    0.0759916,    0.0613779,    0.0526096,    0.0350731,    0.0263048,    0.011691,    0.00876827,    0.00876827,    0.011691,    0.011691,    0.011691,    0.00876827,    0.011691, };
+  //   G4double FAST_Energy[NUMENTRIES_1] =  { 1.77169 * eV, 1.77266 * eV, 1.77558 * eV, 1.77851 * eV, 1.78145 * eV, 1.78539 * eV, 1.79033 * eV, 1.7963 * eV, 1.80231 * eV, 1.80836 * eV, 1.81445 * eV, 1.82058 * eV, 1.82882 * eV, 1.83401 * eV, 1.84553 * eV, 1.85293 * eV, 1.86147 * eV, 1.869 * eV, 1.87769 * eV,  1.89308 * eV, 1.90536 * eV, 1.92007 * eV, 1.93039 * eV, 1.94901 * eV, 1.95846 * eV, 1.9668 * eV, 1.97884 * eV,        1.99102 * eV,        2.00088 * eV,        2.01209 * eV,        2.02596 * eV,        2.03617 * eV,        2.04519 * eV,        2.0569 * eV,        2.06611 * eV,        2.0794 * eV,        2.09151 * eV,        2.10239 * eV,        2.112 * eV,        2.1231 * eV,        2.13431 * eV,        2.14565 * eV,        2.15566 * eV,        2.16868 * eV,        2.18038 * eV,        2.19519 * eV,        2.21171 * eV,        2.2193 * eV,        2.23619 * eV,        2.23464 * eV,        2.24395 * eV,        2.25806 * eV,        2.27234 * eV,        2.28358 * eV,       2.29493 * eV,        2.30475 * eV,        2.31631 * eV,        2.32463 * eV,        2.33134 * eV,        2.33809 * eV,        2.34487 * eV,        2.35856 * eV,        2.36719 * eV,        2.37939 * eV,        2.38642 * eV,        2.40238 * eV,        2.41134 * eV,        2.424 * eV, 2.43312 * eV,        2.44047 * eV,        2.44786 * eV,        2.46278 * eV,        2.47788 * eV,        2.48741 * eV,        2.49317 * eV,        2.49702 * eV,        2.50282 * eV,        2.50865 * eV,        2.5145 * eV,        2.52038 * eV,        2.52432 * eV,  2.53223 * eV,        2.5362 * eV,        2.54619 * eV,        2.55424 * eV,        2.56031 * eV,        2.56437 * eV,   2.57049 * eV,        2.57663 * eV,        2.58487 * eV,        2.59317 * eV,        2.59734 * eV,        2.60571 * eV,        2.61414 * eV,        2.61414 * eV,        2.61837 * eV,        2.62262 * eV,        2.62475 * eV,        2.62902 * eV,        2.63331 * eV,   2.63545 * eV,        2.63976 * eV,        2.64191 * eV,        2.64841 * eV,        2.65493 * eV,        2.6593 * eV,        2.66149 * eV,        2.66588 * eV,        2.67914 * eV,        2.67914 * eV,        2.68136 * eV,        2.68136 * eV,        2.68359 * eV,  2.68805 * eV,        2.68805 * eV,        2.68805 * eV,        2.69477 * eV,        2.69477 * eV,        2.69702 * eV,        2.70153 * eV,        2.70605 * eV,        2.71286 * eV,        2.71742 * eV,        2.71971 * eV,      2.722 * eV,        2.722 * eV,        2.72429 * eV,  2.72889 * eV, 2.72889 * eV,  2.73351 * eV, 2.73814 * eV,  2.74279 * eV, 2.74512 * eV,  2.74979 * eV, 2.75213 * eV,  2.75447 * eV, 2.75917 * eV,
+  //     2.75682 * eV, 2.76389 * eV,   2.76626 * eV, 2.76389 * eV,  2.76626 * eV, 2.77338 * eV,  2.77576 * eV, 2.78533 * eV, 2.79255 * eV, 2.79738 * eV, 2.80223 * eV, 2.80466 * eV, 2.80709 * eV, 2.80953 * eV, 2.80953 * eV, 2.81934 * eV, 2.8218 * eV, 2.82673 * eV, 2.83168 * eV, 2.84164 * eV, 2.84916 * eV, 2.85419 * eV, 2.8643 * eV, 2.86684 * eV, 2.87449 * eV, 2.87705 * eV, 2.87961 * eV, 2.88475 * eV, 2.88733 * eV, 2.8925 * eV, 2.89509 * eV, 2.90028 * eV, 2.90549 * eV, 2.90811 * eV, 2.91073 * eV, 2.91335 * eV, 2.91335 * eV, 2.91335 * eV, 2.91861 * eV, 2.92125 * eV, 2.92125 * eV, 2.92389 * eV, 2.92654 * eV, 2.92654 * eV, 2.92919 * eV, 2.92919 * eV, 2.93185 * eV, 2.93451 * eV, 2.93717 * eV, 2.93985 * eV, 2.94252 * eV, 2.9452 * eV, 2.94789 * eV, 2.94789 * eV,  2.94789 * eV,  2.95058 * eV,  2.95868 * eV,  2.96411 * eV,  2.96955 * eV,  2.97228 * eV,  2.97228 * eV,  2.96955 * eV,  2.97228 * eV, 2.97502 * eV, 2.97776 * eV, 2.97502 * eV, 2.9805 * eV,  2.9805 * eV,    2.9805 * eV,    2.98601 * eV,    2.99154 * eV,    2.99431 * eV,    2.99431 * eV,    2.99708 * eV,    2.99431 * eV,    2.99708 * eV,    3.00544 * eV,    3.00824 * eV,    3.00824 * eV,    3.00824 * eV,    3.00824 * eV,    3.01385 * eV,    3.0223 * eV,    3.02797 * eV,    3.03081 * eV,    3.02797 * eV,    3.03365 * eV,    3.03081 * eV,    3.03081 * eV,    3.0365 * eV,    3.03935 * eV,    3.04221 * eV,    3.04795 * eV,    3.04795 * eV,    3.05083 * eV,    3.05371 * eV,   3.05949 * eV,    3.06239 * eV,    3.06529 * eV,    3.0682 * eV,    3.06529 * eV,    3.07112 * eV,    3.0682 * eV,    3.07696 * eV,    3.08283 * eV,    3.0976 * eV,    3.09464 * eV,    3.09464 * eV,    3.10653 * eV,    3.11252 * eV,    3.11852 * eV,    3.12757 * eV,    3.13668 * eV,    3.14583 * eV,    3.15813 * eV,    3.16741 * eV,    3.17675 * eV,    3.20828 * eV,    3.23719 * eV,    3.26664 * eV,    3.28656 * eV,    3.31351 * eV,    3.34783 * eV,    3.38287 * eV,  };
+  //   G4double FAST_COMPONENT[NUMENTRIES_1] = {    0.011691,    0.011691,    0.011691,    0.0146138,    0.0146138,    0.0146138,    0.011691,    0.011691,    0.00876827,    0.00876827,    0.00584551,    0.00584551,    0.00584551,    0.00292276,    0.00876827,    0.0146138,    0.0146138,   0.0146138,    0.0204593,    0.023382,    0.0263048,    0.0204593,    0.0204593,    0.023382,    0.0292276,    0.0321503,    0.0350731,    0.0379958,    0.0379958,    0.0379958,    0.0350731,    0.0379958,    0.0409186,    0.0438413,    0.0526096,    0.0584551,    0.0643006,    0.0730689,   0.0730689,    0.0818372,    0.0906054,    0.0964509,    0.0993737,    0.105219,    0.111065,    0.122756,    0.125678,    0.146138,    0.146138,    0.160752,    0.157829,    0.163674,    0.184134,    0.192902,    0.20167,    0.219207,    0.230898,    0.242589,    0.25428,    0.265971,   0.274739,    0.292276,    0.306889,    0.315658,    0.321503,    0.350731,    0.368267,    0.385804,    0.397495,    0.415031,    0.432568,    0.458873,    0.482255,    0.496868,    0.514405,    0.529019,    0.549478,    0.564092,    0.581628,    0.593319,    0.602088,    0.616701,   0.637161,    0.660543,    0.681002,    0.71023,    0.736534,    0.756994,    0.777453,    0.806681,    0.844676,    0.868058,    0.891441,    0.9119,    0.938205,    0.955741,    0.984969,    1.0142,    1.03173,    1.05511,    1.07557,    1.11649,    1.13695,    1.15741,    1.17495,   1.19248,    1.21002,    1.22756,    1.27432,    1.2977,    1.31524,    1.32985,    1.36785,    1.40292,    1.39415,    1.4,    1.41754,    1.44092,    1.47015,    1.48476,    1.50814,    1.5286,    1.54906,    1.56952,    1.58998,    1.61921,    1.63967,    1.66597,    1.68935,    1.71566,   1.73904,    1.76242,    1.77996,    1.80042,    1.8238,    1.83549,    1.85303,    1.8618,    1.87933,    1.89979,    1.91733,    1.92902,    1.95825,    1.98163,    2.01378,    2.03424,    2.0547,    2.07808,    2.09562,    2.11023,    2.12484,    2.13361,    2.15407,    2.15699,   2.15992,    2.16576,    2.16868,    2.16868,    2.16284,    2.15699,    2.14823,    2.13946,    2.12484,    2.11023,    2.08977,    2.06639,    2.04593,    2.02839,    2.01086,    1.98455,    1.96409,    1.94948,    1.93194,    1.91733,    1.90271,    1.87641,    1.86472,    1.8501,   1.83841,    1.82088,    1.79749,    1.77119,    1.75073,    1.73027,    1.70689,    1.68058,    1.65428,    1.6309,    1.60167,    1.57244,    1.55491,    1.53152,    1.50522,    1.47891,    1.45261,    1.43215,    1.40877,    1.38831,    1.362,    1.33862,    1.31232,    1.28601,   1.27432,    1.25678,    1.21587,    1.19541,    1.17203,    1.14864,    1.12234,    1.10772,    1.08434,    1.06096,    1.0142,    0.987891,    0.967432,    0.938205,    0.9119,    0.879749,    0.853445,    0.82714,    0.786221,    0.765762,    0.739457,    0.716075,    0.681002,   0.660543,    0.637161,    0.60501,    0.581628,    0.552401,    0.531942,    0.505637,    0.485177,    0.458873,    0.435491,    0.412109,    0.379958,    0.356576,    0.336117,    0.309812,    0.280585,    0.25428,    0.207516,    0.175365,    0.157829,    0.13737,    0.119833,   0.0993737,    0.0759916,    0.0613779,    0.0526096,    0.0350731,    0.0263048,    0.011691,    0.00876827,    0.00876827,    0.011691,    0.011691,    0.011691,    0.00876827,    0.011691, };
   const G4int fastcomponent_NUMENTRIES = fastenergy.size();
   const G4int slowcomponent_NUMENTRIES = slowenergy.size();
   G4double FAST_Energy[fastcomponent_NUMENTRIES];
@@ -519,32 +519,32 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   //ESR
   const G4int NUMvikuiti = 29;
   G4double vikuiti_energy_im[NUMvikuiti] = { 1.25*eV, 1.31*eV, 1.34*eV, 1.38*eV, 1.42*eV, 1.46*eV, 1.51*eV, 1.60*eV, 1.66*eV, 1.75*eV, 1.80*eV, 1.90*eV, 1.95*eV, 2.05*eV, 2.10*eV, 2.20*eV, 2.26*eV, 2.35*eV, 2.45*eV, 2.51*eV, 2.71*eV, 2.81*eV, 3.01*eV, 3.21*eV, 3.41*eV, 3.55*eV, 3.71*eV, 3.91*eV, 4.14*eV };
-//   G4double vikuiti_RIndex_im[NUMvikuiti] = 
-//   {
-//     9.49/1.47, 8.88/1.47, 8.49/1.47, 8.30/1.47, 8.18/1.47, 8.22/1.47, 8.31/1.47,
-//     8.60/1.47, 8.62/1.47, 8.39/1.47, 8.21/1.47, 7.82/1.47, 7.65/1.47, 7.31/1.47,
-//     7.15/1.47, 6.85/1.47, 6.69/1.47, 6.42/1.47, 6.15/1.47, 6.03/1.47, 5.58/1.47,
-//     5.38/1.47, 5.02/1.47, 4.71/1.47, 4.43/1.47, 4.24/1.47, 4.06/1.47, 3.84/1.47, 3.61/1.47
-//     
-//   };
+  //   G4double vikuiti_RIndex_im[NUMvikuiti] = 
+  //   {
+  //     9.49/1.47, 8.88/1.47, 8.49/1.47, 8.30/1.47, 8.18/1.47, 8.22/1.47, 8.31/1.47,
+  //     8.60/1.47, 8.62/1.47, 8.39/1.47, 8.21/1.47, 7.82/1.47, 7.65/1.47, 7.31/1.47,
+  //     7.15/1.47, 6.85/1.47, 6.69/1.47, 6.42/1.47, 6.15/1.47, 6.03/1.47, 5.58/1.47,
+  //     5.38/1.47, 5.02/1.47, 4.71/1.47, 4.43/1.47, 4.24/1.47, 4.06/1.47, 3.84/1.47, 3.61/1.47
+  //     
+  //   };
   //we specify the imaginary index WITHOUT dividing by 1.47 because in this matrix 
   // esr is in air contact with everything, so n1=1
   G4double vikuiti_RIndex_im[NUMvikuiti] = { 9.49, 8.88, 8.49, 8.30, 8.18, 8.22, 8.31, 8.60, 8.62, 8.39, 8.21, 7.82, 7.65, 7.31, 7.15, 6.85, 6.69, 6.42, 6.15, 6.03, 5.58, 5.38, 5.02, 4.71, 4.43, 4.24, 4.06, 3.84, 3.61 };
   G4double vikuiti_energy_re[NUMvikuiti] = { 1.24*eV, 1.27*eV, 1.31*eV, 1.34*eV, 1.38*eV, 1.42*eV, 1.46*eV, 1.51*eV, 1.55*eV, 1.60*eV, 1.66*eV, 1.71*eV, 1.77*eV, 1.84*eV, 1.91*eV, 1.99*eV, 2.07*eV, 2.16*eV, 2.26*eV, 2.37*eV, 2.48*eV, 2.62*eV, 2.76*eV, 2.92*eV, 3.11*eV, 3.31*eV, 3.55*eV, 3.82*eV, 4.14*eV };
-//   G4double vikuiti_RIndex_re[NUMvikuiti] = 
-//   {
-//     0.08/1.47, 0.08/1.47, 0.08/1.47, 0.08/1.47, 0.08/1.47, 0.08/1.47, 0.08/1.47,
-//     0.1/1.47, 0.6/1.47, 1.2/1.47, 0.4/1.47, 0.23/1.47, 0.17/1.47, 0.26/1.47, 1.3/1.47,
-//     0.24/1.47, 0.11/1.47, 0.19/1.47, 0.24/1.47, 0.25/1.47, 0.87/1.47, 0.595/1.47,
-//     0.18/1.47, 0.178/1.47, 0.6/1.47, 8.0/1.47, 8.0/1.47, 8.0/1.47, 8.0/1.47
-//   };
+  //   G4double vikuiti_RIndex_re[NUMvikuiti] = 
+  //   {
+  //     0.08/1.47, 0.08/1.47, 0.08/1.47, 0.08/1.47, 0.08/1.47, 0.08/1.47, 0.08/1.47,
+  //     0.1/1.47, 0.6/1.47, 1.2/1.47, 0.4/1.47, 0.23/1.47, 0.17/1.47, 0.26/1.47, 1.3/1.47,
+  //     0.24/1.47, 0.11/1.47, 0.19/1.47, 0.24/1.47, 0.25/1.47, 0.87/1.47, 0.595/1.47,
+  //     0.18/1.47, 0.178/1.47, 0.6/1.47, 8.0/1.47, 8.0/1.47, 8.0/1.47, 8.0/1.47
+  //   };
   G4double vikuiti_RIndex_re[NUMvikuiti] = { 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.1, 0.6, 1.2, 0.4, 0.23, 0.17, 0.26, 1.3, 0.24, 0.11, 0.19, 0.24, 0.25, 0.87, 0.595, 0.18, 0.178, 0.6, 8.0, 8.0, 8.0, 8.0 };
   const G4int NUMu = 2;
   G4double pp[NUMu] = {2.038*eV, 4.144*eV};
-//   G4double specularlobe[NUMu] = {0.0, 0.0};
-//   G4double specularspike[NUMu] = {0, 0};
-//   G4double backscatter[NUMu] = {0., 0.};
-//   G4double reflectivity[NUMu] = {0.98, 0.98};
+  //   G4double specularlobe[NUMu] = {0.0, 0.0};
+  //   G4double specularspike[NUMu] = {0, 0};
+  //   G4double backscatter[NUMu] = {0., 0.};
+  //   G4double reflectivity[NUMu] = {0.98, 0.98};
   //G4double reflectivity[NUMu] = {0.925, 0.925};
   //G4MaterialPropertiesTable *ESR_mt = new G4MaterialPropertiesTable();
   //now, the esr as a MATERIAL as only an index of refraction, i.e. nothing will happen to the photon while travelling it 
@@ -560,10 +560,10 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   //now the surface made of esr
   //we want to specify only Re(R), Im(R) and a Transmittance 
   //reflection will then be perfectly specular
-//   G4double specularlobei[NUMu] = {0.0, 0.0};
-//   G4double specularspikei[NUMu] = {0, 0};
-//   G4double backscatteri[NUMu] = {0., 0.};
-//   G4double reflectivityi[NUMu] = {0.0, 0.00};
+  //   G4double specularlobei[NUMu] = {0.0, 0.0};
+  //   G4double specularspikei[NUMu] = {0, 0};
+  //   G4double backscatteri[NUMu] = {0., 0.};
+  //   G4double reflectivityi[NUMu] = {0.0, 0.00};
   G4MaterialPropertiesTable *ESR_surf = new G4MaterialPropertiesTable();
   //ESR_surf->AddProperty("SPECULARLOBECONSTANT",pp,specularlobei,NUMu);
   //ESR_surf->AddProperty("SPECULARSPIKECONSTANT",pp,specularspikei,NUMu);
@@ -878,7 +878,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   //                             VOLUMES                               //
   //                                                                   //
   //-------------------------------------------------------------------//
-
+  
   //simple crystal, wrapped in esr but with air between crystal and esr
   //1. we want to have a dielectric_dielectric surface between crystal and air
   //so we just need to specify the real indexes of refraction of both materials
@@ -907,14 +907,14 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   //OLD VERSION
   //----------------
   
-//   // the esr box
-// //   G4Box* esr_box = new G4Box("Esr",fAirThinLayerBox_x/2.0,fAirThinLayerBox_x/2.0,fAirThinLayerBox_x/2.0);
-// //   G4LogicalVolume* esr_log = new G4LogicalVolume(esr_box,air,"Esr",0,0,0);
-// //   G4VPhysicalVolume* esr_phys = new G4PVPlacement(0,G4ThreeVector(),esr_log,"Esr",expHall_log,false,0);
-// 
-//   // the air thin layer box
-//   // now we do it in a "matrix" way with pointers. This is hell.
-//   	
+  //   // the esr box
+  // //   G4Box* esr_box = new G4Box("Esr",fAirThinLayerBox_x/2.0,fAirThinLayerBox_x/2.0,fAirThinLayerBox_x/2.0);
+  // //   G4LogicalVolume* esr_log = new G4LogicalVolume(esr_box,air,"Esr",0,0,0);
+  // //   G4VPhysicalVolume* esr_phys = new G4PVPlacement(0,G4ThreeVector(),esr_log,"Esr",expHall_log,false,0);
+  // 
+  //   // the air thin layer box
+  //   // now we do it in a "matrix" way with pointers. This is hell.
+  //   	
   //airboxes
   G4Box*** airThinLayer_box					= new G4Box** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) airThinLayer_box[i]	= new G4Box* [nCrystalsY];
@@ -933,86 +933,86 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   G4Box**** lateral_box						= new G4Box*** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) 
   {
-      lateral_box[i]           	= new G4Box** [nCrystalsY];
-      for(int j = 0 ; j < nCrystalsY ; j++)
-          lateral_box[i][j]     = new G4Box* [4];
+    lateral_box[i]           	= new G4Box** [nCrystalsY];
+    for(int j = 0 ; j < nCrystalsY ; j++)
+      lateral_box[i][j]     = new G4Box* [4];
   }
   G4LogicalVolume**** lateral_log				= new G4LogicalVolume*** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) 
   {
-      lateral_log[i]           	= new G4LogicalVolume** [nCrystalsY];
-      for(int j = 0 ; j < nCrystalsY ; j++)
-          lateral_log[i][j]     = new G4LogicalVolume* [4];
+    lateral_log[i]           	= new G4LogicalVolume** [nCrystalsY];
+    for(int j = 0 ; j < nCrystalsY ; j++)
+      lateral_log[i][j]     = new G4LogicalVolume* [4];
   }
   G4VPhysicalVolume**** lateral_phys				= new G4VPhysicalVolume*** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) 
   {
-      lateral_phys[i]           	= new G4VPhysicalVolume** [nCrystalsY];
-      for(int j = 0 ; j < nCrystalsY ; j++)
-          lateral_phys[i][j]     = new G4VPhysicalVolume* [4];
+    lateral_phys[i]           	= new G4VPhysicalVolume** [nCrystalsY];
+    for(int j = 0 ; j < nCrystalsY ; j++)
+      lateral_phys[i][j]     = new G4VPhysicalVolume* [4];
   }
   //4 esr volumes
   G4Box**** esr_box						= new G4Box*** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) 
   {
-      esr_box[i]           	= new G4Box** [nCrystalsY];
-      for(int j = 0 ; j < nCrystalsY ; j++)
-          esr_box[i][j]     = new G4Box* [4];
+    esr_box[i]           	= new G4Box** [nCrystalsY];
+    for(int j = 0 ; j < nCrystalsY ; j++)
+      esr_box[i][j]     = new G4Box* [4];
   }
   G4LogicalVolume**** esr_log				= new G4LogicalVolume*** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) 
   {
-      esr_log[i]           	= new G4LogicalVolume** [nCrystalsY];
-      for(int j = 0 ; j < nCrystalsY ; j++)
-          esr_log[i][j]     = new G4LogicalVolume* [4];
+    esr_log[i]           	= new G4LogicalVolume** [nCrystalsY];
+    for(int j = 0 ; j < nCrystalsY ; j++)
+      esr_log[i][j]     = new G4LogicalVolume* [4];
   }
   G4VPhysicalVolume**** esr_phys				= new G4VPhysicalVolume*** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) 
   {
-      esr_phys[i]           	= new G4VPhysicalVolume** [nCrystalsY];
-      for(int j = 0 ; j < nCrystalsY ; j++)
-          esr_phys[i][j]     = new G4VPhysicalVolume* [4];
+    esr_phys[i]           	= new G4VPhysicalVolume** [nCrystalsY];
+    for(int j = 0 ; j < nCrystalsY ; j++)
+      esr_phys[i][j]     = new G4VPhysicalVolume* [4];
   }
   
   G4OpticalSurface**** opCrystalToAirThinLayerSurface		= new G4OpticalSurface*** [nCrystalsX];
   G4OpticalSurface**** opCrystalToAirThinLayerSurfaceInv		= new G4OpticalSurface*** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) 
   {
-      opCrystalToAirThinLayerSurface[i]           	= new G4OpticalSurface** [nCrystalsY];
-      opCrystalToAirThinLayerSurfaceInv[i]           	= new G4OpticalSurface** [nCrystalsY];
-      for(int j = 0 ; j < nCrystalsY ; j++)
-      {
-          opCrystalToAirThinLayerSurface[i][j]     = new G4OpticalSurface* [4];
-          opCrystalToAirThinLayerSurfaceInv[i][j]     = new G4OpticalSurface* [4];
-      }
+    opCrystalToAirThinLayerSurface[i]           	= new G4OpticalSurface** [nCrystalsY];
+    opCrystalToAirThinLayerSurfaceInv[i]           	= new G4OpticalSurface** [nCrystalsY];
+    for(int j = 0 ; j < nCrystalsY ; j++)
+    {
+      opCrystalToAirThinLayerSurface[i][j]     = new G4OpticalSurface* [4];
+      opCrystalToAirThinLayerSurfaceInv[i][j]     = new G4OpticalSurface* [4];
+    }
   }
   
   G4OpticalSurface**** opEsrToAirThinLayerSurface		= new G4OpticalSurface*** [nCrystalsX];
   G4OpticalSurface**** opEsrToAirThinLayerSurfaceInv		= new G4OpticalSurface*** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) 
   {
-      opEsrToAirThinLayerSurface[i]           	= new G4OpticalSurface** [nCrystalsY];
-      opEsrToAirThinLayerSurfaceInv[i]           	= new G4OpticalSurface** [nCrystalsY];
-      for(int j = 0 ; j < nCrystalsY ; j++)
-      {
-         opEsrToAirThinLayerSurface[i][j]     = new G4OpticalSurface* [4];
-         opEsrToAirThinLayerSurfaceInv[i][j]     = new G4OpticalSurface* [4];
-      }
+    opEsrToAirThinLayerSurface[i]           	= new G4OpticalSurface** [nCrystalsY];
+    opEsrToAirThinLayerSurfaceInv[i]           	= new G4OpticalSurface** [nCrystalsY];
+    for(int j = 0 ; j < nCrystalsY ; j++)
+    {
+      opEsrToAirThinLayerSurface[i][j]     = new G4OpticalSurface* [4];
+      opEsrToAirThinLayerSurfaceInv[i][j]     = new G4OpticalSurface* [4];
+    }
   }
   G4OpticalSurface**** opAirThinLayerToWorldSurface				= new G4OpticalSurface*** [nCrystalsX];
   G4OpticalSurface**** opAirThinLayerToWorldSurfaceInv				= new G4OpticalSurface*** [nCrystalsX];
   for(int i = 0 ; i < nCrystalsX ; i++) 
   {
-      opAirThinLayerToWorldSurface[i]	= new G4OpticalSurface** [nCrystalsY];
-      opAirThinLayerToWorldSurfaceInv[i]	= new G4OpticalSurface** [nCrystalsY];
-      for(int j = 0 ; j < nCrystalsY ; j++)
-      {
-          opAirThinLayerToWorldSurface[i][j]     = new G4OpticalSurface* [4];
-          opAirThinLayerToWorldSurfaceInv[i][j]     = new G4OpticalSurface* [4];
-      }
+    opAirThinLayerToWorldSurface[i]	= new G4OpticalSurface** [nCrystalsY];
+    opAirThinLayerToWorldSurfaceInv[i]	= new G4OpticalSurface** [nCrystalsY];
+    for(int j = 0 ; j < nCrystalsY ; j++)
+    {
+      opAirThinLayerToWorldSurface[i][j]     = new G4OpticalSurface* [4];
+      opAirThinLayerToWorldSurfaceInv[i][j]     = new G4OpticalSurface* [4];
+    }
   }
-//   G4OpticalSurface*** opCrystalToAirThinLayerSurface				= new G4OpticalSurface** [nCrystalsX];
-//     for(int i = 0 ; i < nCrystalsX ; i++) opCrystalToAirThinLayerSurface[i]	= new G4OpticalSurface* [nCrystalsY];
+  //   G4OpticalSurface*** opCrystalToAirThinLayerSurface				= new G4OpticalSurface** [nCrystalsX];
+  //     for(int i = 0 ; i < nCrystalsX ; i++) opCrystalToAirThinLayerSurface[i]	= new G4OpticalSurface* [nCrystalsY];
   
   G4int crystalNumber = 0;
   
@@ -1025,7 +1025,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
       name << "AirThinLayer_" << i << "_" << j; 
       //box volume
       airThinLayer_box[i][j]  = new G4Box(name.str().c_str(),fAirThinLayerBox_x/2.0,fAirThinLayerBox_y/2.0,fAirThinLayerBox_z/2.0);
-//       G4cout << name.str() << " Dimensions" << "\t" << fAirThinLayerBox_x/2.0 << "\t" << fAirThinLayerBox_y/2.0 << "\t" << fAirThinLayerBox_z/2.0 << G4endl;
+      //       G4cout << name.str() << " Dimensions" << "\t" << fAirThinLayerBox_x/2.0 << "\t" << fAirThinLayerBox_y/2.0 << "\t" << fAirThinLayerBox_z/2.0 << G4endl;
       //logical volume
       airThinLayer_log[i][j]  = new G4LogicalVolume(airThinLayer_box[i][j],airThinLayer,name.str().c_str(),0,0,0);
       G4VisAttributes* EsrVisulizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,1.0)); //magenta
@@ -1033,7 +1033,7 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
       //airThinLayer_log[i][j]->SetVisAttributes (G4VisAttributes::GetInvisible());
       //and we place the box in space 
       airThinLayer_phys[i][j] = new G4PVPlacement(0,G4ThreeVector(i*fAirThinLayerBox_x - matrixShiftX ,j*fAirThinLayerBox_y - matrixShiftY,matrixShiftZ),airThinLayer_log[i][j],name.str().c_str(),expHall_log,false,0);
-//       G4cout << name.str() << " Position" << "\t" << i*fAirThinLayerBox_x - matrixShiftX  << "\t" << j*fAirThinLayerBox_y - matrixShiftY << "\t" << matrixShiftZ << G4endl;
+      //       G4cout << name.str() << " Position" << "\t" << i*fAirThinLayerBox_x - matrixShiftX  << "\t" << j*fAirThinLayerBox_y - matrixShiftY << "\t" << matrixShiftZ << G4endl;
       
       //2. create the crystal
       name.str("");
@@ -1069,47 +1069,47 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
       
       double shift_x[4] = {0,fCrystal_x/2.0 + airgap/4.0,0,-(fCrystal_x/2.0 + airgap/4.0)};
       double shift_y[4] = {fCrystal_y/2.0 + airgap/4.0,0,-(fCrystal_y/2.0 + airgap/4.0),0};
-//       double dim_x[4]   = {fCrystal_x/2.0,airThinThickness/4.0,fCrystal_x/2.0,airThinThickness/4.0}; 
-//       double dim_y[4]   = {airThinThickness/4.0,fCrystal_y/2.0,airThinThickness/4.0,fCrystal_y/2.0};
-//       bool latdepo_sideBySide[4] = {true,false,true,false};
-
+      //       double dim_x[4]   = {fCrystal_x/2.0,airThinThickness/4.0,fCrystal_x/2.0,airThinThickness/4.0}; 
+      //       double dim_y[4]   = {airThinThickness/4.0,fCrystal_y/2.0,airThinThickness/4.0,fCrystal_y/2.0};
+      //       bool latdepo_sideBySide[4] = {true,false,true,false};
+      
       for(int k = 0 ; k < 4 ; k++)
       {
-          name.str("");
-          name << "Lateral_" << i << "_" << j << "_" << k;
-          lateral_box[i][j][k]  = new G4Box(name.str().c_str(),dim_x[k],dim_y[k],fAirThinLayerBox_z/2.0);
-//           G4cout << name.str() << G4endl;
-          //logical volume
-          lateral_log[i][j][k]  = new G4LogicalVolume(lateral_box[i][j][k],airThinLayer,name.str().c_str(),0,0,0);
-          G4VisAttributes* lateralVisulizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
-          lateral_log[i][j][k]->SetVisAttributes(lateralVisulizationAttribute); // we also set here the visualization colors
-          //airThinLayer_log[i][j]->SetVisAttributes (G4VisAttributes::GetInvisible());
-          //and we place the box in space 
-          lateral_phys[i][j][k] = new G4PVPlacement(0,G4ThreeVector(shift_x[k],shift_y[k],0),lateral_log[i][j][k],name.str().c_str(),airThinLayer_log[i][j],false,0);
-//           G4cout << name.str() << " Position" << "\t" << i*fAirThinLayerBox_x - matrixShiftX  << "\t" << j*fAirThinLayerBox_y - matrixShiftY << "\t" << matrixShiftZ << G4endl;
-          //define the surface here, for depolishing
-          if(latdepo_sideBySide[k])
-          {
-              std::stringstream Surfname;
-              Surfname << "CrystalToAirThinLayerSurface_" << i << "_" << j << "_" << k; 
-              opCrystalToAirThinLayerSurface[i][j][k] = new G4OpticalSurface(Surfname.str().c_str());
-              opCrystalToAirThinLayerSurface[i][j][k]->SetType(dielectric_dielectric);
-              opCrystalToAirThinLayerSurface[i][j][k]->SetFinish(ground);
-              opCrystalToAirThinLayerSurface[i][j][k]->SetModel(unified);
-              opCrystalToAirThinLayerSurface[i][j][k]->SetSigmaAlpha(latsigmaalpha);
-              opCrystalToAirThinLayerSurface[i][j][k]->SetMaterialPropertiesTable(crystalDepolished_surf); //this sets the surface roughness
-              new G4LogicalBorderSurface(Surfname.str().c_str(),crystal_phys[i][j],lateral_phys[i][j][k],opCrystalToAirThinLayerSurface[i][j][k]);
-//               G4cout << Surfname.str() << G4endl;
-              //and the reverse...
-              Surfname << "Inv";
-              opCrystalToAirThinLayerSurfaceInv[i][j][k] = new G4OpticalSurface(Surfname.str().c_str());
-              opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetType(dielectric_dielectric);
-              opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetFinish(ground);
-              opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetModel(unified);
-              opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetSigmaAlpha(latsigmaalpha);
-              opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetMaterialPropertiesTable(crystalDepolished_surf); //this sets the surface roughness
-              new G4LogicalBorderSurface(Surfname.str().c_str(),lateral_phys[i][j][k],crystal_phys[i][j],opCrystalToAirThinLayerSurfaceInv[i][j][k]);
-          }
+        name.str("");
+        name << "Lateral_" << i << "_" << j << "_" << k;
+        lateral_box[i][j][k]  = new G4Box(name.str().c_str(),dim_x[k],dim_y[k],fAirThinLayerBox_z/2.0);
+        //           G4cout << name.str() << G4endl;
+        //logical volume
+        lateral_log[i][j][k]  = new G4LogicalVolume(lateral_box[i][j][k],airThinLayer,name.str().c_str(),0,0,0);
+        G4VisAttributes* lateralVisulizationAttribute = new G4VisAttributes(G4Colour(1.0,0.0,0.0)); //red
+        lateral_log[i][j][k]->SetVisAttributes(lateralVisulizationAttribute); // we also set here the visualization colors
+        //airThinLayer_log[i][j]->SetVisAttributes (G4VisAttributes::GetInvisible());
+        //and we place the box in space 
+        lateral_phys[i][j][k] = new G4PVPlacement(0,G4ThreeVector(shift_x[k],shift_y[k],0),lateral_log[i][j][k],name.str().c_str(),airThinLayer_log[i][j],false,0);
+        //           G4cout << name.str() << " Position" << "\t" << i*fAirThinLayerBox_x - matrixShiftX  << "\t" << j*fAirThinLayerBox_y - matrixShiftY << "\t" << matrixShiftZ << G4endl;
+        //define the surface here, for depolishing
+        if(latdepo_sideBySide[k])
+        {
+          std::stringstream Surfname;
+          Surfname << "CrystalToAirThinLayerSurface_" << i << "_" << j << "_" << k; 
+          opCrystalToAirThinLayerSurface[i][j][k] = new G4OpticalSurface(Surfname.str().c_str());
+          opCrystalToAirThinLayerSurface[i][j][k]->SetType(dielectric_dielectric);
+          opCrystalToAirThinLayerSurface[i][j][k]->SetFinish(ground);
+          opCrystalToAirThinLayerSurface[i][j][k]->SetModel(unified);
+          opCrystalToAirThinLayerSurface[i][j][k]->SetSigmaAlpha(latsigmaalpha);
+          opCrystalToAirThinLayerSurface[i][j][k]->SetMaterialPropertiesTable(crystalDepolished_surf); //this sets the surface roughness
+          new G4LogicalBorderSurface(Surfname.str().c_str(),crystal_phys[i][j],lateral_phys[i][j][k],opCrystalToAirThinLayerSurface[i][j][k]);
+          //               G4cout << Surfname.str() << G4endl;
+          //and the reverse...
+          Surfname << "Inv";
+          opCrystalToAirThinLayerSurfaceInv[i][j][k] = new G4OpticalSurface(Surfname.str().c_str());
+          opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetType(dielectric_dielectric);
+          opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetFinish(ground);
+          opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetModel(unified);
+          opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetSigmaAlpha(latsigmaalpha);
+          opCrystalToAirThinLayerSurfaceInv[i][j][k]->SetMaterialPropertiesTable(crystalDepolished_surf); //this sets the surface roughness
+          new G4LogicalBorderSurface(Surfname.str().c_str(),lateral_phys[i][j][k],crystal_phys[i][j],opCrystalToAirThinLayerSurfaceInv[i][j][k]);
+        }
       }
       //4. create the volumes of esr-air, the real structure of the matrix
       // also create the esr surfaces      
@@ -1134,156 +1134,156 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
       // of course it is not needed for cases when the dimensions is already with no gap
       if((esrgapx == 0) && (esrgapy == 0))  // no gap at all, we choose one direction to take the full airThinLayer_box width, the other just in touch, since they will merge anyway
       {
-          // we choose y as the long direction, so the volumes taking the entire lenght are 1 and 3
-          dim_y_esr[1] = fAirThinLayerBox_y;
-          dim_y_esr[3] = fAirThinLayerBox_y;
-          // the other volumes take instead the full lenght minus the thickness of the other 2 perpendicular volumes, with no esr gap
-          dim_x_esr[0] = fAirThinLayerBox_x - 2.0*(airThinThickness/2.0 - airgap);
-          dim_x_esr[2] = fAirThinLayerBox_x - 2.0*(airThinThickness/2.0 - airgap);
-          //so here no need to change anything for the edges 
+        // we choose y as the long direction, so the volumes taking the entire lenght are 1 and 3
+        dim_y_esr[1] = fAirThinLayerBox_y;
+        dim_y_esr[3] = fAirThinLayerBox_y;
+        // the other volumes take instead the full lenght minus the thickness of the other 2 perpendicular volumes, with no esr gap
+        dim_x_esr[0] = fAirThinLayerBox_x - 2.0*(airThinThickness/2.0 - airgap);
+        dim_x_esr[2] = fAirThinLayerBox_x - 2.0*(airThinThickness/2.0 - airgap);
+        //so here no need to change anything for the edges 
       }
       else if(esrgapx > 0 && esrgapy == 0) // x direction with esrgap, y without 
       {
-          // y is the long direction, so the volumes taking the entire lenght are 1 and 3
-          dim_y_esr[1] = fAirThinLayerBox_y;
-          dim_y_esr[3] = fAirThinLayerBox_y;
-          // the other volumes instead have the full lenght minus 2*x_thickness - 2*esrgap
-          dim_x_esr[0] = fAirThinLayerBox_x - 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapx);
-          dim_x_esr[2] = fAirThinLayerBox_x - 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapx);
-          //here instead the x dimensions will need to be adjusted only if we are on the edge
-          if(j==0) //first row of crystals, the x dim will need to have no gap if k = 2
-              dim_x_esr[2] = fAirThinLayerBox_x - 2.0*(airThinThickness/2.0 - airgap);
-          if(j==(nCrystalsY-1))//last row of crystals, the x dim will need to have no gap if k = 0
-              dim_x_esr[0] = fAirThinLayerBox_x - 2.0*(airThinThickness/2.0 - airgap);
-          
+        // y is the long direction, so the volumes taking the entire lenght are 1 and 3
+        dim_y_esr[1] = fAirThinLayerBox_y;
+        dim_y_esr[3] = fAirThinLayerBox_y;
+        // the other volumes instead have the full lenght minus 2*x_thickness - 2*esrgap
+        dim_x_esr[0] = fAirThinLayerBox_x - 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapx);
+        dim_x_esr[2] = fAirThinLayerBox_x - 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapx);
+        //here instead the x dimensions will need to be adjusted only if we are on the edge
+        if(j==0) //first row of crystals, the x dim will need to have no gap if k = 2
+          dim_x_esr[2] = fAirThinLayerBox_x - 2.0*(airThinThickness/2.0 - airgap);
+        if(j==(nCrystalsY-1))//last row of crystals, the x dim will need to have no gap if k = 0
+          dim_x_esr[0] = fAirThinLayerBox_x - 2.0*(airThinThickness/2.0 - airgap);
+        
       }
       else if(esrgapx == 0 && esrgapy > 0)// y direction with esrgap, x without 
       {
-          // y is the short direction, so the volumes 1 and 3 have the full lenght minus 2*y_thickness - 2*esrgap
-          dim_y_esr[1] = fAirThinLayerBox_y- 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapy);
-          dim_y_esr[3] = fAirThinLayerBox_y- 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapy);
-          // the other volumes have full lenght
-          dim_x_esr[0] = fAirThinLayerBox_x;
-          dim_x_esr[2] = fAirThinLayerBox_x;
-          //here instead the y dimensions will need to be adjusted only if we are on the edge
-          if(i==0) //first row of crystals, the x dim will need to have no gap if k = 3
-              dim_y_esr[3] = fAirThinLayerBox_y - 2.0*(airThinThickness/2.0 - airgap);
-          if(i==(nCrystalsX-1))//last row of crystals, the x dim will need to have no gap if k = 1
-              dim_y_esr[1] = fAirThinLayerBox_y - 2.0*(airThinThickness/2.0 - airgap);
+        // y is the short direction, so the volumes 1 and 3 have the full lenght minus 2*y_thickness - 2*esrgap
+        dim_y_esr[1] = fAirThinLayerBox_y- 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapy);
+        dim_y_esr[3] = fAirThinLayerBox_y- 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapy);
+        // the other volumes have full lenght
+        dim_x_esr[0] = fAirThinLayerBox_x;
+        dim_x_esr[2] = fAirThinLayerBox_x;
+        //here instead the y dimensions will need to be adjusted only if we are on the edge
+        if(i==0) //first row of crystals, the x dim will need to have no gap if k = 3
+          dim_y_esr[3] = fAirThinLayerBox_y - 2.0*(airThinThickness/2.0 - airgap);
+        if(i==(nCrystalsX-1))//last row of crystals, the x dim will need to have no gap if k = 1
+          dim_y_esr[1] = fAirThinLayerBox_y - 2.0*(airThinThickness/2.0 - airgap);
       }
       else if(esrgapx > 0 && esrgapy > 0)
       {
-          //both directions have esrgap
-          dim_y_esr[1] = fAirThinLayerBox_y- 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapy);
-          dim_y_esr[3] = fAirThinLayerBox_y- 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapy);
-          // the other volumes have full lenght
-          dim_x_esr[0] = fAirThinLayerBox_x- 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapx);
-          dim_x_esr[2] = fAirThinLayerBox_x- 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapx);
-          //here instead the x AND y dimensions will need to be adjusted only if we are on the edge
-          //again, we choose y to take the full lenght in case of double adjustment
-          if(i==0) //first row of crystals, the x dim will need to have no gap if k = 3
+        //both directions have esrgap
+        dim_y_esr[1] = fAirThinLayerBox_y- 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapy);
+        dim_y_esr[3] = fAirThinLayerBox_y- 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapy);
+        // the other volumes have full lenght
+        dim_x_esr[0] = fAirThinLayerBox_x- 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapx);
+        dim_x_esr[2] = fAirThinLayerBox_x- 2.0*(airThinThickness/2.0 - airgap) - 2.0*(esrgapx);
+        //here instead the x AND y dimensions will need to be adjusted only if we are on the edge
+        //again, we choose y to take the full lenght in case of double adjustment
+        if(i==0) //first row of crystals, the x dim will need to have no gap if k = 3
+        {
+          dim_y_esr[3] = fAirThinLayerBox_y;
+          //corners are very special. we need to add a thickness equal to the esrthickness and a shift to align them properly - only for horizontal volumes
+          if(j== 0) 
           {
-              dim_y_esr[3] = fAirThinLayerBox_y;
-              //corners are very special. we need to add a thickness equal to the esrthickness and a shift to align them properly - only for horizontal volumes
-              if(j== 0) 
-              {
-                  dim_x_esr[2] = fAirThinLayerBox_x - 1.0*(airThinThickness/2.0 - airgap);
-                  shift_x_esr[2] += (airThinThickness/2.0 - airgap)/2.0;
-              }
-              if(j== nCrystalsY-1) 
-              {
-                  dim_x_esr[0] = fAirThinLayerBox_x - 1.0*(airThinThickness/2.0 - airgap); 
-                  shift_x_esr[0] += (airThinThickness/2.0 - airgap)/2.0;
-              }
+            dim_x_esr[2] = fAirThinLayerBox_x - 1.0*(airThinThickness/2.0 - airgap);
+            shift_x_esr[2] += (airThinThickness/2.0 - airgap)/2.0;
           }
-          if(i==(nCrystalsX-1))//last row of crystals, the x dim will need to have no gap if k = 1
+          if(j== nCrystalsY-1) 
           {
-              dim_y_esr[1] = fAirThinLayerBox_y;
-              if(j==0) 
-              {
-                  dim_x_esr[2] = fAirThinLayerBox_x - 1.0*(airThinThickness/2.0 - airgap);
-                  shift_x_esr[2] += -(airThinThickness/2.0 - airgap)/2.0;
-              }
-              if(j==(nCrystalsY-1)) 
-              {    
-                  dim_x_esr[0] = fAirThinLayerBox_x - 1.0*(airThinThickness/2.0 - airgap);
-                  shift_x_esr[0] += -(airThinThickness/2.0 - airgap)/2.0;
-              }
+            dim_x_esr[0] = fAirThinLayerBox_x - 1.0*(airThinThickness/2.0 - airgap); 
+            shift_x_esr[0] += (airThinThickness/2.0 - airgap)/2.0;
           }
-          if(j== 0 && i!= 0 && i!= (nCrystalsX-1))             dim_x_esr[2] = fAirThinLayerBox_x;
-          if(j== nCrystalsY-1&& i!= 0 && i!= (nCrystalsX-1))   dim_x_esr[0] = fAirThinLayerBox_x;
+        }
+        if(i==(nCrystalsX-1))//last row of crystals, the x dim will need to have no gap if k = 1
+        {
+          dim_y_esr[1] = fAirThinLayerBox_y;
+          if(j==0) 
+          {
+            dim_x_esr[2] = fAirThinLayerBox_x - 1.0*(airThinThickness/2.0 - airgap);
+            shift_x_esr[2] += -(airThinThickness/2.0 - airgap)/2.0;
+          }
+          if(j==(nCrystalsY-1)) 
+          {    
+            dim_x_esr[0] = fAirThinLayerBox_x - 1.0*(airThinThickness/2.0 - airgap);
+            shift_x_esr[0] += -(airThinThickness/2.0 - airgap)/2.0;
+          }
+        }
+        if(j== 0 && i!= 0 && i!= (nCrystalsX-1))             dim_x_esr[2] = fAirThinLayerBox_x;
+        if(j== nCrystalsY-1&& i!= 0 && i!= (nCrystalsX-1))   dim_x_esr[0] = fAirThinLayerBox_x;
       }
-        
+      
       
       for(int k = 0 ; k < 4 ; k++)
       {
-          name.str("");
-          name << "EsrBox_" << i << "_" << j << "_" << k;
-          esr_box[i][j][k]  = new G4Box(name.str().c_str(),dim_x_esr[k]/2.0,dim_y_esr[k]/2.0,fAirThinLayerBox_z/2.0);
-//           G4cout << name.str() << G4endl;
-          //logical volume
-          esr_log[i][j][k]  = new G4LogicalVolume(esr_box[i][j][k],airThinLayer,name.str().c_str(),0,0,0);
-          G4VisAttributes* esrboxVisulizationAttribute = new G4VisAttributes(G4Colour(0.0,0.0,1.0)); //blue
-          esr_log[i][j][k]->SetVisAttributes(esrboxVisulizationAttribute); // we also set here the visualization colors
-          //airThinLayer_log[i][j]->SetVisAttributes (G4VisAttributes::GetInvisible());
-          //and we place the box in space 
-          esr_phys[i][j][k] = new G4PVPlacement(0,G4ThreeVector(shift_x_esr[k],shift_y_esr[k],0),esr_log[i][j][k],name.str().c_str(),airThinLayer_log[i][j],false,0);
-//           G4cout << name.str() << " Position" << "\t" << i*fAirThinLayerBox_x - matrixShiftX  << "\t" << j*fAirThinLayerBox_y - matrixShiftY << "\t" << matrixShiftZ << G4endl;
+        name.str("");
+        name << "EsrBox_" << i << "_" << j << "_" << k;
+        esr_box[i][j][k]  = new G4Box(name.str().c_str(),dim_x_esr[k]/2.0,dim_y_esr[k]/2.0,fAirThinLayerBox_z/2.0);
+        //           G4cout << name.str() << G4endl;
+        //logical volume
+        esr_log[i][j][k]  = new G4LogicalVolume(esr_box[i][j][k],airThinLayer,name.str().c_str(),0,0,0);
+        G4VisAttributes* esrboxVisulizationAttribute = new G4VisAttributes(G4Colour(0.0,0.0,1.0)); //blue
+        esr_log[i][j][k]->SetVisAttributes(esrboxVisulizationAttribute); // we also set here the visualization colors
+        //airThinLayer_log[i][j]->SetVisAttributes (G4VisAttributes::GetInvisible());
+        //and we place the box in space 
+        esr_phys[i][j][k] = new G4PVPlacement(0,G4ThreeVector(shift_x_esr[k],shift_y_esr[k],0),esr_log[i][j][k],name.str().c_str(),airThinLayer_log[i][j],false,0);
+        //           G4cout << name.str() << " Position" << "\t" << i*fAirThinLayerBox_x - matrixShiftX  << "\t" << j*fAirThinLayerBox_y - matrixShiftY << "\t" << matrixShiftZ << G4endl;
         
-          if(lateralEsr)
+        if(lateralEsr)
+        {
+          std::stringstream Surfname;
+          Surfname << "opEsrToAirThinLayerSurface_" << i << "_" << j << "_" << k; 
+          opEsrToAirThinLayerSurface[i][j][k] = new G4OpticalSurface(Surfname.str().c_str());
+          opEsrToAirThinLayerSurface[i][j][k]->SetType(dielectric_metal);
+          opEsrToAirThinLayerSurface[i][j][k]->SetFinish(polished);
+          opEsrToAirThinLayerSurface[i][j][k]->SetModel(unified);
+          //               opEsrToAirThinLayerSurface[i][j][k]->SetSigmaAlpha(latsigmaalpha);
+          opEsrToAirThinLayerSurface[i][j][k]->SetMaterialPropertiesTable(ESR_surf); //this sets the surface roughness
+          new G4LogicalBorderSurface(Surfname.str().c_str(),airThinLayer_phys[i][j],esr_phys[i][j][k],opEsrToAirThinLayerSurface[i][j][k]);
+          //               G4cout << Surfname.str() << G4endl;
+          
+          Surfname << "_Inv";
+          //also the inverse direction needs to be declared, for the same surface between the same two volumes. What is wrong with G4 developers?
+          opEsrToAirThinLayerSurfaceInv[i][j][k] = new G4OpticalSurface(Surfname.str().c_str());
+          opEsrToAirThinLayerSurfaceInv[i][j][k]->SetType(dielectric_metal);
+          opEsrToAirThinLayerSurfaceInv[i][j][k]->SetFinish(polished);
+          opEsrToAirThinLayerSurfaceInv[i][j][k]->SetModel(unified);
+          //               opEsrToAirThinLayerSurface[i][j][k]->SetSigmaAlpha(latsigmaalpha);
+          opEsrToAirThinLayerSurfaceInv[i][j][k]->SetMaterialPropertiesTable(ESR_surf); //this sets the surface roughness
+          new G4LogicalBorderSurface(Surfname.str().c_str(),esr_phys[i][j][k],airThinLayer_phys[i][j],opEsrToAirThinLayerSurfaceInv[i][j][k]);
+          
+          //we need a surface towards the world, but only for the edge esr boxes.
+          //same as before to find them
+          std::vector<int> indexEsr;
+          if(i==0) indexEsr.push_back(3);
+          if(j==0) indexEsr.push_back(2);
+          if(i==(nCrystalsX-1)) indexEsr.push_back(1);
+          if(j==(nCrystalsY-1)) indexEsr.push_back(0);
+          
+          for(int t = 0; t < indexEsr.size(); t++) // first column, the k=3 esr volumes need to have interface with world
           {
-              std::stringstream Surfname;
-              Surfname << "opEsrToAirThinLayerSurface_" << i << "_" << j << "_" << k; 
-              opEsrToAirThinLayerSurface[i][j][k] = new G4OpticalSurface(Surfname.str().c_str());
-              opEsrToAirThinLayerSurface[i][j][k]->SetType(dielectric_metal);
-              opEsrToAirThinLayerSurface[i][j][k]->SetFinish(polished);
-              opEsrToAirThinLayerSurface[i][j][k]->SetModel(unified);
-//               opEsrToAirThinLayerSurface[i][j][k]->SetSigmaAlpha(latsigmaalpha);
-              opEsrToAirThinLayerSurface[i][j][k]->SetMaterialPropertiesTable(ESR_surf); //this sets the surface roughness
-              new G4LogicalBorderSurface(Surfname.str().c_str(),airThinLayer_phys[i][j],esr_phys[i][j][k],opEsrToAirThinLayerSurface[i][j][k]);
-//               G4cout << Surfname.str() << G4endl;
-              
-              Surfname << "_Inv";
-              //also the inverse direction needs to be declared, for the same surface between the same two volumes. What is wrong with G4 developers?
-              opEsrToAirThinLayerSurfaceInv[i][j][k] = new G4OpticalSurface(Surfname.str().c_str());
-              opEsrToAirThinLayerSurfaceInv[i][j][k]->SetType(dielectric_metal);
-              opEsrToAirThinLayerSurfaceInv[i][j][k]->SetFinish(polished);
-              opEsrToAirThinLayerSurfaceInv[i][j][k]->SetModel(unified);
-//               opEsrToAirThinLayerSurface[i][j][k]->SetSigmaAlpha(latsigmaalpha);
-              opEsrToAirThinLayerSurfaceInv[i][j][k]->SetMaterialPropertiesTable(ESR_surf); //this sets the surface roughness
-              new G4LogicalBorderSurface(Surfname.str().c_str(),esr_phys[i][j][k],airThinLayer_phys[i][j],opEsrToAirThinLayerSurfaceInv[i][j][k]);
-              
-              //we need a surface towards the world, but only for the edge esr boxes.
-              //same as before to find them
-              std::vector<int> indexEsr;
-              if(i==0) indexEsr.push_back(3);
-              if(j==0) indexEsr.push_back(2);
-              if(i==(nCrystalsX-1)) indexEsr.push_back(1);
-              if(j==(nCrystalsY-1)) indexEsr.push_back(0);
-                  
-              for(int t = 0; t < indexEsr.size(); t++) // first column, the k=3 esr volumes need to have interface with world
-              {
-                  std::stringstream SurfToWorldName;
-                  SurfToWorldName << "opAirThinLayerToWorldSurface_" << i << "_" << j << "_" << indexEsr[t]; 
-                  opAirThinLayerToWorldSurface[i][j][indexEsr[t]] = new G4OpticalSurface(SurfToWorldName.str().c_str());
-                  opAirThinLayerToWorldSurface[i][j][indexEsr[t]]->SetType(dielectric_metal);
-                  opAirThinLayerToWorldSurface[i][j][indexEsr[t]]->SetFinish(polished);
-                  opAirThinLayerToWorldSurface[i][j][indexEsr[t]]->SetModel(unified);
-                  opAirThinLayerToWorldSurface[i][j][indexEsr[t]]->SetMaterialPropertiesTable(ESR_surf);
-                  new G4LogicalBorderSurface(SurfToWorldName.str().c_str(),esr_phys[i][j][indexEsr[t]],expHall_phys,opAirThinLayerToWorldSurface[i][j][indexEsr[t]]);
-                  
-                  //nothing is outside of matrix, so in principle we don't need to define the inverse surface. But hei, you never know...
-                  SurfToWorldName << "_Inv";
-                  opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]] = new G4OpticalSurface(SurfToWorldName.str().c_str());
-                  opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]->SetType(dielectric_metal);
-                  opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]->SetFinish(polished);
-                  opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]->SetModel(unified);
-                  opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]->SetMaterialPropertiesTable(ESR_surf);
-                  new G4LogicalBorderSurface(SurfToWorldName.str().c_str(),expHall_phys,esr_phys[i][j][indexEsr[t]],opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]);
-                  
-                  
-              }
+            std::stringstream SurfToWorldName;
+            SurfToWorldName << "opAirThinLayerToWorldSurface_" << i << "_" << j << "_" << indexEsr[t]; 
+            opAirThinLayerToWorldSurface[i][j][indexEsr[t]] = new G4OpticalSurface(SurfToWorldName.str().c_str());
+            opAirThinLayerToWorldSurface[i][j][indexEsr[t]]->SetType(dielectric_metal);
+            opAirThinLayerToWorldSurface[i][j][indexEsr[t]]->SetFinish(polished);
+            opAirThinLayerToWorldSurface[i][j][indexEsr[t]]->SetModel(unified);
+            opAirThinLayerToWorldSurface[i][j][indexEsr[t]]->SetMaterialPropertiesTable(ESR_surf);
+            new G4LogicalBorderSurface(SurfToWorldName.str().c_str(),esr_phys[i][j][indexEsr[t]],expHall_phys,opAirThinLayerToWorldSurface[i][j][indexEsr[t]]);
+            
+            //nothing is outside of matrix, so in principle we don't need to define the inverse surface. But hei, you never know...
+            SurfToWorldName << "_Inv";
+            opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]] = new G4OpticalSurface(SurfToWorldName.str().c_str());
+            opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]->SetType(dielectric_metal);
+            opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]->SetFinish(polished);
+            opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]->SetModel(unified);
+            opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]->SetMaterialPropertiesTable(ESR_surf);
+            new G4LogicalBorderSurface(SurfToWorldName.str().c_str(),expHall_phys,esr_phys[i][j][indexEsr[t]],opAirThinLayerToWorldSurfaceInv[i][j][indexEsr[t]]);
+            
+            
           }
+        }
       }    
     } 
   }
@@ -1386,9 +1386,9 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   G4VPhysicalVolume*** detector_phys				= new G4VPhysicalVolume** [nDetectorsX];
   for(int i = 0 ; i < nDetectorsX ; i++) detector_phys[i]	= new G4VPhysicalVolume* [nDetectorsY];
   
-//   G4Box* detector_box[nDetectorsX][nDetectorsY];
-//   G4LogicalVolume* detector_log[nDetectorsX][nDetectorsY]; 
-//   G4VPhysicalVolume* detector_phys[nDetectorsX][nDetectorsY];
+  //   G4Box* detector_box[nDetectorsX][nDetectorsY];
+  //   G4LogicalVolume* detector_log[nDetectorsX][nDetectorsY]; 
+  //   G4VPhysicalVolume* detector_phys[nDetectorsX][nDetectorsY];
   G4int detectorNum = 0;
   //all the 16 mppc detectors
   for(G4int i = 0 ; i < nDetectorsX ; i++)
@@ -1479,32 +1479,32 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
   //                            SURFACES                               //
   //                                                                   //
   //-------------------------------------------------------------------//
-//   
-//   // define a surface between each crystal and its own air layer
-//   if(latdepolished)
-//   {
-// //     G4OpticalSurface* opCrystalToAirThinLayerSurface[nCrystalsX][nCrystalsY];
-//     G4OpticalSurface*** opCrystalToAirThinLayerSurface				= new G4OpticalSurface** [nCrystalsX];
-//     for(int i = 0 ; i < nCrystalsX ; i++) opCrystalToAirThinLayerSurface[i]	= new G4OpticalSurface* [nCrystalsY];
-//     
-//     for(G4int i = 0 ; i < nCrystalsX ; i++)
-//     {
-//       for(G4int j = 0 ; j < nCrystalsY ; j++)
-//       {
-// 	std::stringstream name;
-// 	name << "CrystalToAirThinLayerSurface_" << i << "_" << j; 
-// 	opCrystalToAirThinLayerSurface[i][j] = new G4OpticalSurface(name.str().c_str());
-// 	opCrystalToAirThinLayerSurface[i][j]->SetType(dielectric_dielectric);
-// 	opCrystalToAirThinLayerSurface[i][j]->SetFinish(ground);
-// 	opCrystalToAirThinLayerSurface[i][j]->SetModel(unified);
-// 	opCrystalToAirThinLayerSurface[i][j]->SetSigmaAlpha(latsigmaalpha);
-// 	opCrystalToAirThinLayerSurface[i][j]->SetMaterialPropertiesTable(crystalDepolished_surf); //this sets the surface roughness
-// 	new G4LogicalBorderSurface(name.str().c_str(),crystal_phys[i][j],airThinLayer_phys[i][j],opCrystalToAirThinLayerSurface[i][j]);
-//       }
-//     }
-//   }
-//   
-//   
+  //   
+  //   // define a surface between each crystal and its own air layer
+  //   if(latdepolished)
+  //   {
+  // //     G4OpticalSurface* opCrystalToAirThinLayerSurface[nCrystalsX][nCrystalsY];
+  //     G4OpticalSurface*** opCrystalToAirThinLayerSurface				= new G4OpticalSurface** [nCrystalsX];
+  //     for(int i = 0 ; i < nCrystalsX ; i++) opCrystalToAirThinLayerSurface[i]	= new G4OpticalSurface* [nCrystalsY];
+  //     
+  //     for(G4int i = 0 ; i < nCrystalsX ; i++)
+  //     {
+  //       for(G4int j = 0 ; j < nCrystalsY ; j++)
+  //       {
+  // 	std::stringstream name;
+  // 	name << "CrystalToAirThinLayerSurface_" << i << "_" << j; 
+  // 	opCrystalToAirThinLayerSurface[i][j] = new G4OpticalSurface(name.str().c_str());
+  // 	opCrystalToAirThinLayerSurface[i][j]->SetType(dielectric_dielectric);
+  // 	opCrystalToAirThinLayerSurface[i][j]->SetFinish(ground);
+  // 	opCrystalToAirThinLayerSurface[i][j]->SetModel(unified);
+  // 	opCrystalToAirThinLayerSurface[i][j]->SetSigmaAlpha(latsigmaalpha);
+  // 	opCrystalToAirThinLayerSurface[i][j]->SetMaterialPropertiesTable(crystalDepolished_surf); //this sets the surface roughness
+  // 	new G4LogicalBorderSurface(name.str().c_str(),crystal_phys[i][j],airThinLayer_phys[i][j],opCrystalToAirThinLayerSurface[i][j]);
+  //       }
+  //     }
+  //   }
+  //   
+  //   
   // now define a depolished surface also between the front and back of the crystals and the neighbour volumes. 
   // It if useful if we want to use depolishing to characterize the imperfection of a polished surface. 
   // In this case in fact even the front and back faces of the crystal, although nominally polished, will be simulated as
@@ -1533,132 +1533,132 @@ G4VPhysicalVolume* g4matrixDetectorConstruction::Construct()
       CrystalBackRealSurfaceInv[i]	= new G4OpticalSurface* [nCrystalsY];
     }
     
-//     G4OpticalSurface* CrystalFrontRealSurface[nCrystalsX][nCrystalsY];
-//     G4OpticalSurface* CrystalBackRealSurface[nCrystalsX][nCrystalsY];
+    //     G4OpticalSurface* CrystalFrontRealSurface[nCrystalsX][nCrystalsY];
+    //     G4OpticalSurface* CrystalBackRealSurface[nCrystalsX][nCrystalsY];
     for(G4int i = 0 ; i < nCrystalsX ; i++)
     {
       for(G4int j = 0 ; j < nCrystalsY ; j++)
       {
-	//front 
-	std::stringstream name;
-	name << "CrystalFrontRealSurface_" << i << "_" << j; 
-	CrystalFrontRealSurface[i][j] = new G4OpticalSurface(name.str().c_str());
-	CrystalFrontRealSurface[i][j]->SetType(dielectric_dielectric);
-	CrystalFrontRealSurface[i][j]->SetFinish(ground);
-	CrystalFrontRealSurface[i][j]->SetModel(unified);
-	CrystalFrontRealSurface[i][j]->SetSigmaAlpha(realsigmaalpha);
-	CrystalFrontRealSurface[i][j]->SetMaterialPropertiesTable(crystalReal_surf); //this sets the surface roughness
-	new G4LogicalBorderSurface(name.str().c_str(),crystal_phys[i][j],volumeInFront,CrystalFrontRealSurface[i][j]);
+        //front 
+        std::stringstream name;
+        name << "CrystalFrontRealSurface_" << i << "_" << j; 
+        CrystalFrontRealSurface[i][j] = new G4OpticalSurface(name.str().c_str());
+        CrystalFrontRealSurface[i][j]->SetType(dielectric_dielectric);
+        CrystalFrontRealSurface[i][j]->SetFinish(ground);
+        CrystalFrontRealSurface[i][j]->SetModel(unified);
+        CrystalFrontRealSurface[i][j]->SetSigmaAlpha(realsigmaalpha);
+        CrystalFrontRealSurface[i][j]->SetMaterialPropertiesTable(crystalReal_surf); //this sets the surface roughness
+        new G4LogicalBorderSurface(name.str().c_str(),crystal_phys[i][j],volumeInFront,CrystalFrontRealSurface[i][j]);
         //and inverse...
         name << "_Inv"; 
         CrystalFrontRealSurfaceInv[i][j] = new G4OpticalSurface(name.str().c_str());
-	CrystalFrontRealSurfaceInv[i][j]->SetType(dielectric_dielectric);
-	CrystalFrontRealSurfaceInv[i][j]->SetFinish(ground);
-	CrystalFrontRealSurfaceInv[i][j]->SetModel(unified);
-	CrystalFrontRealSurfaceInv[i][j]->SetSigmaAlpha(realsigmaalpha);
-	CrystalFrontRealSurfaceInv[i][j]->SetMaterialPropertiesTable(crystalReal_surf); //this sets the surface roughness
-	new G4LogicalBorderSurface(name.str().c_str(),volumeInFront,crystal_phys[i][j],CrystalFrontRealSurfaceInv[i][j]);
-	
-	//back
-	name.str("");
-	name << "CrystalBackRealSurface_" << i << "_" << j; 
-	CrystalBackRealSurface[i][j] = new G4OpticalSurface(name.str().c_str());
-	CrystalBackRealSurface[i][j]->SetType(dielectric_dielectric);
-	CrystalBackRealSurface[i][j]->SetFinish(ground);
-	CrystalBackRealSurface[i][j]->SetModel(unified);
-	CrystalBackRealSurface[i][j]->SetSigmaAlpha(realsigmaalpha);
-	CrystalBackRealSurface[i][j]->SetMaterialPropertiesTable(crystalReal_surf); //this sets the surface roughness
-	new G4LogicalBorderSurface(name.str().c_str(),crystal_phys[i][j],volumeOnTheBack,CrystalBackRealSurface[i][j]);
+        CrystalFrontRealSurfaceInv[i][j]->SetType(dielectric_dielectric);
+        CrystalFrontRealSurfaceInv[i][j]->SetFinish(ground);
+        CrystalFrontRealSurfaceInv[i][j]->SetModel(unified);
+        CrystalFrontRealSurfaceInv[i][j]->SetSigmaAlpha(realsigmaalpha);
+        CrystalFrontRealSurfaceInv[i][j]->SetMaterialPropertiesTable(crystalReal_surf); //this sets the surface roughness
+        new G4LogicalBorderSurface(name.str().c_str(),volumeInFront,crystal_phys[i][j],CrystalFrontRealSurfaceInv[i][j]);
+        
+        //back
+        name.str("");
+        name << "CrystalBackRealSurface_" << i << "_" << j; 
+        CrystalBackRealSurface[i][j] = new G4OpticalSurface(name.str().c_str());
+        CrystalBackRealSurface[i][j]->SetType(dielectric_dielectric);
+        CrystalBackRealSurface[i][j]->SetFinish(ground);
+        CrystalBackRealSurface[i][j]->SetModel(unified);
+        CrystalBackRealSurface[i][j]->SetSigmaAlpha(realsigmaalpha);
+        CrystalBackRealSurface[i][j]->SetMaterialPropertiesTable(crystalReal_surf); //this sets the surface roughness
+        new G4LogicalBorderSurface(name.str().c_str(),crystal_phys[i][j],volumeOnTheBack,CrystalBackRealSurface[i][j]);
         //and inverse..
         name << "_Inv"; 
         CrystalBackRealSurfaceInv[i][j] = new G4OpticalSurface(name.str().c_str());
-	CrystalBackRealSurfaceInv[i][j]->SetType(dielectric_dielectric);
-	CrystalBackRealSurfaceInv[i][j]->SetFinish(ground);
-	CrystalBackRealSurfaceInv[i][j]->SetModel(unified);
-	CrystalBackRealSurfaceInv[i][j]->SetSigmaAlpha(realsigmaalpha);
-	CrystalBackRealSurfaceInv[i][j]->SetMaterialPropertiesTable(crystalReal_surf); //this sets the surface roughness
-	new G4LogicalBorderSurface(name.str().c_str(),volumeOnTheBack,crystal_phys[i][j],CrystalBackRealSurfaceInv[i][j]);
+        CrystalBackRealSurfaceInv[i][j]->SetType(dielectric_dielectric);
+        CrystalBackRealSurfaceInv[i][j]->SetFinish(ground);
+        CrystalBackRealSurfaceInv[i][j]->SetModel(unified);
+        CrystalBackRealSurfaceInv[i][j]->SetSigmaAlpha(realsigmaalpha);
+        CrystalBackRealSurfaceInv[i][j]->SetMaterialPropertiesTable(crystalReal_surf); //this sets the surface roughness
+        new G4LogicalBorderSurface(name.str().c_str(),volumeOnTheBack,crystal_phys[i][j],CrystalBackRealSurfaceInv[i][j]);
       }      
     }    
   }
-
+  
   //also the esrboxes, if they are there, should have a final esr surface with the volumes in front and on the back
   if(lateralEsr)
   {
-      
-      G4OpticalSurface**** opEsrToFrontSurface	= new G4OpticalSurface*** [nCrystalsX];
-      G4OpticalSurface**** opEsrToFrontSurfaceInv	= new G4OpticalSurface*** [nCrystalsX];
-      for(int i = 0 ; i < nCrystalsX ; i++) 
+    
+    G4OpticalSurface**** opEsrToFrontSurface	= new G4OpticalSurface*** [nCrystalsX];
+    G4OpticalSurface**** opEsrToFrontSurfaceInv	= new G4OpticalSurface*** [nCrystalsX];
+    for(int i = 0 ; i < nCrystalsX ; i++) 
+    {
+      opEsrToFrontSurface[i]	= new G4OpticalSurface** [nCrystalsY];
+      opEsrToFrontSurfaceInv[i]	= new G4OpticalSurface** [nCrystalsY];
+      for(int j = 0 ; j < nCrystalsY ; j++)
       {
-          opEsrToFrontSurface[i]	= new G4OpticalSurface** [nCrystalsY];
-          opEsrToFrontSurfaceInv[i]	= new G4OpticalSurface** [nCrystalsY];
-          for(int j = 0 ; j < nCrystalsY ; j++)
-          {
-              opEsrToFrontSurface[i][j]     = new G4OpticalSurface* [4];
-              opEsrToFrontSurfaceInv[i][j]     = new G4OpticalSurface* [4];
-          }
+        opEsrToFrontSurface[i][j]     = new G4OpticalSurface* [4];
+        opEsrToFrontSurfaceInv[i][j]     = new G4OpticalSurface* [4];
       }
-      G4OpticalSurface**** opEsrToBackSurface	= new G4OpticalSurface*** [nCrystalsX];
-      G4OpticalSurface**** opEsrToBackSurfaceInv	= new G4OpticalSurface*** [nCrystalsX];
-      for(int i = 0 ; i < nCrystalsX ; i++) 
+    }
+    G4OpticalSurface**** opEsrToBackSurface	= new G4OpticalSurface*** [nCrystalsX];
+    G4OpticalSurface**** opEsrToBackSurfaceInv	= new G4OpticalSurface*** [nCrystalsX];
+    for(int i = 0 ; i < nCrystalsX ; i++) 
+    {
+      opEsrToBackSurface[i]	= new G4OpticalSurface** [nCrystalsY];
+      opEsrToBackSurfaceInv[i]	= new G4OpticalSurface** [nCrystalsY];
+      for(int j = 0 ; j < nCrystalsY ; j++)
       {
-          opEsrToBackSurface[i]	= new G4OpticalSurface** [nCrystalsY];
-          opEsrToBackSurfaceInv[i]	= new G4OpticalSurface** [nCrystalsY];
-          for(int j = 0 ; j < nCrystalsY ; j++)
-          {
-              opEsrToBackSurface[i][j]     = new G4OpticalSurface* [4];
-              opEsrToBackSurfaceInv[i][j]     = new G4OpticalSurface* [4];
-          }
+        opEsrToBackSurface[i][j]     = new G4OpticalSurface* [4];
+        opEsrToBackSurfaceInv[i][j]     = new G4OpticalSurface* [4];
       }
-      
-      
-      for(G4int i = 0 ; i < nCrystalsX ; i++)
+    }
+    
+    
+    for(G4int i = 0 ; i < nCrystalsX ; i++)
+    {
+      for(G4int j = 0 ; j < nCrystalsY ; j++)
       {
-          for(G4int j = 0 ; j < nCrystalsY ; j++)
-          {
-              for(G4int k = 0 ; k < 4 ; k++)
-              {
-                  std::stringstream EsrToFrontname;
-                  EsrToFrontname << "opEsrToFrontSurface" << i << "_" << j << "_" << k; 
-                  opEsrToFrontSurface[i][j][k] = new G4OpticalSurface(EsrToFrontname.str().c_str());
-                  opEsrToFrontSurface[i][j][k]->SetType(dielectric_metal);
-                  opEsrToFrontSurface[i][j][k]->SetFinish(polished);
-                  opEsrToFrontSurface[i][j][k]->SetModel(unified);
-                  opEsrToFrontSurface[i][j][k]->SetMaterialPropertiesTable(ESR_surf); 
-                  new G4LogicalBorderSurface(EsrToFrontname.str().c_str(),volumeInFront,esr_phys[i][j][k],opEsrToFrontSurface[i][j][k]);
-                  //and inverse...
-                  EsrToFrontname << "_Inv";
-                  opEsrToFrontSurfaceInv[i][j][k] = new G4OpticalSurface(EsrToFrontname.str().c_str());
-                  opEsrToFrontSurfaceInv[i][j][k]->SetType(dielectric_metal);
-                  opEsrToFrontSurfaceInv[i][j][k]->SetFinish(polished);
-                  opEsrToFrontSurfaceInv[i][j][k]->SetModel(unified);
-                  opEsrToFrontSurfaceInv[i][j][k]->SetMaterialPropertiesTable(ESR_surf); 
-                  new G4LogicalBorderSurface(EsrToFrontname.str().c_str(),esr_phys[i][j][k],volumeInFront,opEsrToFrontSurfaceInv[i][j][k]);
-                  
-                  
-                  std::stringstream EsrToBackname;
-                  EsrToBackname << "opEsrToBackSurface" << i << "_" << j << "_" << k; 
-                  opEsrToBackSurface[i][j][k] = new G4OpticalSurface(EsrToBackname.str().c_str());
-                  opEsrToBackSurface[i][j][k]->SetType(dielectric_metal);
-                  opEsrToBackSurface[i][j][k]->SetFinish(polished);
-                  opEsrToBackSurface[i][j][k]->SetModel(unified);
-                  opEsrToBackSurface[i][j][k]->SetMaterialPropertiesTable(ESR_surf); 
-                  new G4LogicalBorderSurface(EsrToBackname.str().c_str(),volumeOnTheBack,esr_phys[i][j][k],opEsrToBackSurface[i][j][k]);
-                  //and inverse...
-                  EsrToBackname << "_Inv";
-                  opEsrToBackSurfaceInv[i][j][k] = new G4OpticalSurface(EsrToBackname.str().c_str());
-                  opEsrToBackSurfaceInv[i][j][k]->SetType(dielectric_metal);
-                  opEsrToBackSurfaceInv[i][j][k]->SetFinish(polished);
-                  opEsrToBackSurfaceInv[i][j][k]->SetModel(unified);
-                  opEsrToBackSurfaceInv[i][j][k]->SetMaterialPropertiesTable(ESR_surf); 
-                  new G4LogicalBorderSurface(EsrToBackname.str().c_str(),esr_phys[i][j][k],volumeOnTheBack,opEsrToBackSurfaceInv[i][j][k]);
-                  
-              }
-          }
+        for(G4int k = 0 ; k < 4 ; k++)
+        {
+          std::stringstream EsrToFrontname;
+          EsrToFrontname << "opEsrToFrontSurface" << i << "_" << j << "_" << k; 
+          opEsrToFrontSurface[i][j][k] = new G4OpticalSurface(EsrToFrontname.str().c_str());
+          opEsrToFrontSurface[i][j][k]->SetType(dielectric_metal);
+          opEsrToFrontSurface[i][j][k]->SetFinish(polished);
+          opEsrToFrontSurface[i][j][k]->SetModel(unified);
+          opEsrToFrontSurface[i][j][k]->SetMaterialPropertiesTable(ESR_surf); 
+          new G4LogicalBorderSurface(EsrToFrontname.str().c_str(),volumeInFront,esr_phys[i][j][k],opEsrToFrontSurface[i][j][k]);
+          //and inverse...
+          EsrToFrontname << "_Inv";
+          opEsrToFrontSurfaceInv[i][j][k] = new G4OpticalSurface(EsrToFrontname.str().c_str());
+          opEsrToFrontSurfaceInv[i][j][k]->SetType(dielectric_metal);
+          opEsrToFrontSurfaceInv[i][j][k]->SetFinish(polished);
+          opEsrToFrontSurfaceInv[i][j][k]->SetModel(unified);
+          opEsrToFrontSurfaceInv[i][j][k]->SetMaterialPropertiesTable(ESR_surf); 
+          new G4LogicalBorderSurface(EsrToFrontname.str().c_str(),esr_phys[i][j][k],volumeInFront,opEsrToFrontSurfaceInv[i][j][k]);
+          
+          
+          std::stringstream EsrToBackname;
+          EsrToBackname << "opEsrToBackSurface" << i << "_" << j << "_" << k; 
+          opEsrToBackSurface[i][j][k] = new G4OpticalSurface(EsrToBackname.str().c_str());
+          opEsrToBackSurface[i][j][k]->SetType(dielectric_metal);
+          opEsrToBackSurface[i][j][k]->SetFinish(polished);
+          opEsrToBackSurface[i][j][k]->SetModel(unified);
+          opEsrToBackSurface[i][j][k]->SetMaterialPropertiesTable(ESR_surf); 
+          new G4LogicalBorderSurface(EsrToBackname.str().c_str(),volumeOnTheBack,esr_phys[i][j][k],opEsrToBackSurface[i][j][k]);
+          //and inverse...
+          EsrToBackname << "_Inv";
+          opEsrToBackSurfaceInv[i][j][k] = new G4OpticalSurface(EsrToBackname.str().c_str());
+          opEsrToBackSurfaceInv[i][j][k]->SetType(dielectric_metal);
+          opEsrToBackSurfaceInv[i][j][k]->SetFinish(polished);
+          opEsrToBackSurfaceInv[i][j][k]->SetModel(unified);
+          opEsrToBackSurfaceInv[i][j][k]->SetMaterialPropertiesTable(ESR_surf); 
+          new G4LogicalBorderSurface(EsrToBackname.str().c_str(),esr_phys[i][j][k],volumeOnTheBack,opEsrToBackSurfaceInv[i][j][k]);
+          
+        }
       }
+    }
   }
   
-
+  
   if(backEsr)
   {
     //back air to back esr 

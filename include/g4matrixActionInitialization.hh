@@ -42,20 +42,20 @@ class B4DetectorConstruction;
 
 class g4matrixActionInitialization : public G4VUserActionInitialization
 {
-  public:
-    g4matrixActionInitialization(ConfigFile& config);
-    virtual ~g4matrixActionInitialization();
-
-    virtual void BuildForMaster() const;
-    virtual void Build() const;
-
-    virtual G4VSteppingVerbose* InitializeSteppingVerbose() const;
+public:
+  g4matrixActionInitialization(ConfigFile& config);
+  virtual ~g4matrixActionInitialization();
   
-  private:
-    
-    ConfigFile& fConfig;
-    
-    
+  virtual void BuildForMaster() const;
+  virtual void Build() const;
+  
+  virtual G4VSteppingVerbose* InitializeSteppingVerbose() const;
+  
+private:
+  
+  ConfigFile& fConfig;
+  
+  
 };
 
 #endif

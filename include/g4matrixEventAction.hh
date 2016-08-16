@@ -48,15 +48,15 @@
 
 class g4matrixEventAction : public G4UserEventAction
 {
-  public:
-    g4matrixEventAction(g4matrixRunAction* runAction);
-    virtual ~g4matrixEventAction();
-
-    virtual void  BeginOfEventAction(const G4Event* event);
-    virtual void    EndOfEventAction(const G4Event* event);
-   
-  private:
-    g4matrixRunAction* fRunAction;
+public:
+  g4matrixEventAction(g4matrixRunAction* runAction);
+  virtual ~g4matrixEventAction();
+  
+  virtual void  BeginOfEventAction(const G4Event* event);
+  virtual void    EndOfEventAction(const G4Event* event);
+  
+private:
+  g4matrixRunAction* fRunAction;
 };
 
 // // inline functions
@@ -90,18 +90,18 @@ class g4matrixEventAction : public G4UserEventAction
 
 
 /*
-inline void g4matrixEventAction::AddAbs(G4double de, G4double dl) {
-  fEnergyAbs += de; 
-  fTrackLAbs += dl;
-}
+ * inline void g4matrixEventAction::AddAbs(G4double de, G4double dl) {
+ *  fEnergyAbs += de; 
+ *  fTrackLAbs += dl;
+ * }
+ * 
+ * inline void g4matrixEventAction::AddGap(G4double de, G4double dl) {
+ *  fEnergyGap += de; 
+ *  fTrackLGap += dl;
+ * }*/
 
-inline void g4matrixEventAction::AddGap(G4double de, G4double dl) {
-  fEnergyGap += de; 
-  fTrackLGap += dl;
-}*/
-                     
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
 
-    
+

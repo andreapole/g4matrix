@@ -40,14 +40,14 @@ class g4matrixSteppingVerbose;
 
 class g4matrixSteppingVerbose : public G4SteppingVerbose
 {
- public:
-
-   g4matrixSteppingVerbose();
-   virtual ~g4matrixSteppingVerbose();
-
-   virtual void StepInfo();
-   virtual void TrackingStarted();
-
+public:
+  
+  g4matrixSteppingVerbose();
+  virtual ~g4matrixSteppingVerbose();
+  
+  virtual void StepInfo();
+  virtual void TrackingStarted();
+  
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

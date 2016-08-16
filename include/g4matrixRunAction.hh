@@ -44,18 +44,18 @@ class G4Run;
 
 class g4matrixRunAction : public G4UserRunAction
 {
-  public:
-    g4matrixRunAction();
-    virtual ~g4matrixRunAction();
-
-  public:
-    virtual void BeginOfRunAction(const G4Run* aRun);
-    virtual void EndOfRunAction(const G4Run* aRun);
-
-    
-  private:
-    G4Timer* fTimer;
-
+public:
+  g4matrixRunAction();
+  virtual ~g4matrixRunAction();
+  
+public:
+  virtual void BeginOfRunAction(const G4Run* aRun);
+  virtual void EndOfRunAction(const G4Run* aRun);
+  
+  
+private:
+  G4Timer* fTimer;
+  
 };
 
 

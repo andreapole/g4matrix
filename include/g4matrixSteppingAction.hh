@@ -42,27 +42,27 @@
 
 class g4matrixSteppingAction : public G4UserSteppingAction
 {
-  public:
-    g4matrixSteppingAction(
-                    ConfigFile& config);
-    virtual ~g4matrixSteppingAction();
-
-    // method from the base class
-    virtual void UserSteppingAction(const G4Step*);
-
-  private:
-    G4int fScintillationCounter;
-    G4int fCerenkovCounter;
-    G4int fEventNumber;
-    G4int fOpticalPhotonsStopped;
-    G4int fGammaStopped;
-    G4int fElectronStopped;
-
-    g4matrixEventAction*  fEventAction;
-    
-    G4double quantumEff;
-    
-    
+public:
+  g4matrixSteppingAction(
+    ConfigFile& config);
+  virtual ~g4matrixSteppingAction();
+  
+  // method from the base class
+  virtual void UserSteppingAction(const G4Step*);
+  
+private:
+  G4int fScintillationCounter;
+  G4int fCerenkovCounter;
+  G4int fEventNumber;
+  G4int fOpticalPhotonsStopped;
+  G4int fGammaStopped;
+  G4int fElectronStopped;
+  
+  g4matrixEventAction*  fEventAction;
+  
+  G4double quantumEff;
+  
+  
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

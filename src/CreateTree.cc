@@ -7,10 +7,10 @@ CreateTree* CreateTree::fInstance = NULL;
 using namespace std;
 
 CreateTree::CreateTree(TString name, int x, int y, int z, int k)
-  : nCrystalsX(x),
-    nCrystalsY(y),
-    nDetectorsX(z), 
-    nDetectorsY(k)
+: nCrystalsX(x),
+nCrystalsY(y),
+nDetectorsX(z), 
+nDetectorsY(k)
 {
   
   //G4cout << "DETECTORS "  << " " << nDetectorsX << " " << nDetectorsY << G4endl; ;

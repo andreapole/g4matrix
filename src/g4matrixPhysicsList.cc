@@ -41,29 +41,29 @@
 
 g4matrixPhysicsList::g4matrixPhysicsList() : G4VModularPhysicsList(){
   SetVerboseLevel(1);
-
+  
   // Default physics
   RegisterPhysics(new G4DecayPhysics());
-
+  
   // Radioactive decay
   RegisterPhysics(new G4RadioactiveDecayPhysics());
-
+  
   // EM physics
   RegisterPhysics(new G4EmStandardPhysics());
-
-
- // Optical Physics
+  
+  
+  // Optical Physics
   G4OpticalPhysics* opticalPhysics = new G4OpticalPhysics();
   RegisterPhysics( opticalPhysics );
-
+  
   opticalPhysics->SetWLSTimeProfile("delta");
-
+  
   opticalPhysics->SetScintillationYieldFactor(1.0);
   opticalPhysics->SetScintillationExcitationRatio(0.0);
-
+  
   opticalPhysics->SetMaxNumPhotonsPerStep(1000);
   opticalPhysics->SetMaxBetaChangePerStep(10.0);
-
+  
   opticalPhysics->SetTrackSecondariesFirst(kCerenkov,true);
   opticalPhysics->SetTrackSecondariesFirst(kScintillation,true);
 }

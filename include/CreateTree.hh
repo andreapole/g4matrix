@@ -8,21 +8,21 @@
 
 class CreateTree
 {
-  private:
-
+private:
+  
   TTree*              ftree;
   TString             fname;
-
+  
   Bool_t              HITS;
   Bool_t              ABSORPTIONS;
-
+  
   static const Int_t  MaxNum = 2000000;
   static const Int_t  MaxNumPro = 100;
   
   int nCrystalsX, nCrystalsY, nDetectorsX, nDetectorsY;
-
-  public:
-
+  
+public:
+  
   CreateTree(TString name,int x, int y, int z, int k);
   ~CreateTree();  
   
@@ -34,10 +34,10 @@ class CreateTree
   void                Clear();
   static CreateTree*  Instance() { return fInstance; };
   static CreateTree*  fInstance;
-
+  
   Bool_t              Hits() const { return this->HITS; };
   Bool_t              Absorptions() const { return this->ABSORPTIONS; };
-
+  
   long int            Seed;
   Int_t               Run;
   Int_t               Event;
@@ -47,7 +47,7 @@ class CreateTree
   
   
   Short_t*            DetectorHit;          
-//   int            DetectorHit[16];
+  //   int            DetectorHit[16];
   
   
   std::vector<float>*  CryEnergyDeposited;   
@@ -90,5 +90,5 @@ class CreateTree
   std::vector<float> PhotonEnergy;
   std::vector<float> *pPhotonEnergy;
   
- 
+  
 };

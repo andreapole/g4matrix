@@ -37,18 +37,18 @@
 
 class g4matrixStackingAction : public G4UserStackingAction
 {
-  public:
-    g4matrixStackingAction();
-    virtual ~g4matrixStackingAction();
-
-  public:
-    virtual G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track* aTrack);
-    virtual void NewStage();
-    virtual void PrepareNewEvent();
-
-  private:
-    G4int fScintillationCounter;
-    G4int fCerenkovCounter;
+public:
+  g4matrixStackingAction();
+  virtual ~g4matrixStackingAction();
+  
+public:
+  virtual G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track* aTrack);
+  virtual void NewStage();
+  virtual void PrepareNewEvent();
+  
+private:
+  G4int fScintillationCounter;
+  G4int fCerenkovCounter;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

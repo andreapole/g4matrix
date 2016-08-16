@@ -45,7 +45,7 @@ class g4matrixPhysicsList: public G4VModularPhysicsList
 public:
   g4matrixPhysicsList();
   virtual ~g4matrixPhysicsList();
-
+  
   virtual void SetCuts();
 };
 

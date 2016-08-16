@@ -47,9 +47,9 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 g4matrixRunAction::g4matrixRunAction(/*float* aFloat*/)
- : G4UserRunAction(),
-   fTimer(0)
-   //,pFloat(aFloat)
+: G4UserRunAction(),
+fTimer(0)
+//,pFloat(aFloat)
 {
   fTimer = new G4Timer;
 }
@@ -81,5 +81,5 @@ void g4matrixRunAction::EndOfRunAction(const G4Run* aRun)
   
   fTimer->Stop();
   G4cout << "number of event = " << aRun->GetNumberOfEvent() << " " << *fTimer << G4endl;
-
+  
 }

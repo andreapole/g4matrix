@@ -42,8 +42,8 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 g4matrixActionInitialization::g4matrixActionInitialization(ConfigFile& config)
- : G4VUserActionInitialization(),
-   fConfig(config)
+: G4VUserActionInitialization(),
+fConfig(config)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -76,7 +76,7 @@ void g4matrixActionInitialization::Build() const
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 G4VSteppingVerbose*
-               g4matrixActionInitialization::InitializeSteppingVerbose() const
+g4matrixActionInitialization::InitializeSteppingVerbose() const
 {
   return new g4matrixSteppingVerbose();
 }  

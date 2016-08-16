@@ -45,8 +45,8 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 g4matrixEventAction::g4matrixEventAction(g4matrixRunAction* runAction)
- : G4UserEventAction(),
-      fRunAction(runAction)
+: G4UserEventAction(),
+fRunAction(runAction)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -58,13 +58,13 @@ g4matrixEventAction::~g4matrixEventAction()
 
 void g4matrixEventAction::BeginOfEventAction(const G4Event* event)
 {  
-
+  
   //print event number
   G4int eventID = event->GetEventID();
   G4cout << "//***********************************************//" << G4endl;
   G4cout << "//              Event Number " << eventID		<< G4endl;
   G4cout << "//***********************************************//" << G4endl;
-
+  
   
   Int_t run = CreateTree::Instance()->Run;
   long int seed = CreateTree::Instance()->Seed;
@@ -72,7 +72,7 @@ void g4matrixEventAction::BeginOfEventAction(const G4Event* event)
   CreateTree::Instance()->Seed = seed;
   CreateTree::Instance()->Run = run;
   CreateTree::Instance()->Event = event->GetEventID();
-
+  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -82,63 +82,63 @@ void g4matrixEventAction::EndOfEventAction(const G4Event* event)
   // Accumulate statistics
   // only if there was an energy deposition (otherwise, why would i save empty data?)
   
-//   if(CreateTree::Instance()->totalEnergyDeposited > 0)
-//   {
-      CreateTree::Instance()->Fill();
-      G4cout << "Total Energy deposited in this event = "<< CreateTree::Instance()->totalEnergyDeposited << " MeV" << G4endl;
-//   }
-//   else
-//   {
-//       G4cout << "No Energy deposited in this event" << G4endl;
-//   }
+  //   if(CreateTree::Instance()->totalEnergyDeposited > 0)
+  //   {
+  CreateTree::Instance()->Fill();
+  G4cout << "Total Energy deposited in this event = "<< CreateTree::Instance()->totalEnergyDeposited << " MeV" << G4endl;
+  //   }
+  //   else
+  //   {
+  //       G4cout << "No Energy deposited in this event" << G4endl;
+  //   }
   
   
   
   
   //BEGIN of debug output - not a good idea, works only for 64 crystals - 16 detectors, otherwise gives seg fault. all info is anyway in the root file...
-//   //get total number of crystals
-//   int totCryNum = sizeof(CreateTree::Instance()->pCryEnergyDeposited)/sizeof(CreateTree::Instance()->pCryEnergyDeposited[0]);
-//   //get total number of detectors
-//   int totDetNum =  sizeof(CreateTree::Instance()->DetectorHit)/sizeof(CreateTree::Instance()->DetectorHit[0]);
-//   
-//   G4cout << "sizeof crystals "<<  sizeof(CreateTree::Instance()->pCryEnergyDeposited)/sizeof(CreateTree::Instance()->pCryEnergyDeposited[0]) << G4endl;
-//   G4cout << "sizeof detectors "<<  sizeof(CreateTree::Instance()->DetectorHit)/sizeof(CreateTree::Instance()->DetectorHit[0]) << G4endl;
-//   
-//   for (int i = 0 ; i < 64 ; i++) //FIXME generilize to NxM crystals
-//   {
-//     if(CreateTree::Instance()->pCryEnergyDeposited[i]->size() != 0)
-//     {
-//       G4cout << "Crystal" << i;
-//       for(int j = 0 ; j < CreateTree::Instance()->pCryEnergyDeposited[i]->size() ; j++)
-//       {
-// 	G4cout << "\t" << CreateTree::Instance()->pCryEnergyDeposited[i]->at(j);
-//       }
-//       G4cout << G4endl;
-//       G4cout << "PosX ";
-//       for(int j = 0 ; j < CreateTree::Instance()->pPosXEnDep[i]->size() ; j++)
-//       {
-// 	G4cout << "\t" << CreateTree::Instance()->pPosXEnDep[i]->at(j);
-//       }
-//       G4cout << G4endl;
-//       G4cout << "PosY ";
-//       for(int j = 0 ; j < CreateTree::Instance()->pPosYEnDep[i]->size() ; j++)
-//       {
-// 	G4cout << "\t" << CreateTree::Instance()->pPosYEnDep[i]->at(j);
-//       }
-//       G4cout << G4endl;
-//       G4cout << "PosZ ";
-//       for(int j = 0 ; j < CreateTree::Instance()->pPosZEnDep[i]->size() ; j++)
-//       {
-// 	G4cout << "\t" << CreateTree::Instance()->pPosZEnDep[i]->at(j);
-//       }
-//       G4cout << G4endl;
-//     }
-//   }
-//   //output Detector hits
-//   for(int i = 0 ; i < 16 ; i++)//FIXME generilize to NxM detectors
-//   {
-//     G4cout << "Detector " << i << " = " << CreateTree::Instance()->DetectorHit[i] << G4endl;
-//   }
+  //   //get total number of crystals
+  //   int totCryNum = sizeof(CreateTree::Instance()->pCryEnergyDeposited)/sizeof(CreateTree::Instance()->pCryEnergyDeposited[0]);
+  //   //get total number of detectors
+  //   int totDetNum =  sizeof(CreateTree::Instance()->DetectorHit)/sizeof(CreateTree::Instance()->DetectorHit[0]);
+  //   
+  //   G4cout << "sizeof crystals "<<  sizeof(CreateTree::Instance()->pCryEnergyDeposited)/sizeof(CreateTree::Instance()->pCryEnergyDeposited[0]) << G4endl;
+  //   G4cout << "sizeof detectors "<<  sizeof(CreateTree::Instance()->DetectorHit)/sizeof(CreateTree::Instance()->DetectorHit[0]) << G4endl;
+  //   
+  //   for (int i = 0 ; i < 64 ; i++) //FIXME generilize to NxM crystals
+  //   {
+  //     if(CreateTree::Instance()->pCryEnergyDeposited[i]->size() != 0)
+  //     {
+  //       G4cout << "Crystal" << i;
+  //       for(int j = 0 ; j < CreateTree::Instance()->pCryEnergyDeposited[i]->size() ; j++)
+  //       {
+  // 	G4cout << "\t" << CreateTree::Instance()->pCryEnergyDeposited[i]->at(j);
+  //       }
+  //       G4cout << G4endl;
+  //       G4cout << "PosX ";
+  //       for(int j = 0 ; j < CreateTree::Instance()->pPosXEnDep[i]->size() ; j++)
+  //       {
+  // 	G4cout << "\t" << CreateTree::Instance()->pPosXEnDep[i]->at(j);
+  //       }
+  //       G4cout << G4endl;
+  //       G4cout << "PosY ";
+  //       for(int j = 0 ; j < CreateTree::Instance()->pPosYEnDep[i]->size() ; j++)
+  //       {
+  // 	G4cout << "\t" << CreateTree::Instance()->pPosYEnDep[i]->at(j);
+  //       }
+  //       G4cout << G4endl;
+  //       G4cout << "PosZ ";
+  //       for(int j = 0 ; j < CreateTree::Instance()->pPosZEnDep[i]->size() ; j++)
+  //       {
+  // 	G4cout << "\t" << CreateTree::Instance()->pPosZEnDep[i]->at(j);
+  //       }
+  //       G4cout << G4endl;
+  //     }
+  //   }
+  //   //output Detector hits
+  //   for(int i = 0 ; i < 16 ; i++)//FIXME generilize to NxM detectors
+  //   {
+  //     G4cout << "Detector " << i << " = " << CreateTree::Instance()->DetectorHit[i] << G4endl;
+  //   }
   //END of debug output
   
 } 

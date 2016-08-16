@@ -43,34 +43,34 @@ class g4matrixPrimaryGeneratorMessenger;
 
 class g4matrixPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
-  public:
-    g4matrixPrimaryGeneratorAction(ConfigFile& config);
-    virtual ~g4matrixPrimaryGeneratorAction();
-
-  public:
-    virtual void GeneratePrimaries(G4Event*);
-
-//     void SetOptPhotonPolar();
-//     void SetOptPhotonPolar(G4double);
-
-  private:
-    G4ParticleGun* fParticleGun;
-    g4matrixPrimaryGeneratorMessenger* fGunMessenger;
-    G4double sourcex;  
-    G4double sourcey; 
-    G4double distance; 
-    G4double energy;   
-    G4double direction;
-    
-    G4double theta;
-    G4double phi ;
-    G4double esrThickness;
-    G4double crystalx;
-    G4double crystaly;
-    G4int ncrystalx;
-    G4int ncrystaly;
-    
-    
+public:
+  g4matrixPrimaryGeneratorAction(ConfigFile& config);
+  virtual ~g4matrixPrimaryGeneratorAction();
+  
+public:
+  virtual void GeneratePrimaries(G4Event*);
+  
+  //     void SetOptPhotonPolar();
+  //     void SetOptPhotonPolar(G4double);
+  
+private:
+  G4ParticleGun* fParticleGun;
+  g4matrixPrimaryGeneratorMessenger* fGunMessenger;
+  G4double sourcex;  
+  G4double sourcey; 
+  G4double distance; 
+  G4double energy;   
+  G4double direction;
+  
+  G4double theta;
+  G4double phi ;
+  G4double esrThickness;
+  G4double crystalx;
+  G4double crystaly;
+  G4int ncrystalx;
+  G4int ncrystaly;
+  
+  
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
