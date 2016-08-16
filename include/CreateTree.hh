@@ -52,6 +52,9 @@ class CreateTree
   
   std::vector<float>*  CryEnergyDeposited;   
   std::vector<float>** pCryEnergyDeposited;
+
+  std::vector<float>*  CryGlobalTime;   
+  std::vector<float>** pCryGlobalTime;
   
   std::vector<float>*  PosXEnDep; 
   std::vector<float>** pPosXEnDep;

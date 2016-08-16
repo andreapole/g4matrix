@@ -20,12 +20,15 @@ CreateTree::CreateTree(TString name, int x, int y, int z, int k, int j)
   DetectorHit         = new Short_t [nArrays*nDetectorsX*nDetectorsY];
   CryEnergyDeposited  = new std::vector<float> [nCrystalsX*nCrystalsY];
   pCryEnergyDeposited = new std::vector<float>* [nCrystalsX*nCrystalsY];
+  CryGlobalTime       = new std::vector<float> [nCrystalsX*nCrystalsY];
+  pCryGlobalTime      = new std::vector<float>* [nCrystalsX*nCrystalsY];
   PosXEnDep           = new std::vector<float> [nCrystalsX*nCrystalsY];
   pPosXEnDep          = new std::vector<float>* [nCrystalsX*nCrystalsY];
   PosYEnDep           = new std::vector<float> [nCrystalsX*nCrystalsY];
   pPosYEnDep          = new std::vector<float>* [nCrystalsX*nCrystalsY];
   PosZEnDep           = new std::vector<float> [nCrystalsX*nCrystalsY];
   pPosZEnDep          = new std::vector<float>* [nCrystalsX*nCrystalsY];
+  
   
   gROOT->ProcessLine("#include <vector>"); //this is needed otherwise ROOT will complain about not knowing what a std::vector is...
   if(fInstance) 
@@ -51,6 +54,7 @@ CreateTree::CreateTree(TString name, int x, int y, int z, int k, int j)
   for(int i = 0; i < nCrystalsX*nCrystalsY ; i++) 
   {
     pCryEnergyDeposited[i] = &CryEnergyDeposited[i];
+    pCryGlobalTime[i] = &CryGlobalTime[i];
     pPosXEnDep[i] = &PosXEnDep[i];
     pPosYEnDep[i] = &PosYEnDep[i];
     pPosZEnDep[i] = &PosZEnDep[i];
@@ -62,6 +66,9 @@ CreateTree::CreateTree(TString name, int x, int y, int z, int k, int j)
     snames << "cry" << i;
     this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pCryEnergyDeposited[i]);
     snames.str("");
+    snames<< "cry" << i << "GlobalTime";
+    this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pCryGlobalTime[i]);
+    snames.str("");
     snames<< "cry" << i << "PosXEnDep";
     this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pPosXEnDep[i]);
     snames.str("");
@@ -70,6 +77,7 @@ CreateTree::CreateTree(TString name, int x, int y, int z, int k, int j)
     snames.str("");
     snames<< "cry" << i << "PosZEnDep";
     this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pPosZEnDep[i]);
+    snames.str("");
   }
   
   for (int i = 0 ; i < nArrays*nDetectorsX*nDetectorsY ; i++) 
@@ -129,6 +137,8 @@ CreateTree::~CreateTree()
   delete DetectorHit;
   delete CryEnergyDeposited;
   delete pCryEnergyDeposited;
+  delete CryGlobalTime;
+  delete pCryGlobalTime;
   delete PosXEnDep ;
   delete pPosXEnDep;
   delete PosYEnDep;
@@ -159,6 +169,7 @@ void CreateTree::Clear()
   for(int i = 0; i < nCrystalsX*nCrystalsY ; i++)
   {
     CryEnergyDeposited[i].clear();
+    CryGlobalTime[i].clear();
     PosXEnDep[i].clear();
     PosYEnDep[i].clear();
     PosZEnDep[i].clear();
