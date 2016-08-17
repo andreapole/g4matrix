@@ -175,7 +175,7 @@ void CreateTree::Clear()
     PosZEnDep[i].clear();
   }
   
-  for (int i = 0 ; i < nDetectorsX*nDetectorsY ; i++)//
+  for (int i = 0 ; i < nArrays*nDetectorsX*nDetectorsY ; i++)//
   {
     DetectorHit[i] = 0;
   }
