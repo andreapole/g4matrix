@@ -62,6 +62,24 @@ class CreateTree
   std::vector<float>** pPosYEnDep;
   std::vector<float>*  PosZEnDep; 
   std::vector<float>** pPosZEnDep;
+  std::vector<float>*  PosComptX; 
+  std::vector<float>** pPosComptX;
+  std::vector<float>*  PosComptY; 
+  std::vector<float>** pPosComptY;
+  std::vector<float>*  PosComptZ; 
+  std::vector<float>** pPosComptZ;
+  std::vector<float>*  PosPhotX; 
+  std::vector<float>** pPosPhotX;
+  std::vector<float>*  PosPhotY; 
+  std::vector<float>** pPosPhotY;
+  std::vector<float>*  PosPhotZ; 
+  std::vector<float>** pPosPhotZ;
+  std::vector<float>*  TimeCompt; 
+  std::vector<float>** pTimeCompt;
+  std::vector<float>*  TimePhot; 
+  std::vector<float>** pTimePhot;
+
+
   
   std::vector<float> PositionX;
   std::vector<float> *pPositionX;

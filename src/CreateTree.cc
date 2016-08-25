@@ -28,6 +28,23 @@ CreateTree::CreateTree(TString name, int x, int y, int z, int k, int j)
   pPosYEnDep          = new std::vector<float>* [nCrystalsX*nCrystalsY];
   PosZEnDep           = new std::vector<float> [nCrystalsX*nCrystalsY];
   pPosZEnDep          = new std::vector<float>* [nCrystalsX*nCrystalsY];
+  PosComptX           = new std::vector<float> [nCrystalsX*nCrystalsY];
+  pPosComptX          = new std::vector<float>* [nCrystalsX*nCrystalsY];
+  PosComptY           = new std::vector<float> [nCrystalsX*nCrystalsY];
+  pPosComptY          = new std::vector<float>* [nCrystalsX*nCrystalsY];
+  PosComptZ           = new std::vector<float> [nCrystalsX*nCrystalsY];
+  pPosComptZ          = new std::vector<float>* [nCrystalsX*nCrystalsY];
+  PosPhotX            = new std::vector<float> [nCrystalsX*nCrystalsY];
+  pPosPhotX           = new std::vector<float>* [nCrystalsX*nCrystalsY];
+  PosPhotY            = new std::vector<float> [nCrystalsX*nCrystalsY];
+  pPosPhotY           = new std::vector<float>* [nCrystalsX*nCrystalsY];
+  PosPhotZ            = new std::vector<float> [nCrystalsX*nCrystalsY];
+  pPosPhotZ           = new std::vector<float>* [nCrystalsX*nCrystalsY];
+  TimeCompt           = new std::vector<float> [nCrystalsX*nCrystalsY];
+  pTimeCompt          = new std::vector<float>* [nCrystalsX*nCrystalsY];
+  TimePhot            = new std::vector<float> [nCrystalsX*nCrystalsY];
+  pTimePhot           = new std::vector<float>* [nCrystalsX*nCrystalsY];
+
   
   
   gROOT->ProcessLine("#include <vector>"); //this is needed otherwise ROOT will complain about not knowing what a std::vector is...
@@ -58,6 +75,14 @@ CreateTree::CreateTree(TString name, int x, int y, int z, int k, int j)
     pPosXEnDep[i] = &PosXEnDep[i];
     pPosYEnDep[i] = &PosYEnDep[i];
     pPosZEnDep[i] = &PosZEnDep[i];
+    pPosComptX[i] = &PosComptX[i];
+    pPosComptY[i] = &PosComptY[i];
+    pPosComptZ[i] = &PosComptZ[i];
+    pPosPhotX[i]  = &PosPhotX[i];
+    pPosPhotY[i]  = &PosPhotY[i];
+    pPosPhotZ[i]  = &PosPhotZ[i];
+    pTimeCompt[i] = &TimeCompt[i];
+    pTimePhot[i]  = &TimePhot[i];
   }
   
   for (int i = 0 ; i < nCrystalsX*nCrystalsY ; i++) 
@@ -77,6 +102,30 @@ CreateTree::CreateTree(TString name, int x, int y, int z, int k, int j)
     snames.str("");
     snames<< "cry" << i << "PosZEnDep";
     this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pPosZEnDep[i]);
+    snames.str("");
+    snames<< "cry" << i << "PosComptX";
+    this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pPosComptX[i]);
+    snames.str("");
+    snames<< "cry" << i << "PosComptY";
+    this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pPosComptY[i]);
+    snames.str("");
+    snames<< "cry" << i << "PosComptZ";
+    this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pPosComptZ[i]);
+    snames.str("");
+    snames<< "cry" << i << "PosPhotX";
+    this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pPosPhotX[i]);
+    snames.str("");
+    snames<< "cry" << i << "PosPhotY";
+    this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pPosPhotY[i]);
+    snames.str("");
+    snames<< "cry" << i << "PosPhotZ";
+    this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pPosPhotZ[i]);
+    snames.str("");
+    snames<< "cry" << i << "TimeCompt";
+    this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pTimeCompt[i]);
+    snames.str("");
+    snames<< "cry" << i << "TimePhot";
+    this->GetTree()->Branch(snames.str().c_str(),"std::vector<float>",&pTimePhot[i]);
     snames.str("");
   }
   
@@ -145,6 +194,22 @@ CreateTree::~CreateTree()
   delete pPosYEnDep;
   delete PosZEnDep;
   delete pPosZEnDep;
+  delete PosComptX;
+  delete PosComptY;
+  delete PosComptZ;
+  delete PosPhotX;
+  delete PosPhotY;
+  delete PosPhotZ;
+  delete TimeCompt;
+  delete TimePhot;
+  delete pPosComptX;
+  delete pPosComptY;
+  delete pPosComptZ;
+  delete pPosPhotX;
+  delete pPosPhotY;
+  delete pPosPhotZ;
+  delete pTimeCompt;
+  delete pTimePhot;
 }
 
 Bool_t CreateTree::Write()
@@ -173,6 +238,14 @@ void CreateTree::Clear()
     PosXEnDep[i].clear();
     PosYEnDep[i].clear();
     PosZEnDep[i].clear();
+    PosComptX[i].clear();
+    PosComptY[i].clear();
+    PosComptZ[i].clear();
+    PosPhotX[i].clear();
+    PosPhotY[i].clear();
+    PosPhotZ[i].clear();
+    TimeCompt[i].clear();
+    TimePhot[i].clear();
   }
   
   for (int i = 0 ; i < nArrays*nDetectorsX*nDetectorsY ; i++)//

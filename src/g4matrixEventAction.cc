@@ -61,9 +61,10 @@ void g4matrixEventAction::BeginOfEventAction(const G4Event* event)
 
   //print event number
   G4int eventID = event->GetEventID();
-  G4cout << "//***********************************************//" << G4endl;
-  G4cout << "//              Event Number " << eventID		<< G4endl;
-  G4cout << "//***********************************************//" << G4endl;
+  //G4cout << "//***********************************************//" << G4endl;
+  //G4cout << "//              Event Number " << eventID		<< G4endl;
+  //G4cout << "//***********************************************//" << G4endl;
+  G4cout << eventID << G4endl;
 
   
   Int_t run = CreateTree::Instance()->Run;
@@ -72,7 +73,6 @@ void g4matrixEventAction::BeginOfEventAction(const G4Event* event)
   CreateTree::Instance()->Seed = seed;
   CreateTree::Instance()->Run = run;
   CreateTree::Instance()->Event = event->GetEventID();
-
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
