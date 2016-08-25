@@ -108,6 +108,13 @@ void g4matrixSteppingAction::UserSteppingAction(const G4Step* step)
   //for opticalphoton, we want to know where they stopped 
   if (ParticleName == "opticalphoton") //if it's an opticalphoton
   {
+    G4double edep = 0;
+    edep = step->GetTotalEnergyDeposit()/CLHEP::MeV; //check if there was an energy deposition
+    G4ThreeVector positionVectorOut = track->GetStep()->GetPostStepPoint()->GetPosition(); //get the position vector
+    G4cout << ParticleName << " ID=" << track->GetTrackID() << " ParentID=" << track->GetParentID() << " - CreatorProcess=" << track->GetCreatorProcess()->GetProcessName() << " - En.Dep " << edep << " - " ;
+    G4cout << "(" << positionVectorOut.getX() << "," << positionVectorOut.getY() << "," << positionVectorOut.getZ() << ") - ";
+    G4cout << step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() << G4endl;
+    track->SetTrackStatus(fStopAndKill); 
     //BEGIN of debug part (flood maps not symmetric issue)
 //     G4OpBoundaryProcessStatus boundaryStatus=Undefined;
 //     static G4ThreadLocal G4OpBoundaryProcess* boundary=NULL;
@@ -260,13 +267,18 @@ void g4matrixSteppingAction::UserSteppingAction(const G4Step* step)
   }
   else //there's only gammas and electrons. for them, we want to know where they left energy (opticalphoton don't really leave any)
   {
-    G4double edep;
+    G4double edep = 0;
     edep = step->GetTotalEnergyDeposit()/CLHEP::MeV; //check if there was an energy deposition
+    G4ThreeVector positionVectorOut = track->GetStep()->GetPostStepPoint()->GetPosition(); //get the position vector
+    G4cout << ParticleName << " ID=" << track->GetTrackID() << " ParentID=" << track->GetParentID() << " - En.Dep " << edep << " - " ;
+    G4cout << "(" << positionVectorOut.getX() << "," << positionVectorOut.getY() << "," << positionVectorOut.getZ() << ") - ";
+    G4cout << step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() << G4endl;
+    
     if(edep != 0) //if there was en dep, save the data
     {
       if(materialName == "LYSO") //if the electron is interacting with the detector, it does a huge number of cherenkov
       {
-	
+        
       //get the deposition process name
       // 	G4OpBoundaryProcessStatus boundaryStatus=Undefined;
       // 	static G4ThreadLocal G4OpBoundaryProcess* boundary=NULL;
